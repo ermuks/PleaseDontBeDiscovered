@@ -8,6 +8,14 @@ using TMPro;
 
 public class InGameUIManager : MonoBehaviour
 {
+    public void TestButton()
+    {
+        var properties = PhotonNetwork.CurrentRoom.CustomProperties;
+        properties["Vote"] = false;
+        PhotonNetwork.CurrentRoom.SetCustomProperties(properties);
+    }
+
+
     [SerializeField]
     private Transform canvas;
     private GameObject messageUIPrefab;
@@ -32,16 +40,53 @@ public class InGameUIManager : MonoBehaviour
     [SerializeField] private GameObject areaWatcherUI;
     [SerializeField] private GameObject areaGameOver;
 
+    [SerializeField] private GameObject areaVote;
+    [SerializeField] private Transform playerListParent;
+    private GameObject playerListPrefab;
+    private List<VotePlayerListItem> playerList = new List<VotePlayerListItem>();
+
+    [SerializeField] private Transform chattingListParent;
+    private GameObject chattingListPrefab;
+
     private void Awake()
     {
         messageUIPrefab = Resources.Load<GameObject>("Prefabs/UI/InGameMessageUI");
         bloodUIPrefab = Resources.Load<GameObject>("Prefabs/UI/BloodEffect");
+
+        playerListPrefab = Resources.Load<GameObject>("Prefabs/UI/VotePlayerListItem");
+        chattingListPrefab = Resources.Load<GameObject>("Prefabs/UI/ChatMessage");
+
+        foreach (var player in PhotonNetwork.CurrentRoom.Players.Values)
+        {
+            VotePlayerListItem votePlayer = Instantiate(playerListPrefab, playerListParent).GetComponent<VotePlayerListItem>();
+            votePlayer.Init(player, null);
+            playerList.Add(votePlayer);
+        }
+        EventManager.AddData("InGameUI >> VoteUIActive", (p) => areaVote.activeInHierarchy);
+        EventManager.AddEvent("InGameUI :: OpenVoteUI", (p) =>
+        {
+            Debug.Log("ÃßÀû¿ë");
+            Cursor.lockState = CursorLockMode.None;
+            areaVote.SetActive(true);
+            for (int i = 0; i < playerList.Count; i++)
+            {
+                bool isDead = (bool)playerList[i].player.CustomProperties["isDead"];
+                playerList[i].SetDie(isDead);
+            }
+            EventManager.SendEvent("InGameUI :: VoteChatInit");
+        });
+        EventManager.AddEvent("InGameUI :: CloseVoteUI", (p) =>
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            areaVote.SetActive(false);
+        });
 
         areaDieUI.SetActive(false);
         areaPlayerUI.SetActive(true);
         areaWatcherUI.SetActive(false);
         areaGameOver.SetActive(false);
         areaTrigger.SetActive(false);
+        areaVote.SetActive(false);
         areaPlayerWorkProgressUI.SetActive(false);
 
         bool isMurder = (bool)PhotonNetwork.LocalPlayer.CustomProperties["isMurder"];
@@ -158,6 +203,11 @@ public class InGameUIManager : MonoBehaviour
             else if (col.CompareTag("WarmZone"))
             {
                 EventManager.SendEvent("Player :: EnterWarmZone");
+            }
+            else if (col.CompareTag("ReportArea"))
+            {
+                areaTrigger.SetActive(true);
+                areaTrigger.GetComponent<TriggerUI>().SetMessage(WorkMessage.OpenVote);
             }
             else
             {

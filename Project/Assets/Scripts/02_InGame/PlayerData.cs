@@ -11,7 +11,6 @@ public class PlayerData : MonoBehaviourPun, IPunObservable
     [PunRPC]
     private void Hit(Player player)
     {
-        Debug.Log(player.NickName);
         GetComponent<Animator>().SetTrigger("Hit");
         if ((bool)player.CustomProperties["isMurder"])
         {

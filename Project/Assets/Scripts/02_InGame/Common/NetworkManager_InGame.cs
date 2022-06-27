@@ -41,6 +41,19 @@ public class NetworkManager_InGame : MonoBehaviourPunCallbacks
         if (!isOver && !Settings.instance.isDebug) CheckPlayers();
     }
 
+    public override void OnRoomPropertiesUpdate(ExitGames.Client.Photon.Hashtable propertiesThatChanged)
+    {
+        var properties = propertiesThatChanged;
+        if ((bool)properties["Vote"] && !(bool)EventManager.GetData("InGameUI >> VoteUIActive"))
+        {
+            EventManager.SendEvent("InGameUI :: OpenVoteUI");
+        }
+        if (!(bool)properties["Vote"] && (bool)EventManager.GetData("InGameUI >> VoteUIActive"))
+        {
+            EventManager.SendEvent("InGameUI :: CloseVoteUI");
+        }
+    }
+
     private void CheckPlayers()
     {
         int surviverCount = 0;

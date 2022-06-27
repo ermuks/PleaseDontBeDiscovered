@@ -68,21 +68,21 @@ public class ChattingCallbacks : MonoBehaviourPun, IPunObservable
 
     private void AddMessage(Player player, string message, bool richText)
     {
-        MessageInfo item = Instantiate(chatPrefab, chatParent).GetComponent<MessageInfo>();
+        ChatMessage item = Instantiate(chatPrefab, chatParent).GetComponent<ChatMessage>();
         item.SetMessage(player, message, richText);
         StartCoroutine(ReCalculateChattingHeight());
     }
 
     private void AddAlamMessage(string message)
     {
-        MessageInfo item = Instantiate(alamPrefab, chatParent).GetComponent<MessageInfo>();
+        ChatMessage item = Instantiate(alamPrefab, chatParent).GetComponent<ChatMessage>();
         item.SetMessage(message, true);
         StartCoroutine(ReCalculateChattingHeight());
     }
 
     private void AddNoticeMessage(string message)
     {
-        MessageInfo item = Instantiate(noticePrefab, chatParent).GetComponent<MessageInfo>();
+        ChatMessage item = Instantiate(noticePrefab, chatParent).GetComponent<ChatMessage>();
         item.SetMessage(message, true);
         StartCoroutine(ReCalculateChattingHeight());
     }

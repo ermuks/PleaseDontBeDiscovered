@@ -550,6 +550,7 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
                 roomOption.CustomRoomProperties.Add("murders", (int)sliderMurderCount.value);
                 roomOption.CustomRoomProperties.Add("moveSpeed", sliderMoveSpeed.value);
                 roomOption.CustomRoomProperties.Add("killCooldown", sliderKillCooldown.value);
+                roomOption.CustomRoomProperties.Add("Vote", false);
 
                 PhotonNetwork.LeaveLobby();
                 PhotonNetwork.CreateRoom(title, roomOption);

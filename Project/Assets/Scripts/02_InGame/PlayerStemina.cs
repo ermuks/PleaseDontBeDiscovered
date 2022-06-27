@@ -10,8 +10,6 @@ public class PlayerStemina : MonoBehaviourPun
 
     private float hp = 1f;
 
-    private bool isDie = false;
-
     #region WetValue
     private float _wetValue = .0f;
 
@@ -165,7 +163,8 @@ public class PlayerStemina : MonoBehaviourPun
 
     private void Update()
     {
-        if (normalPlayer && !isDie)
+        if ((bool)EventManager.GetData("InGameUI >> VoteUIActive")) return;
+        if (normalPlayer && !(bool)PhotonNetwork.LocalPlayer.CustomProperties["isDead"])
         {
             ThirstValue();
             HungryValue();
@@ -346,7 +345,7 @@ public class PlayerStemina : MonoBehaviourPun
     private void GetHit(float value, DieMessage msg)
     {
         hp -= value;
-        if (hp <= 0f && !isDie)
+        if (hp <= 0f && !(bool)PhotonNetwork.LocalPlayer.CustomProperties["isDead"])
         {
             EventManager.SendEvent("InGameUI :: Die", msg);
             EventManager.SendEvent("Player :: Die", msg);
@@ -355,7 +354,6 @@ public class PlayerStemina : MonoBehaviourPun
             hungryValue = .0f;
             warmValue = .0f;
             wetValue = .0f;
-            isDie = true;
         }
         else if (hp > 1f)
         {

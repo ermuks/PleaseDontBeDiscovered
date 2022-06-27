@@ -10,6 +10,7 @@ TagManager:
   - SpawnArea
   - WarmZone
   - DeepWater
+  - ReportArea
   layers:
   - Default
   - TransparentFX

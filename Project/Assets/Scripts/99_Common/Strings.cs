@@ -61,6 +61,7 @@ public enum StringKey
     InGameWorkTree,
     InGameWorkWater,
     InGameWorkFish,
+    InGameWorkOpenVote,
 
     InGameWorkProcessTree,
     InGameWorkProcessWater,
@@ -128,6 +129,7 @@ public static class Strings
                 str.Add(StringKey.InGameWorkTree, "Tree");
                 str.Add(StringKey.InGameWorkWater, "Water");
                 str.Add(StringKey.InGameWorkFish, "Fish");
+                str.Add(StringKey.InGameWorkOpenVote, "Report");
 
                 str.Add(StringKey.InGameWorkProcessTree, "Tree");
                 str.Add(StringKey.InGameWorkProcessWater, "Water");
@@ -191,6 +193,7 @@ public static class Strings
                 str.Add(StringKey.InGameWorkTree, "나무 구하기");
                 str.Add(StringKey.InGameWorkWater, "물 구하기");
                 str.Add(StringKey.InGameWorkFish, "낚시하기");
+                str.Add(StringKey.InGameWorkOpenVote, "신고하기");
 
                 str.Add(StringKey.InGameWorkProcessTree, "나무를 구하는 중입니다.");
                 str.Add(StringKey.InGameWorkProcessWater, "물을 퍼고있습니다.");
@@ -249,6 +252,7 @@ public static class Strings
                 str.Add(StringKey.InGameWorkTree, "Tree");
                 str.Add(StringKey.InGameWorkWater, "Water");
                 str.Add(StringKey.InGameWorkFish, "Fish");
+                str.Add(StringKey.InGameWorkOpenVote, "신고하기");
 
                 str.Add(StringKey.InGameWorkProcessTree, "Tree");
                 str.Add(StringKey.InGameWorkProcessWater, "Water");
@@ -307,6 +311,7 @@ public static class Strings
                 str.Add(StringKey.InGameWorkTree, "Tree");
                 str.Add(StringKey.InGameWorkWater, "Water");
                 str.Add(StringKey.InGameWorkFish, "Fish");
+                str.Add(StringKey.InGameWorkOpenVote, "신고하기");
 
                 str.Add(StringKey.InGameWorkProcessTree, "Tree");
                 str.Add(StringKey.InGameWorkProcessWater, "Water");

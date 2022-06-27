@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 using TMPro;
+using Photon.Pun;
 
 public enum WorkMessage
 {
@@ -11,6 +12,7 @@ public enum WorkMessage
     Treezone,
     WaterZone,
     FishZone,
+    OpenVote,
 }
 
 public class TriggerUI : MonoBehaviour
@@ -50,6 +52,9 @@ public class TriggerUI : MonoBehaviour
             case WorkMessage.FishZone:
                 txtMessage.text = Strings.GetString(StringKey.InGameWorkFish);
                 break;
+            case WorkMessage.OpenVote:
+                txtMessage.text = Strings.GetString(StringKey.InGameWorkOpenVote);
+                break;
             default:
                 break;
         }
@@ -63,6 +68,7 @@ public class TriggerUI : MonoBehaviour
 
             if (!isDead)
             {
+                bool isReport = false;
                 string err = "";
                 switch (currentWork)
                 {
@@ -93,17 +99,29 @@ public class TriggerUI : MonoBehaviour
                         if ((bool)EventManager.GetData("Inventory >> ExistBlankCell", "0000", 1)) isWorking = true;
                         else err = Strings.GetString(StringKey.InGameMessageInventoryIsFull);
                         break;
+                    case WorkMessage.OpenVote:
+                        isReport = true;
+                        break;
                     default:
                         break;
                 }
-                if (isWorking)
+                if (isReport)
                 {
-                    EventManager.SendEvent("Player :: WorkStart", currentWork);
-                    EventManager.SendEvent("InGameUI :: WorkStart", currentWork);
+                    var properties = PhotonNetwork.CurrentRoom.CustomProperties;
+                    properties["Vote"] = true;
+                    PhotonNetwork.CurrentRoom.SetCustomProperties(properties);
                 }
                 else
                 {
-                    EventManager.SendEvent("InGameUI :: CreateMessage", err);
+                    if (isWorking)
+                    {
+                        EventManager.SendEvent("Player :: WorkStart", currentWork);
+                        EventManager.SendEvent("InGameUI :: WorkStart", currentWork);
+                    }
+                    else
+                    {
+                        EventManager.SendEvent("InGameUI :: CreateMessage", err);
+                    }
                 }
             }
         }

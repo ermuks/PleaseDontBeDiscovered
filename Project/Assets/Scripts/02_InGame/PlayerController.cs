@@ -42,7 +42,6 @@ public class PlayerController : MonoBehaviour
     private int playerIndex = 0;
     private Transform targetPlayer;
 
-    private bool workabled = false;
     private bool isWorking = false;
 
     private float slowTimer = 3.0f;
@@ -141,6 +140,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if ((bool)EventManager.GetData("InGameUI >> VoteUIActive")) return;
         if (!isDead)
         {
             if (isWorking)
