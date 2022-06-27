@@ -180,7 +180,7 @@ public class PlayerController : MonoBehaviour
     private void KillCooldownUpdate()
     {
         killTimer += Time.deltaTime;
-        EventManager.SendEvent("InGameUI :: SetKillCooldown", killTimer, killTimer >= killCooldown);
+        EventManager.SendEvent("InGameUI :: SetKillCooldown", killTimer, killCooldown, killTimer >= killCooldown);
         if (killTimer >= killCooldown)
         {
             killable = true;
@@ -387,9 +387,11 @@ public class PlayerController : MonoBehaviour
 
             horizontal = Mathf.Clamp(horizontal, -1f, 1f);
             veritcal = Mathf.Clamp(veritcal, -1f, 1f);
-            if (gravityY < -6f)
+            if (gravityY < -8f)
             {
-                Debug.Log(gravityY + 6f);
+                EventManager.SendEvent("InGameUI :: Hurt");
+                EventManager.SendEvent("Player :: FallingDamage", gravityY + 8f);
+                slowTimer = .0f;
             }
             gravityY = .0f;
             anim.SetBool("Air", false);
@@ -464,20 +466,23 @@ public class PlayerController : MonoBehaviour
 
     public void SetPunch()
     {
-        RaycastHit[] hits = Physics.BoxCastAll(transform.position + controller.center, Vector3.one * .5f, Quaternion.Euler(currentAngleX, currentAngleY, 0) * Vector3.forward, Quaternion.identity, 2.5f, 1 << gameObject.layer);
-        foreach (var item in hits)
+        if (killable)
         {
-            if (item.collider.gameObject.CompareTag("Player"))
+            RaycastHit[] hits = Physics.BoxCastAll(transform.position + controller.center, Vector3.one * .5f, Quaternion.Euler(currentAngleX, currentAngleY, 0) * Vector3.forward, Quaternion.identity, 2.5f, 1 << gameObject.layer);
+            foreach (var item in hits)
             {
-                PhotonView view = item.collider.GetComponent<PhotonView>();
-                if (!view.IsMine)
+                if (item.collider.gameObject.CompareTag("Player"))
                 {
-                    if (!(bool)view.Owner.CustomProperties["isMurder"] && !(bool)view.Owner.CustomProperties["isDead"])
+                    PhotonView view = item.collider.GetComponent<PhotonView>();
+                    if (!view.IsMine)
                     {
-                        killable = false;
-                        killTimer = .0f;
-                        view.RPC("Hit", view.Owner, GetComponent<PhotonView>().Owner);
-                        break;
+                        if (!(bool)view.Owner.CustomProperties["isMurder"] && !(bool)view.Owner.CustomProperties["isDead"])
+                        {
+                            killable = false;
+                            killTimer = .0f;
+                            view.RPC("Hit", view.Owner, GetComponent<PhotonView>().Owner);
+                            break;
+                        }
                     }
                 }
             }

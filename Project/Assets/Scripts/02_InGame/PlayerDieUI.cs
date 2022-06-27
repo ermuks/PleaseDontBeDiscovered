@@ -35,5 +35,6 @@ public class PlayerDieUI : MonoBehaviour
                 message = Strings.GetString(StringKey.InGameDieMessageNone);
                 break;
         }
+        txtDieMessage.text = message;
     }
 }

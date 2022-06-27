@@ -2,20 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraInWater : MonoBehaviour
+public class WetCheckTrigger : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("DeepWater"))
         {
-            EventManager.SendEvent("InGameUI :: InWater");
+            EventManager.SendEvent("Player :: EnterWet");
         }
     }
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("DeepWater"))
         {
-            EventManager.SendEvent("InGameUI :: OutWater");
+            EventManager.SendEvent("Player :: ExitWet");
         }
     }
 }

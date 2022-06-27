@@ -6,16 +6,24 @@ using Photon.Pun;
 
 public class PlayerStemina : MonoBehaviourPun
 {
-    public string playerName = "";
-
-    private Inventory inventory;
-
     public bool isWarm = false;
 
     private float hp = 1f;
 
+    private bool isDie = false;
+
     #region WetValue
-    public float wetValue = .0f;
+    private float _wetValue = .0f;
+
+    public float wetValue
+    {
+        set
+        {
+            _wetValue = value;
+            CalcStamina();
+        }
+        get => _wetValue;
+    }
     private float wetTimer = .0f;
     private float wetDelay = 2f;
     #endregion
@@ -59,16 +67,16 @@ public class PlayerStemina : MonoBehaviourPun
     #endregion
 
     #region ColdValue
-    private float _coldValue = 1f;
+    private float _warmValue = 1f;
 
     public float warmValue
     {
         set
         {
-            _coldValue = value;
+            _warmValue = value;
             CalcStamina();
         }
-        get => _coldValue;
+        get => _warmValue;
     }
 
     private float warmFulldelay = 30f;
@@ -132,11 +140,32 @@ public class PlayerStemina : MonoBehaviourPun
                 
             }
         });
+        EventManager.AddEvent("Player :: EnterWarmZone", (p) =>
+        {
+            isWarm = true;
+        });
+        EventManager.AddEvent("Player :: ExitWarmZone", (p) =>
+        {
+            isWarm = false;
+        });
+        EventManager.AddEvent("Player :: EnterWet", (p) =>
+        {
+            wetValue = 1;
+        });
+        EventManager.AddEvent("Player :: ExitWet", (p) =>
+        {
+            wetValue = 1;
+        });
+        EventManager.AddEvent("Player :: FallingDamage", (p) =>
+        {
+            float damage = (float)p[0] / 15f;
+            GetHit(-damage, DieMessage.Falling);
+        });
     }
 
     private void Update()
     {
-        if (normalPlayer)
+        if (normalPlayer && !isDie)
         {
             ThirstValue();
             HungryValue();
@@ -151,6 +180,7 @@ public class PlayerStemina : MonoBehaviourPun
         EventManager.SendEvent("Refresh Thirsty", thirstValue);
         EventManager.SendEvent("Refresh Hungry", hungryValue);
         EventManager.SendEvent("Refresh Cold", warmValue);
+        EventManager.SendEvent("Refresh Wet", wetValue);
     }
 
     private void FillThirsty(float value)
@@ -212,7 +242,7 @@ public class PlayerStemina : MonoBehaviourPun
                 if (thirstValue < 0)
                 {
                     thirstValue = 0;
-                    GetHit(.02f);
+                    GetHit(.02f, DieMessage.Hungry);
                 }
             }
             else
@@ -225,9 +255,9 @@ public class PlayerStemina : MonoBehaviourPun
             thirstyFullTimer += Time.deltaTime;
             thirstyDownTimer = 0;
         }
-        if (thirstValue > .8f)
+        if (thirstValue >= 1f)
         {
-            GetHit(-.02f);
+            GetHit(-.02f * Time.deltaTime, DieMessage.None);
         }
     }
 
@@ -242,7 +272,7 @@ public class PlayerStemina : MonoBehaviourPun
                 if (hungryValue < 0)
                 {
                     hungryValue = 0;
-                    GetHit(.02f);
+                    GetHit(.02f, DieMessage.Hungry);
                 }
             }
             else
@@ -255,15 +285,20 @@ public class PlayerStemina : MonoBehaviourPun
             hungryFullTimer += Time.deltaTime;
             hungryDownTimer = 0;
         }
-        if (hungryValue > .8f)
+        if (hungryValue >= 1f)
         {
-            GetHit(-.02f);
+            GetHit(-.02f * Time.deltaTime, DieMessage.None);
         }
     }
 
     private void WarmValue()
     {
-        if (isWarm) return;
+        if (isWarm)
+        {
+            warmDownTimer = .0f;
+            FillWarm(.1f * Time.deltaTime);
+            return;
+        }
         if (warmFullTimer >= warmFulldelay)
         {
             if (warmDownTimer >= warmDelay)
@@ -273,7 +308,7 @@ public class PlayerStemina : MonoBehaviourPun
                 if (warmValue < 0)
                 {
                     warmValue = 0;
-                    GetHit(.02f);
+                    GetHit(.02f, DieMessage.Hungry);
                 }
             }
             else
@@ -295,7 +330,7 @@ public class PlayerStemina : MonoBehaviourPun
             if (wetTimer >= wetDelay)
             {
                 wetTimer -= wetDelay;
-                wetValue -= .05f;
+                wetValue -= isWarm ? .15f : .05f;
             }
             else
             {
@@ -308,18 +343,24 @@ public class PlayerStemina : MonoBehaviourPun
         }
     }
 
-    private void GetHit(float value)
+    private void GetHit(float value, DieMessage msg)
     {
         hp -= value;
-        if (hp <= 0)
+        if (hp <= 0f && !isDie)
         {
-            EventManager.SendEvent("InGameUI :: Die", DieMessage.Hungry);
-            EventManager.SendEvent("Player :: Die", DieMessage.Hungry);
-            hp = 0;
+            EventManager.SendEvent("InGameUI :: Die", msg);
+            EventManager.SendEvent("Player :: Die", msg);
+            hp = 0f;
+            thirstValue = .0f;
+            hungryValue = .0f;
+            warmValue = .0f;
+            wetValue = .0f;
+            isDie = true;
         }
-        else if (hp >= 1)
+        else if (hp > 1f)
         {
-            hp = 1;
+            hp = 1f;
         }
+        CalcStamina();
     }
 }

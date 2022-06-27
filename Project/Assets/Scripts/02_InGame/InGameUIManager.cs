@@ -9,13 +9,15 @@ using TMPro;
 public class InGameUIManager : MonoBehaviour
 {
     [SerializeField]
-    private Transform messageUIParent;
+    private Transform canvas;
     private GameObject messageUIPrefab;
+    private GameObject bloodUIPrefab;
 
     [SerializeField] private Image areaHPValue;
     [SerializeField] private Image areaHungryValue;
     [SerializeField] private Image areaThirstyValue;
     [SerializeField] private Image areaColdValue;
+    [SerializeField] private Image areaWetValue;
 
     [SerializeField] private GameObject areaNormalPlayerUI;
     [SerializeField] private GameObject areaMurderPlayerUI;
@@ -33,6 +35,7 @@ public class InGameUIManager : MonoBehaviour
     private void Awake()
     {
         messageUIPrefab = Resources.Load<GameObject>("Prefabs/UI/InGameMessageUI");
+        bloodUIPrefab = Resources.Load<GameObject>("Prefabs/UI/BloodEffect");
 
         areaDieUI.SetActive(false);
         areaPlayerUI.SetActive(true);
@@ -90,6 +93,11 @@ public class InGameUIManager : MonoBehaviour
             else if (value >= 15) areaColdValue.color = new Color(1, 1, .4f);
             else areaColdValue.color = new Color(1, .4f, .4f);
         });
+        EventManager.AddEvent("Refresh Wet"   , (p) =>
+        {
+            float value = (float)p[0];
+            areaWetValue.fillAmount = value;
+        });
         EventManager.AddEvent("InGameUI :: SetDie", (p) =>
         {
             areaDieUI.SetActive(true);
@@ -132,21 +140,28 @@ public class InGameUIManager : MonoBehaviour
         EventManager.AddEvent("InGameUI :: TriggerEnter", (p) =>
         {
             Collider col = (Collider)p[0];
-            areaTrigger.SetActive(true);
             if (col.CompareTag("TreeZone"))
             {
+                areaTrigger.SetActive(true);
                 areaTrigger.GetComponent<TriggerUI>().SetMessage(WorkMessage.Treezone);
             }
-            else if (col.CompareTag("WaterZone"))
+            else if (col.CompareTag("WaterZone") || col.CompareTag("DeepWater"))
             {
+                areaTrigger.SetActive(true);
                 areaTrigger.GetComponent<TriggerUI>().SetMessage(WorkMessage.WaterZone);
             }
             else if (col.CompareTag("FishZone"))
             {
+                areaTrigger.SetActive(true);
                 areaTrigger.GetComponent<TriggerUI>().SetMessage(WorkMessage.FishZone);
+            }
+            else if (col.CompareTag("WarmZone"))
+            {
+                EventManager.SendEvent("Player :: EnterWarmZone");
             }
             else
             {
+                areaTrigger.SetActive(true);
                 areaTrigger.GetComponent<TriggerUI>().SetMessage(WorkMessage.None);
             }
         });
@@ -154,6 +169,10 @@ public class InGameUIManager : MonoBehaviour
         {
             Collider col = (Collider)p[0];
             areaTrigger.SetActive(false);
+            if (col.CompareTag("WarmZone"))
+            {
+                EventManager.SendEvent("Player :: ExitWarmZone");
+            }
         });
         EventManager.AddEvent("InGameUI :: WorkStart", (p) =>
         {
@@ -166,16 +185,20 @@ public class InGameUIManager : MonoBehaviour
         });
         EventManager.AddEvent("InGameUI :: CreateMessage", (p) =>
         {
-            InGameMessageUI messageUI = Instantiate(messageUIPrefab, messageUIParent).GetComponent<InGameMessageUI>();
+            InGameMessageUI messageUI = Instantiate(messageUIPrefab, canvas).GetComponent<InGameMessageUI>();
             messageUI.SetMessage((string)p[0]);
+        });
+        EventManager.AddEvent("InGameUI :: Hurt", (p) =>
+        {
+            GameObject blood = Instantiate(bloodUIPrefab, canvas);
         });
         EventManager.AddEvent("InGameUI :: SetKillCooldown", (p) =>
         {
-            imgCooldownTimer.fillAmount = (float)p[0];
-            imgCooldownTimer.gameObject.SetActive(!(bool)p[1]);
+            imgCooldownTimer.fillAmount = 1 - (float)p[0] / (float)p[1];
+            imgCooldownTimer.gameObject.SetActive(!(bool)p[2]);
 
-            txtCooldownTimer.text = $"{(float)p[0]:0.0}";
-            txtCooldownTimer.gameObject.SetActive(!(bool)p[1]);
+            txtCooldownTimer.text = $"{(float)p[1] - (float)p[0]:0.0}";
+            txtCooldownTimer.gameObject.SetActive(!(bool)p[2]);
         });
     }
 }

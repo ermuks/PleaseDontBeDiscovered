@@ -8,6 +8,8 @@ TagManager:
   - TreeZone
   - FishZone
   - SpawnArea
+  - WarmZone
+  - DeepWater
   layers:
   - Default
   - TransparentFX
@@ -21,7 +23,7 @@ TagManager:
   - 
   - Player
   - SpawnArea
-  - 
+  - PlayerWetTrigger
   - 
   - 
   - 
