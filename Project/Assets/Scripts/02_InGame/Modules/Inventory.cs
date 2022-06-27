@@ -102,4 +102,34 @@ public class Inventory
             }
         }
     }
+
+    public bool ExistItem(string code)
+    {
+        return System.Array.FindIndex(cells, e => e.data.itemCode == code) != -1;
+    }
+
+    public bool ExistBlankCell(string code, int count)
+    {
+        bool result = true;
+        int index = System.Array.FindIndex(cells, e => e.data.itemCode == code);
+        if (index != -1)
+        {
+            if (cells[index].data.maxCount != -1)
+            {
+                if (cells[index].itemCount >= cells[index].data.maxCount)
+                {
+                    result = false;
+                }
+            }
+        }
+        else
+        {
+            index = System.Array.FindIndex(cells, e => e.itemCount == 0);
+            if (index == -1)
+            {
+                result = false;
+            }
+        }
+        return result;
+    }
 }

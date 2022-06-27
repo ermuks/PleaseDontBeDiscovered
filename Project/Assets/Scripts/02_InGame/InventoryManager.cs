@@ -10,6 +10,17 @@ public class InventoryManager : MonoBehaviour
 
     private void Awake()
     {
+        EventManager.AddData("Inventory >> ExistBlankCell", (p) =>
+        {
+            string code = (string)p[0];
+            int count = (int)p[1];
+            return inventory.ExistBlankCell(code, count);
+        });
+        EventManager.AddData("Inventory >> ExistItem", (p) =>
+        {
+            string code = (string)p[0];
+            return inventory.ExistItem(code);
+        });
         inventory = new Inventory(2);
         EventManager.AddEvent("Inventory :: AddItem", (p) =>
         {
@@ -39,11 +50,25 @@ public class InventoryManager : MonoBehaviour
     {
         if (Input.GetKeyDown(Settings.instance.GetKey(KeySettings.UseItem1)))
         {
-            UseItem(0, 1);
+            if ((bool)EventManager.GetData("Player :: Working"))
+            {
+                EventManager.SendEvent("InGameUI :: CreateMessage", Strings.GetString(StringKey.InGameMessageWorkingTryOtherAction));
+            }
+            else
+            {
+                UseItem(0, 1);
+            }
         }
         if (Input.GetKeyDown(Settings.instance.GetKey(KeySettings.UseItem2)))
         {
-            UseItem(1, 1);
+            if ((bool)EventManager.GetData("Player :: Working"))
+            {
+                EventManager.SendEvent("InGameUI :: CreateMessage", Strings.GetString(StringKey.InGameMessageWorkingTryOtherAction));
+            }
+            else
+            {
+                UseItem(1, 1);
+            }
         }
     }
 

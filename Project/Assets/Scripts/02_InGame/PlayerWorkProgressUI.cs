@@ -66,6 +66,7 @@ public class PlayerWorkProgressUI : MonoBehaviour
         {
             gameObject.SetActive(false);
             EventManager.SendEvent("Player :: WorkSuccess", currentWork);
+            EventManager.SendEvent("Trigger :: EndWork", currentWork);
         }
     }
 }

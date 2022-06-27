@@ -64,7 +64,11 @@ public enum StringKey
 
     InGameWorkProcessTree,
     InGameWorkProcessWater,
-    InGameWorkProcessFish
+    InGameWorkProcessFish,
+
+    InGameMessageInventoryIsFull,
+    InGameMessageNotExistItem,
+    InGameMessageWorkingTryOtherAction
 }
 
 public static class Strings
@@ -129,6 +133,10 @@ public static class Strings
                 str.Add(StringKey.InGameWorkProcessWater, "Water");
                 str.Add(StringKey.InGameWorkProcessFish, "Fish");
 
+                str.Add(StringKey.InGameMessageInventoryIsFull, "Inventory has been full");
+                str.Add(StringKey.InGameMessageNotExistItem, "You don't have a \"#Item#\"");
+                str.Add(StringKey.InGameMessageWorkingTryOtherAction, "You cannot try actions while working.");
+
 
 
                 break;
@@ -187,6 +195,10 @@ public static class Strings
                 str.Add(StringKey.InGameWorkProcessTree, "나무를 구하는 중입니다.");
                 str.Add(StringKey.InGameWorkProcessWater, "물을 퍼고있습니다.");
                 str.Add(StringKey.InGameWorkProcessFish, "물고기를 낚는중입니다.");
+
+                str.Add(StringKey.InGameMessageInventoryIsFull, "아이템을 더 이상 구할 수 없습니다!");
+                str.Add(StringKey.InGameMessageNotExistItem, "아이템이 없습니다. \"#Item#\"");
+                str.Add(StringKey.InGameMessageWorkingTryOtherAction, "작업 중에는 작업을 시도할 수 없습니다.");
                 break;
             case Language.Japanese:
                 str.Add(StringKey.InitializeConnectingMessage, "サーバーに接続中...");
@@ -241,6 +253,10 @@ public static class Strings
                 str.Add(StringKey.InGameWorkProcessTree, "Tree");
                 str.Add(StringKey.InGameWorkProcessWater, "Water");
                 str.Add(StringKey.InGameWorkProcessFish, "Fish");
+
+                str.Add(StringKey.InGameMessageInventoryIsFull, "아이템을 더 이상 구할 수 없습니다!");
+                str.Add(StringKey.InGameMessageNotExistItem, "아이템이 없습니다. \"#Item#\"");
+                str.Add(StringKey.InGameMessageWorkingTryOtherAction, "작업 중에는 작업을 시도할 수 없습니다.");
                 break;
             case Language.Chinese:
                 str.Add(StringKey.InitializeConnectingMessage, "正在连接服务器...");
@@ -295,6 +311,10 @@ public static class Strings
                 str.Add(StringKey.InGameWorkProcessTree, "Tree");
                 str.Add(StringKey.InGameWorkProcessWater, "Water");
                 str.Add(StringKey.InGameWorkProcessFish, "Fish");
+
+                str.Add(StringKey.InGameMessageInventoryIsFull, "아이템을 더 이상 구할 수 없습니다!");
+                str.Add(StringKey.InGameMessageNotExistItem, "아이템이 없습니다. \"#Item#\"");
+                str.Add(StringKey.InGameMessageWorkingTryOtherAction, "작업 중에는 작업을 시도할 수 없습니다.");
                 break;
         }
     }

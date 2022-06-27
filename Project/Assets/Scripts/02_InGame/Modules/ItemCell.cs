@@ -14,7 +14,7 @@ public class ItemCell
 
     public void Initialize()
     {
-        data = new ItemData("", "", "", "");
+        data = new ItemData("", "", "", -1, "");
         itemCount = 0;
     }
 

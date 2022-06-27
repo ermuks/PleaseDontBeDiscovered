@@ -20,6 +20,18 @@ public class TriggerUI : MonoBehaviour
 
     private WorkMessage currentWork;
 
+    private bool isWorking = false;
+
+    private void Awake()
+    {
+        EventManager.AddData("Player :: Working", (p) => isWorking);
+        EventManager.AddEvent("Trigger :: EndWork", (p) =>
+        {
+            WorkMessage msg = (WorkMessage)p[0];
+            isWorking = false;
+        });
+    }
+
     public void SetMessage(WorkMessage msg)
     {
         currentWork = msg;
@@ -45,18 +57,59 @@ public class TriggerUI : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(Settings.instance.GetKey(KeySettings.Work)))
+        if (Input.GetKeyDown(Settings.instance.GetKey(KeySettings.Work)) && !isWorking)
         {
             bool isDead = (bool)Photon.Pun.PhotonNetwork.LocalPlayer.CustomProperties["isDead"];
 
             if (!isDead)
             {
-                EventManager.SendEvent("Player :: WorkStart", currentWork);
-                EventManager.SendEvent("InGameUI :: WorkStart", currentWork);
+                string err = "";
+                switch (currentWork)
+                {
+                    case WorkMessage.None:
+                        break;
+                    case WorkMessage.Treezone:
+                        if ((bool)EventManager.GetData("Inventory >> ExistBlankCell", "0007", 2)) isWorking = true;
+                        else err = Strings.GetString(StringKey.InGameMessageInventoryIsFull);
+                        break;
+                    case WorkMessage.WaterZone:
+                        if ((bool)EventManager.GetData("Inventory >> ExistBlankCell", "0003", 1))
+                        {
+                            if ((bool)EventManager.GetData("Inventory >> ExistItem", "0002"))
+                            {
+                                isWorking = true;
+                            }
+                            else
+                            {
+                                err = Strings.GetString(StringKey.InGameMessageNotExistItem).Replace("#Item", ItemManager.GetItem("0002").itemName);
+                            }
+                        }
+                        else
+                        {
+                            err = Strings.GetString(StringKey.InGameMessageInventoryIsFull);
+                        }
+                        break;
+                    case WorkMessage.FishZone:
+                        if ((bool)EventManager.GetData("Inventory >> ExistBlankCell", "0000", 1)) isWorking = true;
+                        else err = Strings.GetString(StringKey.InGameMessageInventoryIsFull);
+                        break;
+                    default:
+                        break;
+                }
+                if (isWorking)
+                {
+                    EventManager.SendEvent("Player :: WorkStart", currentWork);
+                    EventManager.SendEvent("InGameUI :: WorkStart", currentWork);
+                }
+                else
+                {
+                    EventManager.SendEvent("InGameUI :: CreateMessage", err);
+                }
             }
         }
-        if (Input.GetKeyDown(Settings.instance.GetKey(KeySettings.CancelWork)))
+        if (Input.GetKeyDown(Settings.instance.GetKey(KeySettings.CancelWork)) && isWorking)
         {
+            isWorking = false;
             EventManager.SendEvent("Player :: WorkEnd", currentWork);
             EventManager.SendEvent("InGameUI :: WorkEnd");
         }
