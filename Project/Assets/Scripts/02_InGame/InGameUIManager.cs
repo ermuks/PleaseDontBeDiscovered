@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class InGameUIManager : MonoBehaviour
 {
@@ -15,6 +16,11 @@ public class InGameUIManager : MonoBehaviour
     [SerializeField] private Image areaHungryValue;
     [SerializeField] private Image areaThirstyValue;
     [SerializeField] private Image areaColdValue;
+
+    [SerializeField] private GameObject areaNormalPlayerUI;
+    [SerializeField] private GameObject areaMurderPlayerUI;
+    [SerializeField] private Image imgCooldownTimer;
+    [SerializeField] private TMP_Text txtCooldownTimer;
 
     [SerializeField] private GameObject areaTrigger;
     [SerializeField] private GameObject areaWater;
@@ -34,6 +40,10 @@ public class InGameUIManager : MonoBehaviour
         areaGameOver.SetActive(false);
         areaTrigger.SetActive(false);
         areaPlayerWorkProgressUI.SetActive(false);
+
+        bool isMurder = (bool)PhotonNetwork.LocalPlayer.CustomProperties["isMurder"];
+        areaNormalPlayerUI.SetActive(!isMurder);
+        areaMurderPlayerUI.SetActive(isMurder);
 
         areaHPValue.color = new Color(.8f, .8f, .8f);
         areaHungryValue.color = new Color(.8f, .8f, .8f);
@@ -158,6 +168,14 @@ public class InGameUIManager : MonoBehaviour
         {
             InGameMessageUI messageUI = Instantiate(messageUIPrefab, messageUIParent).GetComponent<InGameMessageUI>();
             messageUI.SetMessage((string)p[0]);
+        });
+        EventManager.AddEvent("InGameUI :: SetKillCooldown", (p) =>
+        {
+            imgCooldownTimer.fillAmount = (float)p[0];
+            imgCooldownTimer.gameObject.SetActive(!(bool)p[1]);
+
+            txtCooldownTimer.text = $"{(float)p[0]:0.0}";
+            txtCooldownTimer.gameObject.SetActive(!(bool)p[1]);
         });
     }
 }

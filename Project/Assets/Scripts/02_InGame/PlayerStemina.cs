@@ -163,9 +163,9 @@ public class PlayerStemina : MonoBehaviourPun
         else
         {
             thirstValue = 1;
-            if (thirstyDownTimer >= thirstyFulldelay) thirstyDownTimer = thirstyFulldelay;
-            thirstyDownTimer -= thirstyFulldelay * (value - remainValue);
-            if (thirstyDownTimer <= 0) thirstyDownTimer = 0;
+            if (thirstyFullTimer >= thirstyFulldelay) thirstyFullTimer = thirstyFulldelay;
+            thirstyFullTimer -= thirstyFulldelay * (value - remainValue);
+            if (thirstyFullTimer <= 0) thirstyFullTimer = 0;
         }
     }
 
@@ -179,9 +179,9 @@ public class PlayerStemina : MonoBehaviourPun
         else
         {
             hungryValue = 1;
-            if (hungryDownTimer >= hungryFulldelay) hungryDownTimer = hungryFulldelay;
-            hungryDownTimer -= hungryFulldelay * (value - remainValue);
-            if (hungryDownTimer <= 0) hungryDownTimer = 0;
+            if (hungryFullTimer >= hungryFulldelay) hungryFullTimer = hungryFulldelay;
+            hungryFullTimer -= hungryFulldelay * (value - remainValue);
+            if (hungryFullTimer <= 0) hungryFullTimer = 0;
         }
     }
 
@@ -195,9 +195,9 @@ public class PlayerStemina : MonoBehaviourPun
         else
         {
             warmValue = 1;
-            if (warmDownTimer >= warmFulldelay) warmDownTimer = warmFulldelay;
-            warmDownTimer -= warmFulldelay * (value - remainValue);
-            if (warmDownTimer <= 0) warmDownTimer = 0;
+            if (warmFullTimer >= warmFulldelay) warmFullTimer = warmFulldelay;
+            warmFullTimer -= warmFulldelay * (value - remainValue);
+            if (warmFullTimer <= 0) warmFullTimer = 0;
         }
     }
 

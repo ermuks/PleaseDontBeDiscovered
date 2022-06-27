@@ -36,6 +36,7 @@ public class Settings : MonoBehaviour
         }
     }
     public bool isDebug = true;
+    public bool isMurder = true;
 
     private Dictionary<KeySettings, KeyCode> keys = new Dictionary<KeySettings, KeyCode>();
 

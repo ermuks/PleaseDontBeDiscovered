@@ -49,10 +49,15 @@ public class PlayerController : MonoBehaviour
     private float slowEndTime = 3.0f;
     private bool isSlow = false;
 
+    private bool killable = true;
+    private float killCooldown = .0f;
+    private float killTimer = .0f;
+
     private void Awake()
     {
         speed = (float)PhotonNetwork.CurrentRoom.CustomProperties["moveSpeed"];
         isMurder = (bool)PhotonNetwork.LocalPlayer.CustomProperties["isMurder"];
+        killCooldown = (float)PhotonNetwork.CurrentRoom.CustomProperties["killCooldown"];
         camParent = Camera.main.transform.parent;
         cam = Camera.main.transform;
         anim = GetComponent<Animator>();
@@ -163,6 +168,23 @@ public class PlayerController : MonoBehaviour
                 NextPlayer();
             }
         }
+        if (isMurder)
+        {
+            if (!killable)
+            {
+                KillCooldownUpdate();
+            }
+        }
+    }
+
+    private void KillCooldownUpdate()
+    {
+        killTimer += Time.deltaTime;
+        EventManager.SendEvent("InGameUI :: SetKillCooldown", killTimer, killTimer >= killCooldown);
+        if (killTimer >= killCooldown)
+        {
+            killable = true;
+        }
     }
 
     private void PlayerSlow()
@@ -247,7 +269,7 @@ public class PlayerController : MonoBehaviour
     {
         bool isRun = Input.GetKey(Settings.instance.GetKey(KeySettings.RunKey));
         Debug.DrawLine(camParent.position, camParent.position + -cam.forward * (isRun ? runDistance : normalDistance), Color.red);
-        if (Physics.Raycast(camParent.position, -cam.forward, out RaycastHit hit, isRun ? runDistance : normalDistance, ~(1 << gameObject.layer)))
+        if (Physics.Raycast(camParent.position, -cam.forward, out RaycastHit hit, isRun ? runDistance : normalDistance, ~(1 << gameObject.layer), QueryTriggerInteraction.Ignore))
         {
             currentDistance = hit.distance;
         }
@@ -452,6 +474,8 @@ public class PlayerController : MonoBehaviour
                 {
                     if (!(bool)view.Owner.CustomProperties["isMurder"] && !(bool)view.Owner.CustomProperties["isDead"])
                     {
+                        killable = false;
+                        killTimer = .0f;
                         view.RPC("Hit", view.Owner, GetComponent<PhotonView>().Owner);
                         break;
                     }

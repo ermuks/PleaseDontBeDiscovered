@@ -39,7 +39,13 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
     [SerializeField] private Button btnMoveSpeed;
     [SerializeField] private Slider sliderMoveSpeed;
 
-    [Space(16)]
+    [Space(8)]
+    [SerializeField] private TMP_InputField inputKillCooldown;
+    [SerializeField] private TMP_Text txtKillCooldown;
+    [SerializeField] private Button btnKillCooldown;
+    [SerializeField] private Slider sliderKillCooldown;
+
+     [Space(16)]
     [SerializeField] private Button btnOpenCreateRoom;
     [SerializeField] private Button btnRandomJoinRoom;
     [SerializeField] private Button btnCreateRoom;
@@ -338,6 +344,9 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
         {
             if (Settings.instance.isDebug)
             {
+                var p = PhotonNetwork.LocalPlayer.CustomProperties;
+                p["isMurder"] = Settings.instance.isMurder;
+                PhotonNetwork.LocalPlayer.SetCustomProperties(p);
                 PhotonNetwork.CurrentRoom.IsOpen = false;
                 SetRoomProperties("isStart", true);
             }
@@ -401,8 +410,20 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
         {
             if (int.TryParse(inputMoveSpeed.text, out int count))
             {
-                if (int.Parse(inputMoveSpeed.text) < 3) inputRoomMaxPlayer.text = "3";
-                if (int.Parse(inputMoveSpeed.text) > 20) inputRoomMaxPlayer.text = "20";
+                if (int.Parse(inputMoveSpeed.text) < 3) inputMoveSpeed.text = "3";
+                if (int.Parse(inputMoveSpeed.text) > 20) inputMoveSpeed.text = "20";
+            }
+            else
+            {
+                inputRoomMaxPlayer.text = "3";
+            }
+        });
+        inputKillCooldown.onValueChanged.AddListener((value) =>
+        {
+            if (int.TryParse(inputKillCooldown.text, out int count))
+            {
+                if (int.Parse(inputKillCooldown.text) < 5) inputKillCooldown.text = "5";
+                if (int.Parse(inputKillCooldown.text) > 300) inputKillCooldown.text = "300";
             }
             else
             {
@@ -440,14 +461,20 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
         {
             sliderMoveSpeed.value = float.Parse(value);
         });
+        inputKillCooldown.onSubmit.AddListener((value) =>
+        {
+            sliderKillCooldown.value = float.Parse(value);
+        });
 
         inputRoomMaxPlayer.onEndEdit.AddListener((value) => inputRoomMaxPlayer.gameObject.SetActive(false));
         inputMurderCount.onEndEdit.AddListener((value) => inputMurderCount.gameObject.SetActive(false));
         inputMoveSpeed.onEndEdit.AddListener((value) => inputMoveSpeed.gameObject.SetActive(false));
+        inputKillCooldown.onEndEdit.AddListener((value) => inputKillCooldown.gameObject.SetActive(false));
 
         sliderRoomMaxPlayer.onValueChanged.AddListener((value) =>
         {
             txtRoomMaxPlayer.text = $"{value:0}";
+            sliderMurderCount.maxValue = (int)(value) / 2 - 1;
         });
         sliderMurderCount.onValueChanged.AddListener((value) =>
         {
@@ -461,6 +488,15 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
                 sliderMoveSpeed.value = value;
             }
             txtMoveSpeed.text = $"{value:0.0}";
+        });
+        sliderKillCooldown.onValueChanged.AddListener((value) =>
+        {
+            if (Input.GetKey(KeyCode.LeftControl))
+            {
+                value = (int)(value / 5) * 5;
+                sliderKillCooldown.value = value;
+            }
+            txtKillCooldown.text = $"{value:0}";
         });
 
         btnRoomMaxPlayer.onClick.AddListener(() =>
@@ -481,7 +517,18 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
             inputMoveSpeed.ActivateInputField();
             inputMoveSpeed.text = sliderMoveSpeed.value.ToString();
         });
+        btnKillCooldown.onClick.AddListener(() =>
+        {
+            inputKillCooldown.gameObject.SetActive(true);
+            inputKillCooldown.ActivateInputField();
+            inputKillCooldown.text = sliderKillCooldown.value.ToString();
+        });
+
         btnExplusion.onClick.AddListener(() =>
+        {
+            
+        });
+        btnBlackList.onClick.AddListener(() =>
         {
             
         });
@@ -502,6 +549,7 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
                 roomOption.CustomRoomProperties.Add("isStart", false);
                 roomOption.CustomRoomProperties.Add("murders", (int)sliderMurderCount.value);
                 roomOption.CustomRoomProperties.Add("moveSpeed", sliderMoveSpeed.value);
+                roomOption.CustomRoomProperties.Add("killCooldown", sliderKillCooldown.value);
 
                 PhotonNetwork.LeaveLobby();
                 PhotonNetwork.CreateRoom(title, roomOption);
