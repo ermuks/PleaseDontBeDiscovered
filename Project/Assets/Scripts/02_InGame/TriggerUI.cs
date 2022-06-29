@@ -87,7 +87,7 @@ public class TriggerUI : MonoBehaviour
                             }
                             else
                             {
-                                err = Strings.GetString(StringKey.InGameMessageNotExistItem).Replace("#Item", ItemManager.GetItem("0002").itemName);
+                                err = Strings.GetString(StringKey.InGameMessageNotExistItem, ItemManager.GetItem("0002").itemName);
                             }
                         }
                         else
@@ -128,7 +128,7 @@ public class TriggerUI : MonoBehaviour
         if (Input.GetKeyDown(Settings.instance.GetKey(KeySettings.CancelWork)) && isWorking)
         {
             isWorking = false;
-            EventManager.SendEvent("Player :: WorkEnd", currentWork);
+            EventManager.SendEvent("Player :: WorkEnd");
             EventManager.SendEvent("InGameUI :: WorkEnd");
         }
     }

@@ -164,6 +164,7 @@ public class PlayerStemina : MonoBehaviourPun
     private void Update()
     {
         if ((bool)EventManager.GetData("InGameUI >> VoteUIActive")) return;
+        if ((bool)EventManager.GetData("InGameData >> FinishVoteAnimationPlaying")) return;
         if (normalPlayer && !(bool)PhotonNetwork.LocalPlayer.CustomProperties["isDead"])
         {
             ThirstValue();
@@ -348,7 +349,7 @@ public class PlayerStemina : MonoBehaviourPun
         if (hp <= 0f && !(bool)PhotonNetwork.LocalPlayer.CustomProperties["isDead"])
         {
             EventManager.SendEvent("InGameUI :: Die", msg);
-            EventManager.SendEvent("Player :: Die", msg);
+            EventManager.SendEvent("Data :: Die", msg, true, true);
             hp = 0f;
             thirstValue = .0f;
             hungryValue = .0f;

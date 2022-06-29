@@ -63,19 +63,21 @@ public class PlayerController : MonoBehaviour
         controller = GetComponent<CharacterController>();
         EventManager.AddEvent("Player :: Die", (p) =>
         {
-            anim.SetBool("isWorkTree", false);
-            anim.SetBool("isWorkWater", false);
-            anim.SetBool("isWorkFish", false);
-            isWorking = false;
-            EventManager.SendEvent("InGameUI :: WorkEnd");
+            EventManager.SendEvent("Player :: WorkEnd");
             if (p[0].GetType() == typeof(Player))
             {
                 SetDie((Player)p[0]);
             }
-            else if(p[0].GetType() == typeof(DieMessage))
+            else if (p[0].GetType() == typeof(DieMessage))
             {
-                SetDie((DieMessage)p[0]);
+                SetDie();
             }
+        });
+        EventManager.AddEvent("Player :: VoteDie", (p) =>
+        {
+            EventManager.SendEvent("Player :: WorkEnd");
+            EventManager.SendEvent("Player :: SetWatching");
+            SetDie();
         });
         EventManager.AddEvent("Player :: WorkStart", (p) =>
         {
@@ -130,17 +132,24 @@ public class PlayerController : MonoBehaviour
             anim.SetBool("isWorkWater", false);
             anim.SetBool("isWorkFish", false);
             isWorking = false;
+            EventManager.SendEvent("InGameUI :: WorkEnd");
         });
+        EventManager.AddEvent("Player :: SetWatching", (p) => isWatcher = true);
     }
 
     private void Start()
     {
-        EventManager.SendEvent("Inventory :: AddItem", "0003", 3);
+        ItemManager.SetItemRandom(1, 2);
     }
 
     void Update()
     {
         if ((bool)EventManager.GetData("InGameUI >> VoteUIActive")) return;
+        if ((bool)EventManager.GetData("InGameData >> FinishVoteAnimationPlaying"))
+        {
+            CameraPositionVoteEnding();
+            return;
+        }
         if (!isDead)
         {
             if (isWorking)
@@ -175,6 +184,14 @@ public class PlayerController : MonoBehaviour
                 KillCooldownUpdate();
             }
         }
+    }
+
+    private void CameraPositionVoteEnding()
+    {
+        Transform voteEnding = (Transform)EventManager.GetData("InGameUI >> VoteEndingPosition");
+        camParent.position = voteEnding.position;
+        camParent.rotation = voteEnding.rotation;
+        cam.localRotation = Quaternion.identity;
     }
 
     private void KillCooldownUpdate()
@@ -307,6 +324,7 @@ public class PlayerController : MonoBehaviour
         currentAngleY = Mathf.Lerp(currentAngleY, targetAngleY, Time.deltaTime * 30f);
 
         camParent.position = transform.position + Quaternion.Euler(0, currentAngleY, 0) * offset;
+        cam.localRotation = Quaternion.identity;
         cam.localPosition = -Vector3.forward * currentDistance;
 
         camParent.rotation = Quaternion.Euler(currentAngleX, currentAngleY, 0);
@@ -499,12 +517,11 @@ public class PlayerController : MonoBehaviour
         EventManager.SendEvent("InGameUI :: SetDie", player);
     }
 
-    public void SetDie(DieMessage msg)
+    public void SetDie()
     {
         isDead = true;
         anim.SetBool("isDead", true);
         anim.SetTrigger("Die");
-        EventManager.SendEvent("InGameUI :: Die", msg);
     }
 
     public void NoDie()

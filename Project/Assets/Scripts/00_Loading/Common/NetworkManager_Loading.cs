@@ -18,7 +18,9 @@ public class NetworkManager_Loading : MonoBehaviourPunCallbacks
         {
             { "isReady", false },
             { "isDead", false },
-            { "isMurder", false }
+            { "isMurder", false },
+            { "alreadyVoted", false },
+            { "voteMembers", 0 }
         });
         EventManager.SendEvent("OpenScene", "Main");
     }

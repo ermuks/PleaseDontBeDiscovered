@@ -10,6 +10,9 @@ public class NetworkManager_InGame : MonoBehaviourPunCallbacks
     private GameObject myCharacter;
     private bool isOver = false;
 
+    private bool isFinishVote = false;
+    private bool isAlreadyVoted = false;
+
     private void Awake()
     {
         string path = "Prefabs/Player";
@@ -29,6 +32,18 @@ public class NetworkManager_InGame : MonoBehaviourPunCallbacks
 
         myCharacter.transform.position = bounds.center + new Vector3(Random.Range(-x, x), Random.Range(-y, y), Random.Range(-z, z));
         Cursor.lockState = CursorLockMode.Locked;
+
+        EventManager.AddData("InGameData >> FinishVoteAnimationPlaying", (p) => isFinishVote);
+        EventManager.AddData("InGameData >> AlreadyVoted", (p) => isAlreadyVoted);
+
+        EventManager.AddEvent("InGameData :: FinishVoteAnimationPlaying", (p) =>
+        {
+            isFinishVote = (bool)p[0];
+        });
+        EventManager.AddEvent("InGameData :: AlreadyVoted", (p) =>
+        {
+            isAlreadyVoted = (bool)p[0];
+        });
     }
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
@@ -43,14 +58,21 @@ public class NetworkManager_InGame : MonoBehaviourPunCallbacks
 
     public override void OnRoomPropertiesUpdate(ExitGames.Client.Photon.Hashtable propertiesThatChanged)
     {
-        var properties = propertiesThatChanged;
-        if ((bool)properties["Vote"] && !(bool)EventManager.GetData("InGameUI >> VoteUIActive"))
+        if (propertiesThatChanged != null)
         {
-            EventManager.SendEvent("InGameUI :: OpenVoteUI");
-        }
-        if (!(bool)properties["Vote"] && (bool)EventManager.GetData("InGameUI >> VoteUIActive"))
-        {
-            EventManager.SendEvent("InGameUI :: CloseVoteUI");
+            var properties = propertiesThatChanged;
+            foreach (var item in properties)
+            {
+                Debug.Log($"{item.Key} :: {item.Value}");
+            }
+            if ((bool)properties["Vote"] && !(bool)EventManager.GetData("InGameUI >> VoteUIActive"))
+            {
+                EventManager.SendEvent("InGameUI :: OpenVoteUI");
+            }
+            if (!(bool)properties["Vote"] && (bool)EventManager.GetData("InGameUI >> VoteUIActive"))
+            {
+                EventManager.SendEvent("InGameUI :: CloseVoteUI");
+            }
         }
     }
 
@@ -63,8 +85,9 @@ public class NetworkManager_InGame : MonoBehaviourPunCallbacks
         {
             var properties = player.CustomProperties;
             if (!(bool)properties["isDead"] && !(bool)properties["isMurder"]) surviverCount++;
-            if ((bool)properties["isMurder"]) murderCount++;
+            if (!(bool)properties["isDead"] && (bool)properties["isMurder"]) murderCount++;
         }
+
         if (murderCount >= surviverCount) GameOver(true);
         if (murderCount == 0) GameOver(false);
     }
@@ -72,6 +95,8 @@ public class NetworkManager_InGame : MonoBehaviourPunCallbacks
     private void GameOver(bool murderWin)
     {
         isOver = true;
+        EventManager.SendEvent("InGameData :: FinishVoteAnimationPlaying", false);
+        EventManager.SendEvent("InGameData :: AlreadyVoted", false);
         PhotonNetwork.Destroy(myCharacter.GetComponent<PhotonView>());
         EventManager.SendEvent("InGameUI :: GameOver", murderWin);
     }

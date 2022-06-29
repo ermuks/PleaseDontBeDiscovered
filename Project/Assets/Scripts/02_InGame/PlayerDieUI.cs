@@ -3,12 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Photon.Pun;
+using Photon.Realtime;
+using Photon.Chat;
+using Photon;
 
 public enum DieMessage
 {
     None = 0,
     Hungry = 0,
     Falling,
+    Vote,
 }
 
 public class PlayerDieUI : MonoBehaviour
@@ -17,7 +22,7 @@ public class PlayerDieUI : MonoBehaviour
 
     public void SetDie(Photon.Realtime.Player player)
     {
-        txtDieMessage.text = Strings.GetString(StringKey.InGameDieMessage).Replace("#Killer#", player.NickName);
+        txtDieMessage.text = Strings.GetString(StringKey.InGameDieMessage, player.NickName);
     }
 
     public void Die(DieMessage msg)
@@ -30,6 +35,9 @@ public class PlayerDieUI : MonoBehaviour
                 break;
             case DieMessage.Falling:
                 message = Strings.GetString(StringKey.InGameDieMessageFalling);
+                break;
+            case DieMessage.Vote:
+                message = Strings.GetString(StringKey.InGameDieMessageVote);
                 break;
             default:
                 message = Strings.GetString(StringKey.InGameDieMessageNone);

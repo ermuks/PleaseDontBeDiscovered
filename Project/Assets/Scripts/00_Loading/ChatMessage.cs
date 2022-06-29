@@ -27,7 +27,7 @@ public class ChatMessage : MonoBehaviour
             nickname = player.NickName;
         }
 
-        txtNickname.text = nickname;
+        if (txtNickname != null) txtNickname.text = nickname;
         txtContent.text = message;
         txtContent.richText = richText;
     }

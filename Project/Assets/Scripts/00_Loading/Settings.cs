@@ -36,7 +36,7 @@ public class Settings : MonoBehaviour
         }
     }
     public bool isDebug = true;
-    public bool isMurder = true;
+    public bool isMurderMode = true;
 
     private Dictionary<KeySettings, KeyCode> keys = new Dictionary<KeySettings, KeyCode>();
 
@@ -73,11 +73,27 @@ public class Settings : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.F3))
         {
-            //foreach (var item in Photon.Pun.PhotonNetwork.LocalPlayer.CustomProperties)
-            //{
-            //    Debug.Log($"{item.Key} :: {item.Value}");
-            //}
-            EventManager.SendEvent("InGameUI :: CreateMessage", "테스트");
+            foreach (var item in Photon.Pun.PhotonNetwork.LocalPlayer.CustomProperties)
+            {
+                Debug.Log($"{item.Key} :: {item.Value}");
+            }
+            EventManager.SendEvent("InGameUI :: CreateMessage", "디버그용 버튼 (F3)");
+        }
+        if (Input.GetKeyDown(KeyCode.F4))
+        {
+            foreach (var p in Photon.Pun.PhotonNetwork.CurrentRoom.Players)
+            {
+                foreach (var pr in p.Value.CustomProperties)
+                {
+                    Debug.Log($"{p.Value.NickName} :: {pr.Key} :: {pr.Value}");
+                }
+            }
+            EventManager.SendEvent("InGameUI :: CreateMessage", "디버그용 버튼 (F4)");
+        }
+        if (Input.GetKeyDown(KeyCode.F5))
+        {
+            Debug.Log("작동:");
+            GameObject.FindObjectOfType<Photon.Pun.PhotonView>().RPC("VoteDie", Photon.Pun.PhotonNetwork.LocalPlayer);
         }
     }
 }

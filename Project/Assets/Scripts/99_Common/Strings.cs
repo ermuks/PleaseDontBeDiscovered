@@ -53,6 +53,7 @@ public enum StringKey
 
     InGameDieMessageHungry,
     InGameDieMessageFalling,
+    InGameDieMessageVote,
     InGameDieMessageNone,
 
     InGameMurderWin,
@@ -69,7 +70,13 @@ public enum StringKey
 
     InGameMessageInventoryIsFull,
     InGameMessageNotExistItem,
-    InGameMessageWorkingTryOtherAction
+    InGameMessageWorkingTryOtherAction,
+
+    InGameMessageCompleteVote,
+    InGameFinishVoteNone,
+    InGameFinishVoteMurderTrue,
+    InGameFinishVoteMurderFalse,
+    InGameFinishVoteMurderCount,
 }
 
 public static class Strings
@@ -116,11 +123,12 @@ public static class Strings
                 str.Add(StringKey.ItemFullBottleDescript, "물이 가득 차있다.");
                 str.Add(StringKey.ItemFishDescript, "방금 잡은 듯한 모습을 한 물고기다.");
                 str.Add(StringKey.ItemGrilledFishDescript, "바싹 익혀서 노릇노릇 구워진 맛있는 생선이 되었다.");
-                str.Add(StringKey.InGameDieMessage, "You were killed by #Killer#.");
+                str.Add(StringKey.InGameDieMessage, "You were killed by {0}.");
                 str.Add(StringKey.InGameMurderPlayer, "You are a killer");
                 str.Add(StringKey.InGameNoMurderPlayer, "You are surviver");
                 str.Add(StringKey.InGameDieMessageHungry, "death of starvation");
                 str.Add(StringKey.InGameDieMessageFalling, "fell and died");
+                str.Add(StringKey.InGameDieMessageVote, "vote die");
                 str.Add(StringKey.InGameDieMessageNone, "Unknown");
                 str.Add(StringKey.InGameMurderWin, "Murderers win");
                 str.Add(StringKey.InGamePlayerWin, "Players win");
@@ -136,8 +144,14 @@ public static class Strings
                 str.Add(StringKey.InGameWorkProcessFish, "Fish");
 
                 str.Add(StringKey.InGameMessageInventoryIsFull, "Inventory has been full");
-                str.Add(StringKey.InGameMessageNotExistItem, "You don't have a \"#Item#\"");
+                str.Add(StringKey.InGameMessageNotExistItem, "You don't have a \"{0}\"");
                 str.Add(StringKey.InGameMessageWorkingTryOtherAction, "You cannot try actions while working.");
+
+                str.Add(StringKey.InGameMessageCompleteVote, "{0} has voted");
+                str.Add(StringKey.InGameFinishVoteNone, "No one reported");
+                str.Add(StringKey.InGameFinishVoteMurderTrue, "{0} was murderer");
+                str.Add(StringKey.InGameFinishVoteMurderFalse, "{0} was not murderer");
+                str.Add(StringKey.InGameFinishVoteMurderCount, "Remain murderer count : {0}");
 
 
 
@@ -180,11 +194,12 @@ public static class Strings
                 str.Add(StringKey.ItemFullBottleDescript, "물이 가득 차있다.");
                 str.Add(StringKey.ItemFishDescript, "방금 잡은 듯한 모습을 한 물고기다.");
                 str.Add(StringKey.ItemGrilledFishDescript, "바싹 익혀서 노릇노릇 구워진 맛있는 생선이 되었다.");
-                str.Add(StringKey.InGameDieMessage, "당신은 #Killer#에게 살해당했습니다.");
+                str.Add(StringKey.InGameDieMessage, "당신은 {0}에게 살해당했습니다.");
                 str.Add(StringKey.InGameMurderPlayer, "들키지 않고 모두 죽이세요");
                 str.Add(StringKey.InGameNoMurderPlayer, "무조건 생존하세요");
                 str.Add(StringKey.InGameDieMessageHungry, "굶주림에 지쳐 사망했습니다");
                 str.Add(StringKey.InGameDieMessageFalling, "높은 곳에서 떨어져 사망했습니다");
+                str.Add(StringKey.InGameDieMessageVote, "투표로 인해 쫓겨났습니다.");
                 str.Add(StringKey.InGameDieMessageNone, "Unknown");
                 str.Add(StringKey.InGameMurderWin, "살인자에게 모두 당했습니다.");
                 str.Add(StringKey.InGamePlayerWin, "살인자를 모두 처리했습니다.");
@@ -200,8 +215,14 @@ public static class Strings
                 str.Add(StringKey.InGameWorkProcessFish, "물고기를 낚는중입니다.");
 
                 str.Add(StringKey.InGameMessageInventoryIsFull, "아이템을 더 이상 구할 수 없습니다!");
-                str.Add(StringKey.InGameMessageNotExistItem, "아이템이 없습니다. \"#Item#\"");
+                str.Add(StringKey.InGameMessageNotExistItem, "아이템이 없습니다. \"{0}\"");
                 str.Add(StringKey.InGameMessageWorkingTryOtherAction, "작업 중에는 작업을 시도할 수 없습니다.");
+
+                str.Add(StringKey.InGameMessageCompleteVote, "{0}님이 투표를 완료했습니다.");
+                str.Add(StringKey.InGameFinishVoteNone, "아무도 내보내지 않았습니다.");
+                str.Add(StringKey.InGameFinishVoteMurderTrue, "{0}님은 살인자였습니다.");
+                str.Add(StringKey.InGameFinishVoteMurderFalse, "{0}님은 살인자가 아니였습니다.");
+                str.Add(StringKey.InGameFinishVoteMurderCount, "살인자가 {0}명 있습니다.");
                 break;
             case Language.Japanese:
                 str.Add(StringKey.InitializeConnectingMessage, "サーバーに接続中...");
@@ -239,11 +260,12 @@ public static class Strings
                 str.Add(StringKey.ItemFullBottleDescript, "물이 가득 차있다.");
                 str.Add(StringKey.ItemFishDescript, "방금 잡은 듯한 모습을 한 물고기다.");
                 str.Add(StringKey.ItemGrilledFishDescript, "바싹 익혀서 노릇노릇 구워진 맛있는 생선이 되었다.");
-                str.Add(StringKey.InGameDieMessage, "あなたは#Killer#に殺された。");
+                str.Add(StringKey.InGameDieMessage, "あなたは{0}に殺された。");
                 str.Add(StringKey.InGameMurderPlayer, "みんな殺してください。");
                 str.Add(StringKey.InGameNoMurderPlayer, "生き残る必要があります。");
                 str.Add(StringKey.InGameDieMessageHungry, "굶주림에 지쳐 사망했습니다");
                 str.Add(StringKey.InGameDieMessageFalling, "높은 곳에서 떨어져 사망했습니다");
+                str.Add(StringKey.InGameDieMessageVote, "투표로 인해 쫓겨났습니다.");
                 str.Add(StringKey.InGameDieMessageNone, "Unknown");
                 str.Add(StringKey.InGameMurderWin, "Murderers win");
                 str.Add(StringKey.InGamePlayerWin, "Players win");
@@ -259,8 +281,14 @@ public static class Strings
                 str.Add(StringKey.InGameWorkProcessFish, "Fish");
 
                 str.Add(StringKey.InGameMessageInventoryIsFull, "아이템을 더 이상 구할 수 없습니다!");
-                str.Add(StringKey.InGameMessageNotExistItem, "아이템이 없습니다. \"#Item#\"");
+                str.Add(StringKey.InGameMessageNotExistItem, "아이템이 없습니다. \"{0}\"");
                 str.Add(StringKey.InGameMessageWorkingTryOtherAction, "작업 중에는 작업을 시도할 수 없습니다.");
+
+                str.Add(StringKey.InGameMessageCompleteVote, "{0}님이 투표를 완료했습니다.");
+                str.Add(StringKey.InGameFinishVoteNone, "아무도 내보내지 않았습니다.");
+                str.Add(StringKey.InGameFinishVoteMurderTrue, "{0}님은 살인자였습니다.");
+                str.Add(StringKey.InGameFinishVoteMurderFalse, "{0}님은 살인자가 아니였습니다.");
+                str.Add(StringKey.InGameFinishVoteMurderCount, "살인자가 {0}명 있습니다.");
                 break;
             case Language.Chinese:
                 str.Add(StringKey.InitializeConnectingMessage, "正在连接服务器...");
@@ -298,11 +326,12 @@ public static class Strings
                 str.Add(StringKey.ItemFullBottleDescript, "물이 가득 차있다.");
                 str.Add(StringKey.ItemFishDescript, "방금 잡은 듯한 모습을 한 물고기다.");
                 str.Add(StringKey.ItemGrilledFishDescript, "바싹 익혀서 노릇노릇 구워진 맛있는 생선이 되었다.");
-                str.Add(StringKey.InGameDieMessage, "你被#Killer#杀死了。");
+                str.Add(StringKey.InGameDieMessage, "你被{0}杀死了。");
                 str.Add(StringKey.InGameMurderPlayer, "杀光他们");
                 str.Add(StringKey.InGameNoMurderPlayer, "活到最后");
                 str.Add(StringKey.InGameDieMessageHungry, "굶주림에 지쳐 사망했습니다");
                 str.Add(StringKey.InGameDieMessageFalling, "높은 곳에서 떨어져 사망했습니다");
+                str.Add(StringKey.InGameDieMessageVote, "투표로 인해 쫓겨났습니다.");
                 str.Add(StringKey.InGameDieMessageNone, "Unknown");
                 str.Add(StringKey.InGameMurderWin, "Murderers win");
                 str.Add(StringKey.InGamePlayerWin, "Players win");
@@ -318,14 +347,20 @@ public static class Strings
                 str.Add(StringKey.InGameWorkProcessFish, "Fish");
 
                 str.Add(StringKey.InGameMessageInventoryIsFull, "아이템을 더 이상 구할 수 없습니다!");
-                str.Add(StringKey.InGameMessageNotExistItem, "아이템이 없습니다. \"#Item#\"");
+                str.Add(StringKey.InGameMessageNotExistItem, "아이템이 없습니다. \"{0}\"");
                 str.Add(StringKey.InGameMessageWorkingTryOtherAction, "작업 중에는 작업을 시도할 수 없습니다.");
+
+                str.Add(StringKey.InGameMessageCompleteVote, "{0}님이 투표를 완료했습니다.");
+                str.Add(StringKey.InGameFinishVoteNone, "아무도 내보내지 않았습니다.");
+                str.Add(StringKey.InGameFinishVoteMurderTrue, "{0}님은 살인자였습니다.");
+                str.Add(StringKey.InGameFinishVoteMurderFalse, "{0}님은 살인자가 아니였습니다.");
+                str.Add(StringKey.InGameFinishVoteMurderCount, "살인자가 {0}명 있습니다.");
                 break;
         }
     }
 
-    public static string GetString(StringKey key)
+    public static string GetString(StringKey key, params object[] args)
     {
-        return str[key];
+        return string.Format(str[key], args);
     }
 }

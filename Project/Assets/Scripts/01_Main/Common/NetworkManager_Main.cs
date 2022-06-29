@@ -345,7 +345,7 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
             if (Settings.instance.isDebug)
             {
                 var p = PhotonNetwork.LocalPlayer.CustomProperties;
-                p["isMurder"] = Settings.instance.isMurder;
+                p["isMurder"] = Settings.instance.isMurderMode;
                 PhotonNetwork.LocalPlayer.SetCustomProperties(p);
                 PhotonNetwork.CurrentRoom.IsOpen = false;
                 SetRoomProperties("isStart", true);
@@ -547,10 +547,10 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
                 roomOption.IsOpen = true;
                 roomOption.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable();
                 roomOption.CustomRoomProperties.Add("isStart", false);
+                roomOption.CustomRoomProperties.Add("Vote", false);
                 roomOption.CustomRoomProperties.Add("murders", (int)sliderMurderCount.value);
                 roomOption.CustomRoomProperties.Add("moveSpeed", sliderMoveSpeed.value);
                 roomOption.CustomRoomProperties.Add("killCooldown", sliderKillCooldown.value);
-                roomOption.CustomRoomProperties.Add("Vote", false);
 
                 PhotonNetwork.LeaveLobby();
                 PhotonNetwork.CreateRoom(title, roomOption);
