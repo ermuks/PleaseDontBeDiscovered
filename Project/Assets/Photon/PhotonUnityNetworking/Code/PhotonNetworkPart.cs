@@ -496,9 +496,12 @@ namespace Photon.Pun
                 }
 
                 // Check cache for valid methodname+arguments
+                Debug.Log($"PhotonView.RPC().count => {cachedRPCMethods.Count}");
                 for (int index = 0; index < cachedRPCMethods.Count; index++)
                 {
                     MethodInfo mInfo = cachedRPCMethods[index];
+                    Debug.Log($"PhotonView.RPC().mInfo[{index}] => {mInfo.Name}");
+                    Debug.Log($"PhotonView.RPC().inMethodName => {inMethodName}");
                     if (!mInfo.Name.Equals(inMethodName))
                     {
                         continue;
@@ -603,6 +606,7 @@ namespace Photon.Pun
                     }
                 }
             }
+            Debug.Log($"PhotonView.RPC() ================================");
 
             // Error handling
             if (receivers != 1)

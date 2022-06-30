@@ -13,15 +13,22 @@ public class PlayerData : MonoBehaviourPun, IPunObservable
         {
             Die(p[0], (bool)p[1], (bool)p[2]);
         });
+        EventManager.AddEvent("Data :: Hit", (p) =>
+        {
+            Hit((Player)p[0]);
+        });
+        EventManager.AddEvent("Data :: VoteDie", (p) =>
+        {
+            VoteDie();
+        });
     }
 
-    [PunRPC]
+
     private void VoteDie()
     {
         Die(DieMessage.Vote, false, false);
     }
 
-    [PunRPC]
     private void Hit(Player player)
     {
         GetComponent<Animator>().SetTrigger("Hit");

@@ -61,17 +61,16 @@ public class NetworkManager_InGame : MonoBehaviourPunCallbacks
         if (propertiesThatChanged != null)
         {
             var properties = propertiesThatChanged;
-            foreach (var item in properties)
+            if (properties.ContainsKey("Vote"))
             {
-                Debug.Log($"{item.Key} :: {item.Value}");
-            }
-            if ((bool)properties["Vote"] && !(bool)EventManager.GetData("InGameUI >> VoteUIActive"))
-            {
-                EventManager.SendEvent("InGameUI :: OpenVoteUI");
-            }
-            if (!(bool)properties["Vote"] && (bool)EventManager.GetData("InGameUI >> VoteUIActive"))
-            {
-                EventManager.SendEvent("InGameUI :: CloseVoteUI");
+                if ((bool)properties["Vote"] && !(bool)EventManager.GetData("InGameUI >> VoteUIActive"))
+                {
+                    EventManager.SendEvent("InGameUI :: OpenVoteUI");
+                }
+                if (!(bool)properties["Vote"] && (bool)EventManager.GetData("InGameUI >> VoteUIActive"))
+                {
+                    EventManager.SendEvent("InGameUI :: CloseVoteUI");
+                }
             }
         }
     }

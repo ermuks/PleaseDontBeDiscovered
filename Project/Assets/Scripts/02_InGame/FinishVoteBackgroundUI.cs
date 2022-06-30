@@ -43,7 +43,7 @@ public class FinishVoteBackgroundUI : MonoBehaviour
             if ((bool)player.CustomProperties["isMurder"])
             {
                 txtIsMurder.text = Strings.GetString(StringKey.InGameFinishVoteMurderTrue, player.NickName);
-                txtMurderCount.text = Strings.GetString(StringKey.InGameFinishVoteMurderCount, murderCount);
+                txtMurderCount.text = Strings.GetString(StringKey.InGameFinishVoteMurderCount, murderCount - 1);
             }
             else
             {
@@ -61,7 +61,6 @@ public class FinishVoteBackgroundUI : MonoBehaviour
 
     private void EndAnimation()
     {
-        EventManager.SendEvent("InGameUI :: FadeIn", "");
         EventManager.SendEvent("InGameData :: FinishVoteAnimationPlaying", false);
         gameObject.SetActive(false);
     }

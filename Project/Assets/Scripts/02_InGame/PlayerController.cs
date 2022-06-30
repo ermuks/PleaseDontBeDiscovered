@@ -135,6 +135,10 @@ public class PlayerController : MonoBehaviour
             EventManager.SendEvent("InGameUI :: WorkEnd");
         });
         EventManager.AddEvent("Player :: SetWatching", (p) => isWatcher = true);
+        EventManager.AddEvent("Player :: RemoveCharacter", (p) =>
+        {
+            gameObject.SetActive(false);
+        });
     }
 
     private void Start()
@@ -498,7 +502,8 @@ public class PlayerController : MonoBehaviour
                         {
                             killable = false;
                             killTimer = .0f;
-                            view.RPC("Hit", view.Owner, GetComponent<PhotonView>().Owner);
+                            EventManager.SendEvent("PUN :: Hit", GetComponent<PhotonView>().Owner, view.Owner);
+                            //view.RPC("Hit", view.Owner, GetComponent<PhotonView>().Owner);
                             break;
                         }
                     }
