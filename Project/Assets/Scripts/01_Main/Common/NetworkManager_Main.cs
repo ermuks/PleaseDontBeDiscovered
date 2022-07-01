@@ -329,7 +329,6 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
             txtMurderCount.text = "2";
             txtMoveSpeed.text = "5";
 
-            areaRoomList.SetActive(false);
             areaCreateRoom.SetActive(true);
         });
         btnRandomJoinRoom.onClick.AddListener(() =>
@@ -342,7 +341,6 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
         });
         btnCreateCancel.onClick.AddListener(() =>
         {
-            areaRoomList.SetActive(true);
             areaCreateRoom.SetActive(false);
         });
 
