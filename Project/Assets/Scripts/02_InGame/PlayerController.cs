@@ -52,11 +52,19 @@ public class PlayerController : MonoBehaviour
     private float killCooldown = .0f;
     private float killTimer = .0f;
 
+    private bool isFallingDamage = false;
+    private bool isRunable = false;
+
+    private bool isWater = false;
+
     private void Awake()
     {
         speed = (float)PhotonNetwork.CurrentRoom.CustomProperties["moveSpeed"];
         isMurder = (bool)PhotonNetwork.LocalPlayer.CustomProperties["isMurder"];
         killCooldown = (float)PhotonNetwork.CurrentRoom.CustomProperties["killCooldown"];
+        isFallingDamage = (bool)PhotonNetwork.CurrentRoom.CustomProperties["fallingDamage"];
+        isRunable = (bool)PhotonNetwork.CurrentRoom.CustomProperties["runable"];
+
         camParent = Camera.main.transform.parent;
         cam = Camera.main.transform;
         anim = GetComponent<Animator>();
@@ -86,15 +94,12 @@ public class PlayerController : MonoBehaviour
             {
                 case WorkMessage.Treezone:
                     anim.SetBool("isWorkTree", true);
-                    anim.SetTrigger("SetWork");
                     break;
                 case WorkMessage.WaterZone:
                     anim.SetBool("isWorkWater", true);
-                    anim.SetTrigger("SetWork");
                     break;
                 case WorkMessage.FishZone:
                     anim.SetBool("isWorkFish", true);
-                    anim.SetTrigger("SetWork");
                     break;
                 default:
                     break;
@@ -143,7 +148,10 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        ItemManager.SetItemRandom(1, 2);
+        if ((bool)PhotonNetwork.CurrentRoom.CustomProperties["startItem"])
+        {
+            ItemManager.SetItemRandom(1, 2);
+        }
     }
 
     void Update()
@@ -409,7 +417,7 @@ public class PlayerController : MonoBehaviour
 
             horizontal = Mathf.Clamp(horizontal, -1f, 1f);
             veritcal = Mathf.Clamp(veritcal, -1f, 1f);
-            if (gravityY < -8f)
+            if (gravityY < -8f && isFallingDamage)
             {
                 EventManager.SendEvent("InGameUI :: Hurt");
                 EventManager.SendEvent("Player :: FallingDamage", gravityY + 8f);
@@ -418,7 +426,7 @@ public class PlayerController : MonoBehaviour
             gravityY = .0f;
             anim.SetBool("Air", false);
 
-            if (Input.GetKey(KeyCode.Space))
+            if (!isWater && Input.GetKey(Settings.instance.GetKey(KeySettings.JumpKey)))
             {
                 anim.SetBool("Air", true);
                 gravityY = jump;
@@ -455,9 +463,21 @@ public class PlayerController : MonoBehaviour
             airTimer += delta;
         }
 
-
-        gravityY += Physics.gravity.y * delta;
-        moveDir.y = gravityY;
+        if (isWater)
+        {
+            if (Input.GetKey(Settings.instance.GetKey(KeySettings.JumpKey)))
+            {
+                anim.SetBool("Air", true);
+                gravityY = 4.4f;
+            }
+            gravityY = Mathf.Lerp(gravityY, .0f, delta * 3f);
+            moveDir.y = gravityY;
+        }
+        else
+        {
+            gravityY += Physics.gravity.y * delta;
+            moveDir.y = gravityY;
+        }
 
         controller.Move(moveDir * delta);
 
@@ -477,13 +497,24 @@ public class PlayerController : MonoBehaviour
             StartPunch();
             if (Random.Range(0f, 100f) < 50f)
             {
-                anim.SetTrigger("PunchLeft");
+                anim.SetBool("PunchLeft", true);
             }
             else
             {
-                anim.SetTrigger("PunchRight");
+                anim.SetBool("PunchRight", true);
             }
         }
+    }
+
+    private void PunchEnd()
+    {
+        anim.SetBool("PunchLeft", false);
+        anim.SetBool("PunchRight", false);
+    }
+
+    private void HitEnd()
+    {
+        anim.SetBool("Hit", false);
     }
 
     public void SetPunch()
@@ -518,7 +549,6 @@ public class PlayerController : MonoBehaviour
     {
         isDead = true;
         anim.SetBool("isDead", true);
-        anim.SetTrigger("Die");
         EventManager.SendEvent("InGameUI :: SetDie", player);
     }
 
@@ -526,7 +556,6 @@ public class PlayerController : MonoBehaviour
     {
         isDead = true;
         anim.SetBool("isDead", true);
-        anim.SetTrigger("Die");
     }
 
     public void NoDie()
@@ -542,10 +571,12 @@ public class PlayerController : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         EventManager.SendEvent("InGameUI :: TriggerEnter", other);
+        if (other.CompareTag("DeepWater")) isWater = true;
     }
 
     private void OnTriggerExit(Collider other)
     {
         EventManager.SendEvent("InGameUI :: TriggerExit", other);
+        if (other.CompareTag("DeepWater")) isWater = false;
     }
 }

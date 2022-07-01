@@ -61,7 +61,7 @@ public class PlayerStemina : MonoBehaviourPun
     private float hungryFulldelay = 30f;
     private float hungryFullTimer = .0f;
     private float hungryDownTimer = .0f;
-    private float hungryDelay = 2.8f;
+    private float hungryDelay = 2.1f;
     #endregion
 
     #region ColdValue
@@ -92,14 +92,14 @@ public class PlayerStemina : MonoBehaviourPun
         {
             if (normalPlayer)
             {
-                FillHungry(.2f);
+                FillHungry(.4f);
             }
         });
         EventManager.AddEvent("Item :: GrilledFish", (p) =>
         {
             if (normalPlayer)
             {
-                FillHungry(.4f);
+                FillHungry(.75f);
             }
         });
         EventManager.AddEvent("Item :: EmptyBottle", (p) =>
@@ -113,7 +113,7 @@ public class PlayerStemina : MonoBehaviourPun
         {
             if (normalPlayer)
             {
-                FillThirsty(.5f);
+                FillThirsty(.8f);
                 EventManager.SendEvent("Inventory :: Change", "0003", "0002", true);
             }
         });
@@ -268,7 +268,7 @@ public class PlayerStemina : MonoBehaviourPun
             if (hungryDownTimer >= hungryDelay)
             {
                 hungryDownTimer -= hungryDelay;
-                hungryValue -= .075f;
+                hungryValue -= .025f;
                 if (hungryValue < 0)
                 {
                     hungryValue = 0;
@@ -304,7 +304,7 @@ public class PlayerStemina : MonoBehaviourPun
             if (warmDownTimer >= warmDelay)
             {
                 warmDownTimer -= warmDelay;
-                warmValue -= .05f * (1 + wetValue);
+                warmValue -= .03f * (1 + wetValue);
                 if (warmValue < 0)
                 {
                     warmValue = 0;
@@ -330,7 +330,7 @@ public class PlayerStemina : MonoBehaviourPun
             if (wetTimer >= wetDelay)
             {
                 wetTimer -= wetDelay;
-                wetValue -= isWarm ? .15f : .05f;
+                wetValue -= isWarm ? .15f : .02f;
             }
             else
             {

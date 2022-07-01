@@ -282,7 +282,7 @@ public static class Strings
 
                 str.Add(StringKey.InGameMessageInventoryIsFull, "아이템을 더 이상 구할 수 없습니다!");
                 str.Add(StringKey.InGameMessageNotExistItem, "아이템이 없습니다. \"{0}\"");
-                str.Add(StringKey.InGameMessageWorkingTryOtherAction, "작업 중에는 작업을 시도할 수 없습니다.");
+                str.Add(StringKey.InGameMessageWorkingTryOtherAction, "작업 중에는 다른 행동을 시도할 수 없습니다.");
 
                 str.Add(StringKey.InGameMessageCompleteVote, "{0}님이 투표를 완료했습니다.");
                 str.Add(StringKey.InGameFinishVoteNone, "아무도 내보내지 않았습니다.");

@@ -65,6 +65,12 @@ public class VotePlayerListItem : MonoBehaviour
     {
         voteable = !isDead;
         if (isDead) GetComponent<Image>().color = Color.black;
+        else GetComponent<Image>().color = Color.white;
         imgDie.SetActive(isDead);
+    }
+
+    public void SetVote()
+    {
+        GetComponent<Image>().color = new Color(.2f, .6f, .8f);
     }
 }

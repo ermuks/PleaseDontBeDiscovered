@@ -133,7 +133,7 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
                 playerList[i].CloseVoteButton();
             }
 
-            photonView.RPC("CompleteVote", RpcTarget.MasterClient, who, target);
+            photonView.RPC("CompleteVote", RpcTarget.All, who, target);
         });
         EventManager.AddEvent("InGameUI :: FadeIn", (p) =>
         {
@@ -331,18 +331,29 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
         voteEndingCamAnimation.GetComponent<Animator>().SetTrigger("SetAnim");
         Player manyVotePlayer = null;
         int voteCount = 0;
+        bool isEqualVotes = false;
+
         foreach (var player in PhotonNetwork.CurrentRoom.Players.Values)
         {
             var properties = player.CustomProperties;
             int count = (int)properties["voteMembers"];
-            if (count > voteCount)
+            if (count > 0)
             {
-                if (count > 0)
+                if (count > voteCount)
                 {
+                    voteCount = count;
                     manyVotePlayer = player;
+                }
+                else
+                {
+                    if (count == voteCount)
+                    {
+                        isEqualVotes = true;
+                    }
                 }
             }
         }
+        if (isEqualVotes) manyVotePlayer = null;
         areaFinishVote.GetComponent<FinishVoteBackgroundUI>().SetMessage(manyVotePlayer);
         yield return new WaitForSeconds(15f);
         if (PhotonNetwork.LocalPlayer.IsMasterClient)
@@ -363,7 +374,6 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
     public void CompleteVote(Player who, Player target)
     {
         RefreshVoteAmount();
-
         if (PhotonNetwork.LocalPlayer.IsMasterClient)
         {
             var properties = target.CustomProperties;
@@ -376,9 +386,15 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
                 roomProperties["Vote"] = false;
                 PhotonNetwork.CurrentRoom.SetCustomProperties(roomProperties);
             }
-            Debug.Log($"{who.NickName} 이(가) {target.NickName}을(를) 투표했습니다.");
         }
-
+        foreach (var playerListItem in playerList)
+        {
+            if (playerListItem.player == who)
+            {
+                playerListItem.SetVote();
+                break;
+            }
+        }
         EventManager.SendEvent("InGameUI :: AddAlamMessage", Strings.GetString(StringKey.InGameMessageCompleteVote, who.NickName));
     }
 

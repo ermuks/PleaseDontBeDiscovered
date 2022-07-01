@@ -45,7 +45,13 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
     [SerializeField] private Button btnKillCooldown;
     [SerializeField] private Slider sliderKillCooldown;
 
-     [Space(16)]
+    [Space(8)]
+    [SerializeField] private Toggle tglNickname;
+    [SerializeField] private Toggle tglFallingDamage;
+    [SerializeField] private Toggle tglStartItem;
+    [SerializeField] private Toggle tglRunable;
+
+    [Space(16)]
     [SerializeField] private Button btnOpenCreateRoom;
     [SerializeField] private Button btnRandomJoinRoom;
     [SerializeField] private Button btnCreateRoom;
@@ -551,6 +557,10 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
                 roomOption.CustomRoomProperties.Add("murders", (int)sliderMurderCount.value);
                 roomOption.CustomRoomProperties.Add("moveSpeed", sliderMoveSpeed.value);
                 roomOption.CustomRoomProperties.Add("killCooldown", sliderKillCooldown.value);
+                roomOption.CustomRoomProperties.Add("nicknameVisible", tglNickname.isOn);
+                roomOption.CustomRoomProperties.Add("fallingDamage", tglFallingDamage.isOn);
+                roomOption.CustomRoomProperties.Add("startItem", tglStartItem.isOn);
+                roomOption.CustomRoomProperties.Add("runable", tglRunable.isOn);
 
                 PhotonNetwork.LeaveLobby();
                 PhotonNetwork.CreateRoom(title, roomOption);

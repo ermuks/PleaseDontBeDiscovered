@@ -7,8 +7,20 @@ using Photon.Realtime;
 
 public class PlayerData : MonoBehaviourPun, IPunObservable
 {
+    [SerializeField] private Transform nickname;
+
+    private CharacterController controller;
+    private Animator anim;
+
     private void Awake()
     {
+        controller = GetComponent<CharacterController>();
+        anim = GetComponent<Animator>();
+        nickname.GetComponent<TMPro.TMP_Text>().text = photonView.Owner.NickName;
+        if (photonView.IsMine)
+        {
+            nickname.gameObject.SetActive(false);
+        }
         EventManager.AddEvent("Data :: Die", (p) =>
         {
             Die(p[0], (bool)p[1], (bool)p[2]);
@@ -23,6 +35,21 @@ public class PlayerData : MonoBehaviourPun, IPunObservable
         });
     }
 
+    private void Update()
+    {
+        float delta = Time.deltaTime;
+        Vector3 point1 = controller.bounds.center + Vector3.up * (controller.height - controller.radius * 2) / 2;
+        Vector3 point2 = controller.bounds.center - Vector3.up * (controller.height - controller.radius * 2) / 2;
+        if (controller.isGrounded || Physics.CapsuleCast(point1, point2, controller.radius, Vector3.down, .02f, ~(1 << gameObject.layer)))
+        {
+            if (anim.GetBool("Run"))
+            {
+
+            }
+        }
+        nickname.LookAt(Camera.main.transform);
+    }
+
 
     private void VoteDie()
     {
@@ -31,7 +58,7 @@ public class PlayerData : MonoBehaviourPun, IPunObservable
 
     private void Hit(Player player)
     {
-        GetComponent<Animator>().SetTrigger("Hit");
+        GetComponent<Animator>().SetBool("Hit", true);
         if ((bool)player.CustomProperties["isMurder"])
         {
             Die(player, true, true);
