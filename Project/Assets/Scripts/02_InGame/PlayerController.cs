@@ -157,6 +157,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         if ((bool)EventManager.GetData("InGameUI >> VoteUIActive")) return;
+        Debug.Log((bool)EventManager.GetData("InGameData >> FinishVoteAnimationPlaying"));
         if ((bool)EventManager.GetData("InGameData >> FinishVoteAnimationPlaying"))
         {
             CameraPositionVoteEnding();

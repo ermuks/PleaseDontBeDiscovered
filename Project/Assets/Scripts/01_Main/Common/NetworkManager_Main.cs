@@ -578,12 +578,19 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
     // ***** SetNickname ***** //
     private void SetNickname(string nickname)
     {
-        bool retry = true;
-        Regex regex = new Regex(@"^[가-힣a-zA-Zぁ-ゟァ-ヿㄱ-ㅎㅏ-ㅣ]{8}$");    //한글 3글자
-        if (regex.IsMatch(nickname))
-        {
-            retry = false;
-        }
+        bool retry = false;
+        if (nickname.Replace(" ", "").Length < 2)
+            retry = true;
+        else
+            if (nickname.IndexOf("GM") != -1)
+                retry = true;
+            else
+                if (nickname.IndexOf("<") != -1)
+                    retry = true;
+                else
+                    if (nickname.IndexOf(">") != -1)
+                        retry = true;
+
         if (retry)
         {
             EventManager.SendEvent("PopupMessage", $"닉네임을 확인해주세요.");
