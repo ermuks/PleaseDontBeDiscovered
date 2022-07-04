@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,6 +7,7 @@ using TMPro;
 
 using Photon.Pun;
 using Photon.Realtime;
+using System.Text.RegularExpressions;
 
 public class NetworkManager_Main : MonoBehaviourPunCallbacks
 {
@@ -96,7 +97,7 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
     #endregion
 
     #region string Data
-    readonly private string[] randomTitle = { "¾Æ¹«³ª µé¾î¿Í~~", "Ã³À½ ÇÏ´Â »ç¶÷¸¸!!", "¤»¤»¤»¤» ³Ê¹« Àç¹Õ³×", "»¡¸® ¤¡¤¡", "¿©±â·Î µé¾î¿Í!!" };
+    readonly private string[] randomTitle = { "ì•„ë¬´ë‚˜ ë“¤ì–´ì™€~~", "ì²˜ìŒ í•˜ëŠ” ì‚¬ëŒë§Œ!!", "ã…‹ã…‹ã…‹ã…‹ ë„ˆë¬´ ì¬ë°Œë„¤", "ë¹¨ë¦¬ ã„±ã„±", "ì—¬ê¸°ë¡œ ë“¤ì–´ì™€!!" };
     #endregion
 
     #region Unity Method
@@ -263,13 +264,13 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
     // ***** OnJoinRoomFailed ***** //
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
-        EventManager.SendEvent("PopupMessage", $"¹æ ÀÔÀå¿¡ ½ÇÆĞÇß½À´Ï´Ù.\nError Code : {returnCode}");
+        EventManager.SendEvent("PopupMessage", $"ë°© ì…ì¥ì— ì‹¤íŒ¨í–ˆìŠµë‹ˆë‹¤.\nError Code : {returnCode}");
     }
 
     // ***** OnJoinRandomFailed ***** //
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
-        EventManager.SendEvent("PopupMessage", $"·£´ı ÀÔÀå¿¡ ½ÇÆĞÇß½À´Ï´Ù.\nError Code : {returnCode}");
+        EventManager.SendEvent("PopupMessage", $"ëœë¤ ì…ì¥ì— ì‹¤íŒ¨í–ˆìŠµë‹ˆë‹¤.\nError Code : {returnCode}");
     }
     #endregion Photon Method
 
@@ -452,11 +453,11 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
                 {
                     if (count >= maxPlayer / 2)
                     {
-                        EventManager.SendEvent("PopupMessage", $"Å³·¯ ¼ö°¡ ³Ê¹« ¸¹½À´Ï´Ù.\nÃÖ´ë ÀÎ¿ø : {maxPlayer / 2 - 1}");
+                        EventManager.SendEvent("PopupMessage", $"í‚¬ëŸ¬ ìˆ˜ê°€ ë„ˆë¬´ ë§ìŠµë‹ˆë‹¤.\nìµœëŒ€ ì¸ì› : {maxPlayer / 2 - 1}");
                     }
                     if (count < 1)
                     {
-                        EventManager.SendEvent("PopupMessage", $"Å³·¯ ¼ö°¡ ³Ê¹« Àû½À´Ï´Ù.\nÃÖ¼Ò ÀÎ¿ø : 1");
+                        EventManager.SendEvent("PopupMessage", $"í‚¬ëŸ¬ ìˆ˜ê°€ ë„ˆë¬´ ì ìŠµë‹ˆë‹¤.\nìµœì†Œ ì¸ì› : 1");
                     }
                 }
             }
@@ -565,21 +566,34 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
             }
             else
             {
-                EventManager.SendEvent("PopupMessage", $"¹æ Á¦¸ñÀ» ÀÔ·ÂÇØÁÖ¼¼¿ä.");
+                EventManager.SendEvent("PopupMessage", $"ë°© ì œëª©ì„ ì…ë ¥í•´ì£¼ì„¸ìš”.");
             }
         }
         else
         {
-            EventManager.SendEvent("PopupMessage", $"ÇÃ·¹ÀÌ¾î ¼ö ¹üÀ§¸¦ ¹ş¾î³µ½À´Ï´Ù.\n¹üÀ§ : 2 ~ 8");
+            EventManager.SendEvent("PopupMessage", $"í”Œë ˆì´ì–´ ìˆ˜ ë²”ìœ„ë¥¼ ë²—ì–´ë‚¬ìŠµë‹ˆë‹¤.\në²”ìœ„ : 2 ~ 8");
         }
     }
 
     // ***** SetNickname ***** //
     private void SetNickname(string nickname)
     {
-        PhotonNetwork.NickName = nickname;
-        areaInputNickname.SetActive(false);
-        areaRoomList.SetActive(true);
+        bool retry = true;
+        Regex regex = new Regex(@"^[ê°€-í£a-zA-Zã-ã‚Ÿã‚¡-ãƒ¿ã„±-ã…ã…-ã…£]{8}$");    //í•œê¸€ 3ê¸€ì
+        if (regex.IsMatch(nickname))
+        {
+            retry = false;
+        }
+        if (retry)
+        {
+            EventManager.SendEvent("PopupMessage", $"ë‹‰ë„¤ì„ì„ í™•ì¸í•´ì£¼ì„¸ìš”.");
+        }
+        else
+        {
+            PhotonNetwork.NickName = nickname;
+            areaInputNickname.SetActive(false);
+            areaRoomList.SetActive(true);
+        }
     }
 
     // ***** RefreshRoomList ***** //
@@ -652,7 +666,7 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
         {
             if (PhotonNetwork.CurrentRoom.PlayerCount <= (int)PhotonNetwork.CurrentRoom.CustomProperties["murders"] * 2)
             {
-                EventManager.SendEvent("PopupMessage", $"ÀÎ¿øÀÌ ºÎÁ·ÇÕ´Ï´Ù!");
+                EventManager.SendEvent("PopupMessage", $"ì¸ì›ì´ ë¶€ì¡±í•©ë‹ˆë‹¤!");
             }
             else
             {
@@ -667,7 +681,7 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
 
                 if (noReady > 0)
                 {
-                    EventManager.SendEvent("PopupMessage", $"{noReady}¸íÀÌ ÁØºñ¸¦ ¾ÈÇß½À´Ï´Ù.");
+                    EventManager.SendEvent("PopupMessage", $"{noReady}ëª…ì´ ì¤€ë¹„ë¥¼ ì•ˆí–ˆìŠµë‹ˆë‹¤.");
                 }
                 else
                 {

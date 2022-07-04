@@ -24,4 +24,12 @@ public class PopupMessage : MonoBehaviour
             areaMessagePopupUI.SetActive(false);
         });
     }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Return) && areaMessagePopupUI.activeSelf)
+        {
+            areaMessagePopupUI.SetActive(false);
+        }
+    }
 }
