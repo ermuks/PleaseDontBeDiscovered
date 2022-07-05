@@ -20,6 +20,8 @@ public class PlayerController : MonoBehaviour
     private Transform camParent;
     private Transform cam;
 
+    private GameObject aliveObject;
+
     private CharacterController controller;
     private Animator anim;
 
@@ -67,6 +69,7 @@ public class PlayerController : MonoBehaviour
 
         camParent = Camera.main.transform.parent;
         cam = Camera.main.transform;
+        aliveObject = transform.Find("AliveObject").gameObject;
         anim = GetComponent<Animator>();
         controller = GetComponent<CharacterController>();
         EventManager.AddEvent("Player :: Die", (p) =>
@@ -142,7 +145,7 @@ public class PlayerController : MonoBehaviour
         EventManager.AddEvent("Player :: SetWatching", (p) => isWatcher = true);
         EventManager.AddEvent("Player :: RemoveCharacter", (p) =>
         {
-            gameObject.SetActive(false);
+            aliveObject.SetActive(false);
         });
     }
 
@@ -157,7 +160,6 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         if ((bool)EventManager.GetData("InGameUI >> VoteUIActive")) return;
-        Debug.Log((bool)EventManager.GetData("InGameData >> FinishVoteAnimationPlaying"));
         if ((bool)EventManager.GetData("InGameData >> FinishVoteAnimationPlaying"))
         {
             CameraPositionVoteEnding();
@@ -281,7 +283,11 @@ public class PlayerController : MonoBehaviour
         currentAngleX = Mathf.Lerp(currentAngleX, targetAngleX, Time.deltaTime * 30f);
         currentAngleY = Mathf.Lerp(currentAngleY, targetAngleY, Time.deltaTime * 30f);
 
-        if (targetPlayer == null) NextPlayer();
+
+        while (targetPlayer == null)
+        {
+            NextPlayer();
+        }
         camParent.position = targetPlayer.position + Quaternion.Euler(0, currentAngleY, 0) * offset;
         cam.localRotation = Quaternion.identity;
         cam.localPosition = -Vector3.forward * currentDistance;
