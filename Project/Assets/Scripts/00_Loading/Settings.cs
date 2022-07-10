@@ -92,8 +92,11 @@ public class Settings : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.F5))
         {
-            Debug.Log("작동:");
-            GameObject.FindObjectOfType<Photon.Pun.PhotonView>().RPC("VoteDie", Photon.Pun.PhotonNetwork.LocalPlayer);
+            foreach (var p in Photon.Pun.PhotonNetwork.CurrentRoom.CustomProperties)
+            {
+                Debug.Log($"{p.Key} :: {p.Value}");
+            }
+            EventManager.SendEvent("InGameUI :: CreateMessage", "디버그용 버튼 (F5)");
         }
     }
 }

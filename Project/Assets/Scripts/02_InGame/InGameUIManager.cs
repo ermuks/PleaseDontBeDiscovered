@@ -89,7 +89,6 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
             if ((bool)PhotonNetwork.LocalPlayer.CustomProperties["isDead"])
             {
                 EventManager.SendEvent("Player :: SetWatching");
-                EventManager.SendEvent("Player :: RemoveCharacter");
                 areaDieUI.SetActive(false);
             }
 
@@ -102,6 +101,7 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
 
             voteCount = 0;
             EventManager.SendEvent("InGameData :: AlreadyVoted", false);
+            EventManager.SendEvent("InGameUI :: Vote :: InitTimer", false);
 
             for (int i = 0; i < playerList.Count; i++)
             {
@@ -143,12 +143,23 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
         EventManager.AddEvent("InGameUI :: PlayFinishVoteAnimation", (p) =>
         {
             StartCoroutine(AnimationEnd());
+            areaPlayerUI.SetActive(false);
+            areaDieUI.SetActive(false);
+            areaTrigger.SetActive(false);
+            EventManager.SendEvent("InGameData :: PlayerPositionSetting");
         });
         EventManager.AddEvent("InGameUI :: FinishVoteAnimationPlaying", (p) =>
         {
-            areaMurderPlayerUI.SetActive(false);
-            areaPlayerUI.SetActive(false);
-            areaDieUI.SetActive(false);
+            if ((bool)PhotonNetwork.LocalPlayer.CustomProperties["isDead"])
+            {
+                EventManager.SendEvent("Player :: PlayerDieToWatch");
+                areaWatcherUI.SetActive(true);
+            }
+            else
+            {
+                EventManager.SendEvent("InGameData :: PlayerPositionSetting");
+                areaPlayerUI.SetActive(true);
+            }
         });
 
         EventManager.AddEvent("Refresh Stamina", (p) =>
@@ -279,9 +290,12 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
         {
             Collider col = (Collider)p[0];
             areaTrigger.SetActive(false);
-            if (col.CompareTag("WarmZone"))
+            if (col != null)
             {
-                EventManager.SendEvent("Player :: ExitWarmZone");
+                if (col.CompareTag("WarmZone"))
+                {
+                    EventManager.SendEvent("Player :: ExitWarmZone");
+                }
             }
         });
         EventManager.AddEvent("InGameUI :: WorkStart", (p) =>

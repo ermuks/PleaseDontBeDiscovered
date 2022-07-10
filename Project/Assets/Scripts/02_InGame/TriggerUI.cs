@@ -32,6 +32,10 @@ public class TriggerUI : MonoBehaviour
             WorkMessage msg = (WorkMessage)p[0];
             isWorking = false;
         });
+        EventManager.AddEvent("Trigger :: HideTrigger", (p) =>
+        {
+            EventManager.SendEvent("InGameUI :: TriggerExit", null);
+        });
     }
 
     public void SetMessage(WorkMessage msg)

@@ -62,6 +62,7 @@ public class FinishVoteBackgroundUI : MonoBehaviour
     private void EndAnimation()
     {
         EventManager.SendEvent("InGameData :: FinishVoteAnimationPlaying", false);
+        EventManager.SendEvent("InGameUI :: FinishVoteAnimationPlaying", false);
         gameObject.SetActive(false);
     }
 }

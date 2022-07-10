@@ -143,8 +143,10 @@ public class PlayerController : MonoBehaviour
             EventManager.SendEvent("InGameUI :: WorkEnd");
         });
         EventManager.AddEvent("Player :: SetWatching", (p) => isWatcher = true);
-        EventManager.AddEvent("Player :: RemoveCharacter", (p) =>
+        EventManager.AddEvent("Player :: PlayerDieToWatch", (p) =>
         {
+            NextPlayer(true);
+            EventManager.SendEvent("Player :: WorkEnd");
             aliveObject.SetActive(false);
         });
     }
@@ -187,7 +189,7 @@ public class PlayerController : MonoBehaviour
                 NextPlayer();
             }
             else
-            {
+            { 
                 PlayerDieCamera();
                 NextPlayer();
             }
@@ -207,6 +209,7 @@ public class PlayerController : MonoBehaviour
         camParent.position = voteEnding.position;
         camParent.rotation = voteEnding.rotation;
         cam.localRotation = Quaternion.identity;
+        cam.localPosition = Vector3.one;
     }
 
     private void KillCooldownUpdate()
@@ -244,20 +247,27 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    private void NextPlayer()
+    private void NextPlayer(bool auto = false)
     {
-        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-        if (Input.GetKeyDown(Settings.instance.GetKey(KeySettings.WatchNextPlayer)))
+        if (auto || Input.GetKeyDown(Settings.instance.GetKey(KeySettings.WatchNextPlayer)))
         {
+            GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
         ReFind:
             if (++playerIndex >= players.Length) playerIndex = 0;
-            if (SetTargetWatch(players)) goto ReFind;
+            if (SetTargetWatch(players))
+            {
+                goto ReFind;
+            }
         }
         if (Input.GetKeyDown(Settings.instance.GetKey(KeySettings.WatchPreviewPlayer)))
         {
+            GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
         ReFind:
             if (--playerIndex < 0) playerIndex = players.Length - 1;
-            if (SetTargetWatch(players)) goto ReFind;
+            if (SetTargetWatch(players))
+            {
+                goto ReFind;
+            }
         }
     }
 
@@ -510,6 +520,7 @@ public class PlayerController : MonoBehaviour
             {
                 anim.SetBool("PunchRight", true);
             }
+            SetPunch();
         }
     }
 

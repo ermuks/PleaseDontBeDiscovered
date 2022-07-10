@@ -17,7 +17,6 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
     [SerializeField] private GameObject areaRoomList;
     [SerializeField] private GameObject areaCreateRoom;
     [SerializeField] private GameObject areaRoomUI;
-    [SerializeField] private GameObject areaMasterMenu;
 
     [Header("** Create Room UI **")]
     [SerializeField] private TMP_InputField inputRoomTitle;
@@ -47,6 +46,12 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
     [SerializeField] private Slider sliderKillCooldown;
 
     [Space(8)]
+    [SerializeField] private TMP_InputField inputVoteTime;
+    [SerializeField] private TMP_Text txtVoteTime;
+    [SerializeField] private Button btnVoteTime;
+    [SerializeField] private Slider sliderVoteTime;
+
+    [Space(8)]
     [SerializeField] private Toggle tglNickname;
     [SerializeField] private Toggle tglFallingDamage;
     [SerializeField] private Toggle tglStartItem;
@@ -63,11 +68,6 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
     [SerializeField] private Button btnReady;
     [SerializeField] private Button btnCancel;
     [SerializeField] private Button btnExit;
-
-    private Player selectPlayer;
-    [SerializeField] private TMP_Text txtTargetNickname;
-    [SerializeField] private Button btnExplusion;
-    [SerializeField] private Button btnBlackList;
     #endregion
 
     [Header("Nickname Settings")]
@@ -107,30 +107,6 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
         LoadPrefab();
         CheckRoomLobby();
         UIAddEvents();
-
-        areaMasterMenu.SetActive(false);
-        EventManager.AddEvent("MainUI :: OpenMasterMenu", (p) =>
-        {
-            areaMasterMenu.SetActive(true);
-            areaMasterMenu.transform.position = (Vector2)p[0];
-            selectPlayer = (Player)p[1];
-            txtTargetNickname.text = selectPlayer.NickName;
-        });
-        EventManager.AddEvent("MainUI :: CloseMasterMenu", (p) =>
-        {
-            areaMasterMenu.SetActive(true);
-        });
-    }
-
-    private void LateUpdate()
-    {
-        if (areaMasterMenu.activeInHierarchy)
-        {
-            if (Input.GetMouseButtonUp(0) || Input.GetKeyDown(KeyCode.Escape))
-            {
-                areaMasterMenu.SetActive(false);
-            }
-        }
     }
 
     #endregion
@@ -420,7 +396,7 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
             }
             else
             {
-                inputRoomMaxPlayer.text = "3";
+                inputMoveSpeed.text = "3";
             }
         });
         inputKillCooldown.onValueChanged.AddListener((value) =>
@@ -432,7 +408,19 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
             }
             else
             {
-                inputRoomMaxPlayer.text = "3";
+                inputKillCooldown.text = "5";
+            }
+        });
+        inputVoteTime.onValueChanged.AddListener((value) =>
+        {
+            if (int.TryParse(inputVoteTime.text, out int count))
+            {
+                if (int.Parse(inputVoteTime.text) < 60) inputVoteTime.text = "60";
+                if (int.Parse(inputVoteTime.text) > 300) inputVoteTime.text = "900";
+            }
+            else
+            {
+                inputVoteTime.text = "60";
             }
         });
 
@@ -470,11 +458,16 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
         {
             sliderKillCooldown.value = float.Parse(value);
         });
+        inputVoteTime.onSubmit.AddListener((value) =>
+        {
+            sliderVoteTime.value = float.Parse(value);
+        });
 
         inputRoomMaxPlayer.onEndEdit.AddListener((value) => inputRoomMaxPlayer.gameObject.SetActive(false));
         inputMurderCount.onEndEdit.AddListener((value) => inputMurderCount.gameObject.SetActive(false));
         inputMoveSpeed.onEndEdit.AddListener((value) => inputMoveSpeed.gameObject.SetActive(false));
         inputKillCooldown.onEndEdit.AddListener((value) => inputKillCooldown.gameObject.SetActive(false));
+        inputVoteTime.onEndEdit.AddListener((value) => inputVoteTime.gameObject.SetActive(false));
 
         sliderRoomMaxPlayer.onValueChanged.AddListener((value) =>
         {
@@ -503,6 +496,20 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
             }
             txtKillCooldown.text = $"{value:0}";
         });
+        sliderVoteTime.onValueChanged.AddListener((value) =>
+        {
+            if (Input.GetKey(KeyCode.LeftControl))
+            {
+                value = (int)(value / 60) * 60;
+                sliderVoteTime.value = value;
+            }
+            else
+            {
+                value = (int)(value / 15) * 15;
+                sliderVoteTime.value = value;
+            }
+            txtVoteTime.text = $"{value:0}";
+        });
 
         btnRoomMaxPlayer.onClick.AddListener(() =>
         {
@@ -528,14 +535,11 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
             inputKillCooldown.ActivateInputField();
             inputKillCooldown.text = sliderKillCooldown.value.ToString();
         });
-
-        btnExplusion.onClick.AddListener(() =>
+        btnVoteTime.onClick.AddListener(() =>
         {
-            
-        });
-        btnBlackList.onClick.AddListener(() =>
-        {
-            
+            inputVoteTime.gameObject.SetActive(true);
+            inputVoteTime.ActivateInputField();
+            inputVoteTime.text = sliderVoteTime.value.ToString();
         });
     }
     // ***** CreateRoom ***** //
@@ -556,6 +560,7 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
                 roomOption.CustomRoomProperties.Add("murders", (int)sliderMurderCount.value);
                 roomOption.CustomRoomProperties.Add("moveSpeed", sliderMoveSpeed.value);
                 roomOption.CustomRoomProperties.Add("killCooldown", sliderKillCooldown.value);
+                roomOption.CustomRoomProperties.Add("voteTime", sliderVoteTime.value);
                 roomOption.CustomRoomProperties.Add("nicknameVisible", tglNickname.isOn);
                 roomOption.CustomRoomProperties.Add("fallingDamage", tglFallingDamage.isOn);
                 roomOption.CustomRoomProperties.Add("startItem", tglStartItem.isOn);

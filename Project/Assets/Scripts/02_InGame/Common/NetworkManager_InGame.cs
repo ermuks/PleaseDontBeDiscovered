@@ -20,18 +20,23 @@ public class NetworkManager_InGame : MonoBehaviourPunCallbacks
         myCharacter = PhotonNetwork.Instantiate(path, playerTransform.position, playerTransform.rotation);
         myCharacter.AddComponent<PlayerController>();
         myCharacter.AddComponent<PlayerStemina>();
-
-        GameObject[] areas = GameObject.FindGameObjectsWithTag("SpawnArea");
-
-        GameObject spawnArea = areas[Random.Range(0, areas.Length)];
-        Bounds bounds = spawnArea.GetComponent<Collider>().bounds;
-
-        float x = bounds.extents.x;
-        float y = bounds.extents.y;
-        float z = bounds.extents.z;
-
-        myCharacter.transform.position = bounds.center + new Vector3(Random.Range(-x, x), Random.Range(-y, y), Random.Range(-z, z));
         Cursor.lockState = CursorLockMode.Locked;
+
+        EventManager.AddEvent("InGameData :: PlayerPositionSetting", (p) =>
+        {
+            GameObject[] areas = GameObject.FindGameObjectsWithTag("SpawnArea");
+
+            GameObject spawnArea = areas[Random.Range(0, areas.Length)];
+            Bounds bounds = spawnArea.GetComponent<Collider>().bounds;
+
+            float x = bounds.extents.x;
+            float y = bounds.extents.y;
+            float z = bounds.extents.z;
+            myCharacter.GetComponent<CharacterController>().enabled = false;
+            myCharacter.transform.position = bounds.center + new Vector3(Random.Range(-x, x), Random.Range(-y, y), Random.Range(-z, z));
+            myCharacter.GetComponent<CharacterController>().enabled = true;
+        });
+        EventManager.SendEvent("InGameData :: PlayerPositionSetting");
 
         EventManager.AddData("InGameData >> FinishVoteAnimationPlaying", (p) => isFinishVote);
         EventManager.AddData("InGameData >> AlreadyVoted", (p) => isAlreadyVoted);

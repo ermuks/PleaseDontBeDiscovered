@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -25,28 +26,30 @@ public class EventManager : MonoBehaviour
     {
         if (key == "")
         {
-#if UNITY_EDITOR
+            //#if UNITY_EDITOR
             if (key.IndexOf("Refresh") == -1 && key.IndexOf("SetKillCooldown") == -1)
             {
                 Debug.Log($"<b><color=#ff2025>[ Fail ]</color></b>\nEvent Key : <color=#c9f5f9>{key}</color>\nParameters Count : <color=#c9f5f9>{param.Length}</color>");
             }
-#endif
-            return;
+            //#endif
         }
-        if (eventList.ContainsKey(key))
+        else
         {
-            eventList[key](param);
-#if UNITY_EDITOR
-            if (key.IndexOf("Refresh") == -1 && key.IndexOf("SetKillCooldown") == -1)
+            if (eventList.ContainsKey(key))
             {
-                string p = "";
-                for (int i = 0; i < param.Length; i++)
+                eventList[key](param);
+                //#if UNITY_EDITOR
+                if (key.IndexOf("Refresh") == -1 && key.IndexOf("SetKillCooldown") == -1)
                 {
-                    p += $"\nParameter [ <color=#79d5d9>{i}</color> ] : <color=#c9f5f9>{param[i]}</color>";
+                    string p = "";
+                    for (int i = 0; i < param.Length; i++)
+                    {
+                        p += $"\nParameter [ <color=#79d5d9>{i}</color> ] : <color=#c9f5f9>{param[i]}</color>";
+                    }
+                    Debug.Log($"<color=#fff335>[ Success ]</color>\nEvent Key : <color=#c9f5f9>{key}</color>{p}");
                 }
-                Debug.Log($"<color=#fff335>[ Success ]</color>\nEvent Key : <color=#c9f5f9>{key}</color>{p}");
+                //#endif
             }
-#endif
         }
     }
 

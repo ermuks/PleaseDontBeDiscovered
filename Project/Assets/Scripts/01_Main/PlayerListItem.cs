@@ -9,15 +9,23 @@ using TMPro;
 using Photon.Pun;
 using Photon.Realtime;
 
-public class PlayerListItem : MonoBehaviour, IPointerClickHandler
+public class PlayerListItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     private Player owner;
 
     [SerializeField]
-    private TMP_Text txtNickname;
+    private Text txtNickname;
+
+    [SerializeField]
+    private Image playerColor;
 
     [SerializeField]
     private Image statusObject;
+
+    [SerializeField]
+    private RectTransform areaNickname;
+    [SerializeField]
+    private GameObject areaPlayerManagementButtons;
 
     [SerializeField]
     private Color clrNone;
@@ -55,11 +63,19 @@ public class PlayerListItem : MonoBehaviour, IPointerClickHandler
         txtNickname.text = "";
     }
 
-    public void OnPointerClick(PointerEventData eventData)
+    public void OnPointerEnter(PointerEventData eventData)
     {
-        if (eventData.button == PointerEventData.InputButton.Right)
-        {
-            EventManager.SendEvent("MainUI :: OpenMasterMenu", eventData.position, owner);
-        }
+        Vector2 size = areaNickname.sizeDelta;
+        size.x = 196f;
+        areaNickname.sizeDelta = size;
+        areaPlayerManagementButtons.SetActive(true);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        Vector2 size = areaNickname.sizeDelta;
+        size.x = 286f;
+        areaNickname.sizeDelta = size;
+        areaPlayerManagementButtons.SetActive(false);
     }
 }
