@@ -14,6 +14,7 @@ public enum DieMessage
     Hungry = 0,
     Falling,
     Vote,
+    Breath,
 }
 
 public class PlayerDieUI : MonoBehaviour
@@ -38,6 +39,9 @@ public class PlayerDieUI : MonoBehaviour
                 break;
             case DieMessage.Vote:
                 message = Strings.GetString(StringKey.InGameDieMessageVote);
+                break;
+            case DieMessage.Breath:
+                message = Strings.GetString(StringKey.InGameDieMessageBreath);
                 break;
             default:
                 message = Strings.GetString(StringKey.InGameDieMessageNone);

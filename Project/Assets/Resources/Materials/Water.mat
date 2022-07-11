@@ -21,8 +21,8 @@ Material:
     m_TexEnvs:
     - _BumpMap:
         m_Texture: {fileID: 2800000, guid: a7d950ad657b9544aab7f27f62191d8a, type: 3}
-        m_Scale: {x: 4, y: 0.7}
-        m_Offset: {x: 0.0767686, y: 0.12842868}
+        m_Scale: {x: 2, y: 0.7}
+        m_Offset: {x: 0.34014013, y: 0.33111593}
     - _DetailAlbedoMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}

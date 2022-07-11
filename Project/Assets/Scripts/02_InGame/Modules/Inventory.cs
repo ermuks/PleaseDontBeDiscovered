@@ -68,21 +68,20 @@ public class Inventory
         cells[dropIndex].SetCell(cell);
     }
 
-    public void UseItem(int index, int count)
+    public void UseItem(int index)
     {
         if (cells[index].itemCount >= 0)
         {
             cells[index].data.UseItem();
-            Remove(index, count);
         }
     }
 
-    public void ChangeItem(string origin, string code, bool useable)
+    public void ChangeItem(string origin, string code)
     {
         int index = System.Array.FindIndex(cells, e => e.data.itemCode == origin);
         if (index != -1)
         {
-            if (!useable) Remove(origin, 1);
+            Remove(origin, 1);
             int blankIndex = System.Array.FindIndex(cells, e => e.itemCount == 0);
             if (blankIndex != -1)
             {
@@ -103,12 +102,35 @@ public class Inventory
         }
     }
 
-    public bool ExistItem(string code)
+    public bool TryChange(string origin, string code)
     {
-        return System.Array.FindIndex(cells, e => e.data.itemCode == code) != -1;
+        bool result = true;
+        int index = System.Array.FindIndex(cells, e => e.data.itemCode == code);
+        if (index != -1)
+        {
+            if (cells[index].data.maxCount != -1)
+            {
+                if (cells[index].itemCount >= cells[index].data.maxCount)
+                {
+                    result = false;
+                }
+            }
+        }
+        else
+        {
+            index = System.Array.FindIndex(cells, e => e.itemCount == 0);
+            if (index == -1)
+            {
+                if (ItemCount(origin) != 1)
+                {
+                    result = false;
+                }
+            }
+        }
+        return result;
     }
 
-    public bool ExistBlankCell(string code, int count)
+    public bool TryAddItem(string code)
     {
         bool result = true;
         int index = System.Array.FindIndex(cells, e => e.data.itemCode == code);
@@ -131,5 +153,28 @@ public class Inventory
             }
         }
         return result;
+    }
+
+    public int ItemCount(string code)
+    {
+        int index = System.Array.FindIndex(cells, e => e.data.itemCode == code);
+        if (index != -1)
+        {
+            return cells[index].itemCount;
+        }
+        else
+        {
+            return -1;
+        }
+    }
+
+    public bool HasItem(string code)
+    {
+        return System.Array.FindIndex(cells, e => e.data.itemCode == code) != -1;
+    }
+
+    public int FindIndex(string code)
+    {
+        return System.Array.FindIndex(cells, e => e.data.itemCode == code);
     }
 }

@@ -11,6 +11,8 @@ TagManager:
   - WarmZone
   - DeepWater
   - ReportArea
+  - Inventory
+  - InventoryArea
   layers:
   - Default
   - TransparentFX
@@ -19,13 +21,13 @@ TagManager:
   - Water
   - UI
   - 
-  - 
+  - MapResource
   - 
   - 
   - Player
   - SpawnArea
   - PlayerWetTrigger
-  - 
+  - PlayerBreathTrigger
   - 
   - 
   - 

@@ -18,6 +18,12 @@ public class RoomListItem : MonoBehaviourPun
         GetComponent<Button>().onClick.RemoveAllListeners();
         GetComponent<Button>().onClick.AddListener(() =>
         {
+            Debug.Log(PhotonNetwork.LocalPlayer.UserId);
+            Debug.Log(info.CustomProperties.Count);
+            foreach (var v in info.CustomProperties)
+            {
+                Debug.Log($"{v.Key} :: {v.Value}");
+            }
             PhotonNetwork.LeaveLobby();
             PhotonNetwork.JoinRoom(info.Name);
         });

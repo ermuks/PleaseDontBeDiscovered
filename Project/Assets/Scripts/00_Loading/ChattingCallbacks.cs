@@ -9,9 +9,6 @@ using Photon.Realtime;
 public class ChattingCallbacks : MonoBehaviourPun, IPunObservable
 {
     [SerializeField]
-    private GameObject chattingUI;
-
-    [SerializeField]
     private Transform chatParent;
 
     private GameObject chatPrefab;
@@ -28,9 +25,6 @@ public class ChattingCallbacks : MonoBehaviourPun, IPunObservable
         alamPrefab = Resources.Load<GameObject>("Prefabs/UI/AlamMessage");
         noticePrefab = Resources.Load<GameObject>("Prefabs/UI/NoticeMessage");
 
-        EventManager.AddEvent("Chatting :: Show", (p) => chattingUI.SetActive(true));
-        EventManager.AddEvent("Chatting :: Hide", (p) => chattingUI.SetActive(false));
-
         inputContent.onSubmit.AddListener((v) =>
         {
             SendPunMessage();
@@ -40,11 +34,15 @@ public class ChattingCallbacks : MonoBehaviourPun, IPunObservable
             SendPunMessage();
         });
 
-        EventManager.AddEvent("AddAlamMessage", (p) =>
+        EventManager.AddEvent("Chatting :: Clear", (p) =>
+        {
+            ChattingClear();
+        });
+        EventManager.AddEvent("Chatting :: AddAlamMessage", (p) =>
         {
             AddAlamMessage((string)p[0]);
         });
-        EventManager.AddEvent("AddNoticeMessage", (p) =>
+        EventManager.AddEvent("Chatting :: AddNoticeMessage", (p) =>
         {
             AddNoticeMessage((string)p[0]);
         });
@@ -93,6 +91,14 @@ public class ChattingCallbacks : MonoBehaviourPun, IPunObservable
         Vector2 pos = chatList.content.anchoredPosition;
         pos.y = chatList.content.rect.height;
         chatList.content.anchoredPosition = pos;
+    }
+
+    private void ChattingClear()
+    {
+        foreach (Transform chat in chatParent)
+        {
+            Destroy(chat.gameObject);
+        }
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

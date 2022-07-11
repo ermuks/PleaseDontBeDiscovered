@@ -11,12 +11,16 @@ using System.Text.RegularExpressions;
 
 public class NetworkManager_Main : MonoBehaviourPunCallbacks
 {
-    [Header("UI Settings")]
     #region UI
+    [Header("UI Settings")]
     [SerializeField] private GameObject areaInputNickname;
     [SerializeField] private GameObject areaRoomList;
-    [SerializeField] private GameObject areaCreateRoom;
+    [SerializeField] private GameObject areaPlayerSettings;
+    [SerializeField] private GameObject areaRoomSettings;
     [SerializeField] private GameObject areaRoomUI;
+
+    [Header("UI Settings")]
+    [SerializeField] private Button btnGameExit;
 
     [Header("** Create Room UI **")]
     [SerializeField] private TMP_InputField inputRoomTitle;
@@ -67,7 +71,24 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
     [SerializeField] private Button btnStart;
     [SerializeField] private Button btnReady;
     [SerializeField] private Button btnCancel;
+    [SerializeField] private Button btnPlayerSettings;
+    [SerializeField] private Button btnRoomSettings;
     [SerializeField] private Button btnExit;
+
+    [SerializeField] private TMP_Text txtRoomSettingsRoomTitle;
+
+    [SerializeField] private Image imgMapThumbnail;
+
+    [SerializeField] private TMP_Text txtRoomSettingsMapName;
+
+    [SerializeField] private TMP_Text txtRoomSettingsMurdererCount;
+    [SerializeField] private TMP_Text txtRoomSettingsMoveSpeed;
+    [SerializeField] private TMP_Text txtRoomSettingsKillCooldown;
+    [SerializeField] private TMP_Text txtRoomSettingsVoteTime;
+    [SerializeField] private TMP_Text txtRoomSettingsNicknameVisible;
+    [SerializeField] private TMP_Text txtRoomSettingsFallingDamage;
+    [SerializeField] private TMP_Text txtRoomSettingsStartItem;
+    [SerializeField] private TMP_Text txtRoomSettingsRunable;
     #endregion
 
     [Header("Nickname Settings")]
@@ -107,6 +128,22 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
         LoadPrefab();
         CheckRoomLobby();
         UIAddEvents();
+        EventManager.AddEvent("MainUI :: Open Room Settings", (p) =>
+        {
+            areaRoomSettings.SetActive(false);
+        });
+        EventManager.AddEvent("MainUI :: Close Room Settings", (p) =>
+        {
+            areaRoomSettings.SetActive(false);
+        });
+        EventManager.AddEvent("PUN :: Explusion", (p) =>
+        {
+            photonView.RPC("Explusion", RpcTarget.All, (Player)p[0]);
+        });
+        EventManager.AddEvent("PUN :: Ban", (p) =>
+        {
+            photonView.RPC("Ban", RpcTarget.All, (Player)p[0]);
+        });
     }
 
     #endregion
@@ -124,37 +161,37 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
     // ***** OnJoinedLobby ***** //
     public override void OnJoinedLobby()
     {
-        EventManager.SendEvent("Chatting :: Hide");
+        
     }
 
     // ***** OnJoinedRoom ***** //
     public override void OnJoinedRoom()
     {
-        areaRoomList.SetActive(false);
-        areaCreateRoom.SetActive(false);
-        areaRoomUI.SetActive(true);
-        SetPlayerProperties("isReady", false, "isMurder", false, "isDead", false);
-        for (int i = 0; i < playerListItems.Count; i++)
+        bool isBanUser = false;
+        string[] banList = (string[])PhotonNetwork.CurrentRoom.CustomProperties["banList"];
+        for (int i = 0; i < banList.Length; i++)
         {
-            Destroy(playerListItems[i].gameObject);
+            if (banList[i] == PhotonNetwork.LocalPlayer.UserId)
+            {
+                isBanUser = true;
+                break;
+            }
         }
-        playerListItems.Clear();
-        for (int i = 0; i < PhotonNetwork.CurrentRoom.MaxPlayers; i++)
+        if (!isBanUser)
         {
-            PlayerListItem item = Instantiate(playerListPrefab, playerListParent).GetComponent<PlayerListItem>();
-            playerListItems.Add(item);
+            areaRoomList.SetActive(false);
+            areaRoomSettings.SetActive(false);
+            areaRoomUI.SetActive(true);
+            SetPlayerProperties("isReady", false, "isMurder", false, "isDead", false);
+            EventManager.SendEvent("Chatting :: Clear");
+            RoomRefresh(true);
+            RefreshPlayerList();
         }
-
-        CheckIsMasterClient();
-
-        EventManager.SendEvent("Chatting :: Show");
-
-        players.Clear();
-        foreach (var item in PhotonNetwork.CurrentRoom.Players)
+        else
         {
-            players.Add(item.Value.NickName, item.Value);
+            EventManager.SendEvent("PopupMessage", $"방에 입장할 수 없습니다.\n영구추방 대상입니다.");
+            PhotonNetwork.LeaveRoom();
         }
-        RefreshPlayerList();
     }
 
     // ***** OnLeftRoom ***** //
@@ -174,8 +211,21 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
     // ***** OnPlayerEnteredRoom ***** //
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
-        players.Add(newPlayer.NickName, newPlayer);
-        RefreshPlayerList();
+        bool isBanUser = false;
+        string[] banList = (string[])PhotonNetwork.CurrentRoom.CustomProperties["banList"];
+        for (int i = 0; i < banList.Length; i++)
+        {
+            if (banList[i] == newPlayer.UserId)
+            {
+                isBanUser = true;
+                break;
+            }
+        }
+        if (!isBanUser)
+        {
+            players.Add(newPlayer.NickName, newPlayer);
+            RefreshPlayerList();
+        }
     }
 
     // ***** OnPlayerLeftRoom ***** //
@@ -195,7 +245,6 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
         }
         RefreshPlayerList();
     }
-
 
 
     // ***** OnRoomListUpdate ***** //
@@ -225,16 +274,17 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
     // ***** OnRoomPropertiesUpdate ***** //
     public override void OnRoomPropertiesUpdate(ExitGames.Client.Photon.Hashtable propertiesThatChanged)
     {
+        var properties = PhotonNetwork.CurrentRoom.CustomProperties;
         if (propertiesThatChanged.ContainsKey("isStart"))
         {
             if ((bool)propertiesThatChanged["isStart"])
             {
-                var properties = PhotonNetwork.LocalPlayer.CustomProperties;
                 properties["isReady"] = false;
                 PhotonNetwork.LocalPlayer.SetCustomProperties(properties);
                 EventManager.SendEvent("OpenScene", "InGame");
             }
         }
+        RoomRefresh(PhotonNetwork.CurrentRoom.MaxPlayers != playerListItems.Count);
     }
 
     // ***** OnJoinRoomFailed ***** //
@@ -260,11 +310,12 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
 
     private void CheckRoomLobby()
     {
+        areaRoomSettings.SetActive(false);
+        areaPlayerSettings.SetActive(false);
         if (PhotonNetwork.InRoom)
         {
             areaInputNickname.SetActive(false);
             areaRoomList.SetActive(false);
-            areaCreateRoom.SetActive(false);
             areaRoomUI.SetActive(true);
             OnJoinedRoom();
         }
@@ -274,14 +325,12 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
             {
                 areaInputNickname.SetActive(false);
                 areaRoomList.SetActive(true);
-                areaCreateRoom.SetActive(false);
                 areaRoomUI.SetActive(false);
             }
             else
             {
                 areaInputNickname.SetActive(true);
                 areaRoomList.SetActive(false);
-                areaCreateRoom.SetActive(false);
                 areaRoomUI.SetActive(false);
                 PhotonNetwork.JoinLobby();
             }
@@ -290,6 +339,14 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
 
     private void UIAddEvents()
     {
+        btnGameExit.onClick.AddListener(() =>
+        {
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#else
+            Application.Quit(); // 어플리케이션 종료
+#endif
+        });
         btnOpenCreateRoom.onClick.AddListener(() =>
         {
             inputRoomTitle.text = randomTitle[Random.Range(0, randomTitle.Length)];
@@ -306,7 +363,7 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
             txtMurderCount.text = "2";
             txtMoveSpeed.text = "5";
 
-            areaCreateRoom.SetActive(true);
+            areaRoomSettings.SetActive(true);
         });
         btnRandomJoinRoom.onClick.AddListener(() =>
         {
@@ -318,7 +375,7 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
         });
         btnCreateCancel.onClick.AddListener(() =>
         {
-            areaCreateRoom.SetActive(false);
+            areaRoomSettings.SetActive(false);
         });
 
         btnStart.onClick.AddListener(() =>
@@ -541,6 +598,18 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
             inputVoteTime.ActivateInputField();
             inputVoteTime.text = sliderVoteTime.value.ToString();
         });
+
+        btnPlayerSettings.onClick.AddListener(() =>
+        {
+            areaPlayerSettings.SetActive(true);
+        });
+        btnRoomSettings.onClick.AddListener(() =>
+        {
+            if (PhotonNetwork.LocalPlayer.IsMasterClient)
+            {
+                areaRoomSettings.SetActive(true);
+            }
+        });
     }
     // ***** CreateRoom ***** //
     private void CreateRoom()
@@ -557,7 +626,7 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
                 roomOption.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable();
                 roomOption.CustomRoomProperties.Add("isStart", false);
                 roomOption.CustomRoomProperties.Add("Vote", false);
-                roomOption.CustomRoomProperties.Add("murders", (int)sliderMurderCount.value);
+                roomOption.CustomRoomProperties.Add("murdererCount", (int)sliderMurderCount.value);
                 roomOption.CustomRoomProperties.Add("moveSpeed", sliderMoveSpeed.value);
                 roomOption.CustomRoomProperties.Add("killCooldown", sliderKillCooldown.value);
                 roomOption.CustomRoomProperties.Add("voteTime", sliderVoteTime.value);
@@ -566,8 +635,35 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
                 roomOption.CustomRoomProperties.Add("startItem", tglStartItem.isOn);
                 roomOption.CustomRoomProperties.Add("runable", tglRunable.isOn);
 
-                PhotonNetwork.LeaveLobby();
-                PhotonNetwork.CreateRoom(title, roomOption);
+                if (PhotonNetwork.InRoom)
+                {
+                    if (PhotonNetwork.LocalPlayer.IsMasterClient)
+                    {
+                        if (playerCount >= players.Count)
+                        {
+                            PhotonNetwork.CurrentRoom.MaxPlayers = playerCount;
+                            PhotonNetwork.CurrentRoom.IsOpen = true;
+                            PhotonNetwork.CurrentRoom.SetCustomProperties(roomOption.CustomRoomProperties);
+                            areaRoomSettings.SetActive(false);
+                            RoomRefresh(playerCount != playerListItems.Count);
+                        }
+                        else
+                        {
+                            EventManager.SendEvent("PopupMessage", $"방 최대 인원이 현재 방 인원보다 적습니다!");
+                            sliderRoomMaxPlayer.value = players.Count;
+                        }
+                    }
+                    else
+                    {
+                        EventManager.SendEvent("PopupMessage", $"방장이 아닙니다!");
+                    }
+                }
+                else
+                {
+                    roomOption.CustomRoomProperties.Add("banList", new string[0]);
+                    PhotonNetwork.LeaveLobby();
+                    PhotonNetwork.CreateRoom(title, roomOption);
+                }
             }
             else
             {
@@ -578,6 +674,84 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
         {
             EventManager.SendEvent("PopupMessage", $"플레이어 수 범위를 벗어났습니다.\n범위 : 2 ~ 8");
         }
+    }
+
+    private void RoomRefresh(bool playerRefresh = false)
+    {
+        var properties = PhotonNetwork.CurrentRoom.CustomProperties;
+        int s_murdererCount = (int)properties["murdererCount"];
+        float s_moveSpeed = (float)properties["moveSpeed"];
+        float s_killCooldown = (float)properties["killCooldown"];
+        float s_voteTime = (float)properties["voteTime"];
+        string s_nicknameVisible = (bool)properties["nicknameVisible"] ? "O" : "X";
+        string s_fallingDamage = (bool)properties["fallingDamage"] ? "O" : "X";
+        string s_startItem = (bool)properties["startItem"] ? "O" : "X";
+        string s_runable = (bool)properties["runable"] ? "O" : "X";
+        txtRoomSettingsMurdererCount.text = Strings.GetString(StringKey.MainTextMurdererCount, s_murdererCount);
+        txtRoomSettingsMoveSpeed.text = Strings.GetString(StringKey.MainTextMoveSpeed, s_moveSpeed);
+        txtRoomSettingsKillCooldown.text = Strings.GetString(StringKey.MainTextKillCooldown, s_killCooldown);
+        txtRoomSettingsVoteTime.text = Strings.GetString(StringKey.MainTextVoteTime, s_voteTime);
+        txtRoomSettingsNicknameVisible.text = Strings.GetString(StringKey.MainTextNicknameVisible, s_nicknameVisible);
+        txtRoomSettingsFallingDamage.text = Strings.GetString(StringKey.MainTextFallingDamage, s_fallingDamage);
+        txtRoomSettingsStartItem.text = Strings.GetString(StringKey.MainTextStartItem, s_startItem);
+        txtRoomSettingsRunable.text = Strings.GetString(StringKey.MainTextRunable, s_runable);
+        txtRoomSettingsRoomTitle.text = PhotonNetwork.CurrentRoom.Name;
+
+        if (playerRefresh)
+        {
+            for (int i = 0; i < playerListItems.Count; i++)
+            {
+                Destroy(playerListItems[i].gameObject);
+            }
+            playerListItems.Clear();
+            for (int i = 0; i < PhotonNetwork.CurrentRoom.MaxPlayers; i++)
+            {
+                PlayerListItem item = Instantiate(playerListPrefab, playerListParent).GetComponent<PlayerListItem>();
+                playerListItems.Add(item);
+            }
+
+            CheckIsMasterClient();
+
+            players.Clear();
+            foreach (var item in PhotonNetwork.CurrentRoom.Players)
+            {
+                players.Add(item.Value.NickName, item.Value);
+            }
+        }
+    }
+
+    [PunRPC]
+    private void Explusion(Player target)
+    {
+        if (PhotonNetwork.LocalPlayer == target)
+        {
+            EventManager.SendEvent("PopupMessage", $"방에서 추방되었습니다.");
+            PhotonNetwork.LeaveRoom();
+        }
+    }
+
+    [PunRPC]
+    private void Ban(Player target)
+    {
+        if (PhotonNetwork.LocalPlayer == target)
+        {
+            photonView.RPC("AddBanList", RpcTarget.MasterClient, PhotonNetwork.LocalPlayer.UserId);
+            EventManager.SendEvent("PopupMessage", $"방에서 영구추방되었습니다.");
+            PhotonNetwork.LeaveRoom();
+        }
+    }
+
+    [PunRPC]
+    private void AddBanList(string id)
+    {
+        var prop = PhotonNetwork.CurrentRoom.CustomProperties;
+
+        string[] banList = (string[])prop["banList"];
+        System.Array.Resize(ref banList, banList.Length + 1);
+        banList[banList.Length - 1] = id;
+
+        prop["banList"] = banList;
+        PhotonNetwork.CurrentRoom.SetCustomProperties(prop);
     }
 
     // ***** SetNickname ***** //
@@ -676,7 +850,7 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.LocalPlayer.IsMasterClient)
         {
-            if (PhotonNetwork.CurrentRoom.PlayerCount <= (int)PhotonNetwork.CurrentRoom.CustomProperties["murders"] * 2)
+            if (PhotonNetwork.CurrentRoom.PlayerCount <= (int)PhotonNetwork.CurrentRoom.CustomProperties["murdererCount"] * 2)
             {
                 EventManager.SendEvent("PopupMessage", $"인원이 부족합니다!");
             }
@@ -697,7 +871,7 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
                 }
                 else
                 {
-                    int maxCount = (int)PhotonNetwork.CurrentRoom.CustomProperties["murders"];
+                    int maxCount = (int)PhotonNetwork.CurrentRoom.CustomProperties["murdererCount"];
                     int count = maxCount;
                     bool[] murderIndex = new bool[PhotonNetwork.CurrentRoom.PlayerCount];
                     while (count > 0)
@@ -758,5 +932,5 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
     }
 #nullable disable
 
-    #endregion Custom Method
+#endregion Custom Method
 }

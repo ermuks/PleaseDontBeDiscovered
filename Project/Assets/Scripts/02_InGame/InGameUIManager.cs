@@ -19,6 +19,7 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
     [SerializeField] private Image areaThirstyValue;
     [SerializeField] private Image areaColdValue;
     [SerializeField] private Image areaWetValue;
+    [SerializeField] private Image areaBreathValue;
 
     [SerializeField] private GameObject areaNormalPlayerUI;
     [SerializeField] private GameObject areaMurderPlayerUI;
@@ -28,6 +29,7 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
     [SerializeField] private GameObject areaTrigger;
     [SerializeField] private GameObject areaWater;
     [SerializeField] private GameObject areaDieUI;
+    [SerializeField] private GameObject areaInventory;
     [SerializeField] private GameObject areaPlayerUI;
     [SerializeField] private GameObject areaPlayerWorkProgressUI;
     [SerializeField] private GameObject areaWatcherUI;
@@ -55,6 +57,7 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
         areaFinishVote.SetActive(false);
         areaDieUI.SetActive(false);
         areaPlayerUI.SetActive(true);
+        areaInventory.SetActive(false);
         areaWatcherUI.SetActive(false);
         areaGameOver.SetActive(false);
         areaTrigger.SetActive(false);
@@ -101,6 +104,7 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
 
             voteCount = 0;
             EventManager.SendEvent("InGameData :: AlreadyVoted", false);
+            EventManager.SendEvent("Player :: WorkEnd");
             EventManager.SendEvent("InGameUI :: Vote :: InitTimer", false);
 
             for (int i = 0; i < playerList.Count; i++)
@@ -167,9 +171,9 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
             float value = (float)p[0];
             areaHPValue.fillAmount = value;
 
-            if (value >= 60) areaHPValue.color = new Color(.8f, .8f, .8f);
-            else if (value >= 30) areaHPValue.color = Color.white;
-            else if (value >= 15) areaHPValue.color = new Color(1, 1, .4f);
+            if (value >= .6f) areaHPValue.color = new Color(.8f, .8f, .8f);
+            else if (value >= .3f) areaHPValue.color = Color.white;
+            else if (value >= .15f) areaHPValue.color = new Color(1, 1, .4f);
             else areaHPValue.color = new Color(1, .4f, .4f);
         });
         EventManager.AddEvent("Refresh Hungry" , (p) =>
@@ -177,9 +181,9 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
             float value = (float)p[0];
             areaHungryValue.fillAmount = value;
 
-            if (value >= 60) areaHungryValue.color = new Color(.8f, .8f, .8f);
-            else if (value >= 30) areaHungryValue.color = Color.white;
-            else if (value >= 15) areaHungryValue.color = new Color(1, 1, .4f);
+            if (value >= .6f) areaHungryValue.color = new Color(.8f, .8f, .8f);
+            else if (value >= .3f) areaHungryValue.color = Color.white;
+            else if (value >= .15f) areaHungryValue.color = new Color(1, 1, .4f);
             else areaHungryValue.color = new Color(1, .4f, .4f);
         });
         EventManager.AddEvent("Refresh Thirsty", (p) =>
@@ -187,25 +191,35 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
             float value = (float)p[0];
             areaThirstyValue.fillAmount = value;
 
-            if (value >= 60) areaThirstyValue.color = new Color(.8f, .8f, .8f);
-            else if (value >= 30) areaThirstyValue.color = Color.white;
-            else if (value >= 15) areaThirstyValue.color = new Color(1, 1, .4f);
+            if (value >= .6f) areaThirstyValue.color = new Color(.8f, .8f, .8f);
+            else if (value >= .3f) areaThirstyValue.color = Color.white;
+            else if (value >= .15f) areaThirstyValue.color = new Color(1, 1, .4f);
             else areaThirstyValue.color = new Color(1, .4f, .4f);
         });
-        EventManager.AddEvent("Refresh Cold"   , (p) =>
+        EventManager.AddEvent("Refresh Breath"   , (p) =>
         {
             float value = (float)p[0];
-            areaColdValue.fillAmount = value;
+            areaBreathValue.fillAmount = value;
 
-            if (value >= 60) areaColdValue.color = new Color(.8f, .8f, .8f);
-            else if (value >= 30) areaColdValue.color = Color.white;
-            else if (value >= 15) areaColdValue.color = new Color(1, 1, .4f);
-            else areaColdValue.color = new Color(1, .4f, .4f);
+            if (value <= .5f) areaBreathValue.color = new Color(.8f, .8f, .8f);
+            else if (value <= .7f) areaBreathValue.color = new Color(1, .8f, .8f);
+            else if (value <= .9f) areaBreathValue.color = new Color(1, .4f, .4f);
+            else areaBreathValue.color = new Color(.8f, .2f, .2f);
         });
         EventManager.AddEvent("Refresh Wet"   , (p) =>
         {
             float value = (float)p[0];
             areaWetValue.fillAmount = value;
+        });
+        EventManager.AddEvent("Refresh Cold", (p) =>
+        {
+            float value = (float)p[0];
+            areaThirstyValue.fillAmount = value;
+
+            if (value >= .6f) areaThirstyValue.color = new Color(.8f, .8f, .8f);
+            else if (value >= .3f) areaThirstyValue.color = Color.white;
+            else if (value >= .15f) areaThirstyValue.color = new Color(1, 1, .4f);
+            else areaThirstyValue.color = new Color(1, .4f, .4f);
         });
         EventManager.AddEvent("InGameUI :: SetDie", (p) =>
         {
@@ -288,10 +302,10 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
         });
         EventManager.AddEvent("InGameUI :: TriggerExit", (p) =>
         {
-            Collider col = (Collider)p[0];
             areaTrigger.SetActive(false);
-            if (col != null)
+            if (p != null)
             {
+                Collider col = (Collider)p[0];
                 if (col.CompareTag("WarmZone"))
                 {
                     EventManager.SendEvent("Player :: ExitWarmZone");

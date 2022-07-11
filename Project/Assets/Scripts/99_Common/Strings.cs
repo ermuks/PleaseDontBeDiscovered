@@ -54,6 +54,7 @@ public enum StringKey
     InGameDieMessageHungry,
     InGameDieMessageFalling,
     InGameDieMessageVote,
+    InGameDieMessageBreath,
     InGameDieMessageNone,
 
     InGameMurderWin,
@@ -79,6 +80,15 @@ public enum StringKey
     InGameFinishVoteMurderCount,
 
     InGameVoteTimer,
+
+    MainTextMurdererCount,
+    MainTextMoveSpeed,
+    MainTextKillCooldown,
+    MainTextVoteTime,
+    MainTextNicknameVisible,
+    MainTextFallingDamage,
+    MainTextStartItem,
+    MainTextRunable,
 }
 
 public static class Strings
@@ -105,6 +115,17 @@ public static class Strings
                 str.Add(StringKey.MainTextNoRoom, "No Room");
                 str.Add(StringKey.MainTextNoRoomNameInInputField, "Input room title");
                 str.Add(StringKey.MainTextRoomNameTitle, "Room name");
+
+                str.Add(StringKey.MainTextMurdererCount, "Murderers count : <color=#ffffff>{0}</color>");
+                str.Add(StringKey.MainTextMoveSpeed, "Move speed : <color=#ffffff>{0}</color>");
+                str.Add(StringKey.MainTextKillCooldown, "Kill cooldown : <color=#ffffff>{0}</color>");
+                str.Add(StringKey.MainTextVoteTime, "Vote time : <color=#ffffff>{0}</color>");
+                str.Add(StringKey.MainTextNicknameVisible, "Nickname visible : <color=#ffffff>{0}</color>");
+                str.Add(StringKey.MainTextFallingDamage, "Falling damage : <color=#ffffff>{0}</color>");
+                str.Add(StringKey.MainTextStartItem, "Start item : <color=#ffffff>{0}</color>");
+                str.Add(StringKey.MainTextRunable, "Running : <color=#ffffff>{0}</color>");
+
+
                 str.Add(StringKey.InGameButtonResume, "Resume");
                 str.Add(StringKey.InGameButtonSettings, "Settings");
                 str.Add(StringKey.InGameButtonReconnect, "Reconnect");
@@ -131,6 +152,7 @@ public static class Strings
                 str.Add(StringKey.InGameDieMessageHungry, "death of starvation");
                 str.Add(StringKey.InGameDieMessageFalling, "fell and died");
                 str.Add(StringKey.InGameDieMessageVote, "vote die");
+                str.Add(StringKey.InGameDieMessageBreath, "death from asphyxiation");
                 str.Add(StringKey.InGameDieMessageNone, "Unknown");
                 str.Add(StringKey.InGameMurderWin, "Murderers win");
                 str.Add(StringKey.InGamePlayerWin, "Players win");
@@ -178,6 +200,15 @@ public static class Strings
                 str.Add(StringKey.MainTextNoRoomNameInInputField, "방 이름을 입력해주세요");
                 str.Add(StringKey.MainTextRoomNameTitle, "방 이름");
 
+                str.Add(StringKey.MainTextMurdererCount, "살인자 수 : <color=#ffffff>{0}</color>");
+                str.Add(StringKey.MainTextMoveSpeed, "이동속도 : <color=#ffffff>{0}</color>");
+                str.Add(StringKey.MainTextKillCooldown, "킬 쿨타임 : <color=#ffffff>{0}</color>");
+                str.Add(StringKey.MainTextVoteTime, "투표 시간 : <color=#ffffff>{0}</color>");
+                str.Add(StringKey.MainTextNicknameVisible, "닉네임 보이기 : <color=#ffffff>{0}</color>");
+                str.Add(StringKey.MainTextFallingDamage, "낙하 데미지 : <color=#ffffff>{0}</color>");
+                str.Add(StringKey.MainTextStartItem, "시작 아이템 : <color=#ffffff>{0}</color>");
+                str.Add(StringKey.MainTextRunable, "달리기 : <color=#ffffff>{0}</color>");
+
                 str.Add(StringKey.InGameButtonResume, "돌아가기");
                 str.Add(StringKey.InGameButtonSettings, "설정");
                 str.Add(StringKey.InGameButtonReconnect, "재접속");
@@ -204,6 +235,7 @@ public static class Strings
                 str.Add(StringKey.InGameDieMessageHungry, "굶주림에 지쳐 사망했습니다");
                 str.Add(StringKey.InGameDieMessageFalling, "높은 곳에서 떨어져 사망했습니다");
                 str.Add(StringKey.InGameDieMessageVote, "투표로 인해 쫓겨났습니다.");
+                str.Add(StringKey.InGameDieMessageBreath, "질식으로 인해 사망했습니다");
                 str.Add(StringKey.InGameDieMessageNone, "Unknown");
                 str.Add(StringKey.InGameMurderWin, "살인자에게 모두 당했습니다.");
                 str.Add(StringKey.InGamePlayerWin, "살인자를 모두 처리했습니다.");
@@ -245,6 +277,16 @@ public static class Strings
                 str.Add(StringKey.MainTextNoRoom, "作成された部屋はありません");
                 str.Add(StringKey.MainTextNoRoomNameInInputField, "部屋の名前を入力してください");
                 str.Add(StringKey.MainTextRoomNameTitle, "部屋名");
+
+                str.Add(StringKey.MainTextMurdererCount, "살인자 수 : <color=#ffffff>{0}</color>");
+                str.Add(StringKey.MainTextMoveSpeed, "이동속도 : <color=#ffffff>{0}</color>");
+                str.Add(StringKey.MainTextKillCooldown, "킬 쿨타임 : <color=#ffffff>{0}</color>");
+                str.Add(StringKey.MainTextVoteTime, "투표 시간 : <color=#ffffff>{0}</color>");
+                str.Add(StringKey.MainTextNicknameVisible, "닉네임 보이기 : <color=#ffffff>{0}</color>");
+                str.Add(StringKey.MainTextFallingDamage, "낙하 데미지 : <color=#ffffff>{0}</color>");
+                str.Add(StringKey.MainTextStartItem, "시작 아이템 : <color=#ffffff>{0}</color>");
+                str.Add(StringKey.MainTextRunable, "달리기 : <color=#ffffff>{0}</color>");
+
                 str.Add(StringKey.InGameButtonResume, "再開する");
                 str.Add(StringKey.InGameButtonSettings, "環境設定");
                 str.Add(StringKey.InGameButtonReconnect, "再接続");
@@ -271,6 +313,7 @@ public static class Strings
                 str.Add(StringKey.InGameDieMessageHungry, "굶주림에 지쳐 사망했습니다");
                 str.Add(StringKey.InGameDieMessageFalling, "높은 곳에서 떨어져 사망했습니다");
                 str.Add(StringKey.InGameDieMessageVote, "투표로 인해 쫓겨났습니다.");
+                str.Add(StringKey.InGameDieMessageBreath, "질식으로 인해 사망했습니다");
                 str.Add(StringKey.InGameDieMessageNone, "Unknown");
                 str.Add(StringKey.InGameMurderWin, "Murderers win");
                 str.Add(StringKey.InGamePlayerWin, "Players win");
@@ -312,6 +355,16 @@ public static class Strings
                 str.Add(StringKey.MainTextNoRoom, "没地方玩");
                 str.Add(StringKey.MainTextNoRoomNameInInputField, "请输入房间名称");
                 str.Add(StringKey.MainTextRoomNameTitle, "房间名称");
+
+                str.Add(StringKey.MainTextMurdererCount, "살인자 수 : <color=#ffffff>{0}</color>");
+                str.Add(StringKey.MainTextMoveSpeed, "이동속도 : <color=#ffffff>{0}</color>");
+                str.Add(StringKey.MainTextKillCooldown, "킬 쿨타임 : <color=#ffffff>{0}</color>");
+                str.Add(StringKey.MainTextVoteTime, "투표 시간 : <color=#ffffff>{0}</color>");
+                str.Add(StringKey.MainTextNicknameVisible, "닉네임 보이기 : <color=#ffffff>{0}</color>");
+                str.Add(StringKey.MainTextFallingDamage, "낙하 데미지 : <color=#ffffff>{0}</color>");
+                str.Add(StringKey.MainTextStartItem, "시작 아이템 : <color=#ffffff>{0}</color>");
+                str.Add(StringKey.MainTextRunable, "달리기 : <color=#ffffff>{0}</color>");
+
                 str.Add(StringKey.InGameButtonResume, "撤消");
                 str.Add(StringKey.InGameButtonSettings, "环境");
                 str.Add(StringKey.InGameButtonReconnect, "重新连接");
@@ -338,6 +391,7 @@ public static class Strings
                 str.Add(StringKey.InGameDieMessageHungry, "굶주림에 지쳐 사망했습니다");
                 str.Add(StringKey.InGameDieMessageFalling, "높은 곳에서 떨어져 사망했습니다");
                 str.Add(StringKey.InGameDieMessageVote, "투표로 인해 쫓겨났습니다.");
+                str.Add(StringKey.InGameDieMessageBreath, "질식으로 인해 사망했습니다");
                 str.Add(StringKey.InGameDieMessageNone, "Unknown");
                 str.Add(StringKey.InGameMurderWin, "Murderers win");
                 str.Add(StringKey.InGamePlayerWin, "Players win");

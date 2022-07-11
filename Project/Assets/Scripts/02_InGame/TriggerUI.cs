@@ -81,28 +81,28 @@ public class TriggerUI : MonoBehaviour
                         case WorkMessage.None:
                             break;
                         case WorkMessage.Treezone:
-                            if ((bool)EventManager.GetData("Inventory >> ExistBlankCell", "0007", 2)) isWorking = true;
+                            if ((bool)EventManager.GetData("Inventory >> TryAddItem", "0007")) isWorking = true;
                             else err = Strings.GetString(StringKey.InGameMessageInventoryIsFull);
                             break;
                         case WorkMessage.WaterZone:
-                            if ((bool)EventManager.GetData("Inventory >> ExistBlankCell", "0003", 1))
+                            if ((bool)EventManager.GetData("Inventory >> HasItem", "0002"))
                             {
-                                if ((bool)EventManager.GetData("Inventory >> ExistItem", "0002"))
+                                if ((bool)EventManager.GetData("Inventory >> TryChange", "0002", "0003"))
                                 {
                                     isWorking = true;
                                 }
                                 else
                                 {
-                                    err = Strings.GetString(StringKey.InGameMessageNotExistItem, ItemManager.GetItem("0002").itemName);
+                                    err = Strings.GetString(StringKey.InGameMessageInventoryIsFull);
                                 }
                             }
                             else
                             {
-                                err = Strings.GetString(StringKey.InGameMessageInventoryIsFull);
+                                err = Strings.GetString(StringKey.InGameMessageNotExistItem, ItemManager.GetItem("0002").itemName);
                             }
                             break;
                         case WorkMessage.FishZone:
-                            if ((bool)EventManager.GetData("Inventory >> ExistBlankCell", "0000", 1)) isWorking = true;
+                            if ((bool)EventManager.GetData("Inventory >> TryAddItem", "0000")) isWorking = true;
                             else err = Strings.GetString(StringKey.InGameMessageInventoryIsFull);
                             break;
                         case WorkMessage.OpenVote:
@@ -137,6 +137,10 @@ public class TriggerUI : MonoBehaviour
                 EventManager.SendEvent("Player :: WorkEnd");
                 EventManager.SendEvent("InGameUI :: WorkEnd");
             }
+        }
+        else
+        {
+            EventManager.SendEvent("InGameUI :: TriggerExit", null);
         }
     }
 }

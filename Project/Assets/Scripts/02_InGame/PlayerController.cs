@@ -59,6 +59,10 @@ public class PlayerController : MonoBehaviour
 
     private bool isWater = false;
 
+    private bool canBreath = true;
+    private float breathHoldTimer = .0f;
+    private float breathHoldMaximum = 20f;
+
     private void Awake()
     {
         speed = (float)PhotonNetwork.CurrentRoom.CustomProperties["moveSpeed"];
@@ -66,6 +70,8 @@ public class PlayerController : MonoBehaviour
         killCooldown = (float)PhotonNetwork.CurrentRoom.CustomProperties["killCooldown"];
         isFallingDamage = (bool)PhotonNetwork.CurrentRoom.CustomProperties["fallingDamage"];
         isRunable = (bool)PhotonNetwork.CurrentRoom.CustomProperties["runable"];
+
+        killTimer = killCooldown - 10;
 
         camParent = Camera.main.transform.parent;
         cam = Camera.main.transform;
@@ -123,7 +129,7 @@ public class PlayerController : MonoBehaviour
                     break;
                 case WorkMessage.WaterZone:
                     anim.SetBool("isWorkWater", false);
-                    EventManager.SendEvent("Inventory :: Change", "0002", "0003", false);
+                    EventManager.SendEvent("Inventory :: Change", "0002", "0003");
                     break;
                 case WorkMessage.FishZone:
                     anim.SetBool("isWorkFish", false);
@@ -149,6 +155,14 @@ public class PlayerController : MonoBehaviour
             EventManager.SendEvent("Player :: WorkEnd");
             aliveObject.SetActive(false);
         });
+        EventManager.AddEvent("Player :: CanBreath", (p) =>
+        {
+            canBreath = true;
+        });
+        EventManager.AddEvent("Player :: CantBreath", (p) =>
+        {
+            canBreath = false;
+        });
     }
 
     private void Start()
@@ -161,9 +175,19 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            isWorking = false;
+        }
         if ((bool)EventManager.GetData("InGameUI >> VoteUIActive")) return;
         if ((bool)EventManager.GetData("InGameData >> FinishVoteAnimationPlaying"))
         {
+            anim.SetBool("Forward", false);
+            anim.SetBool("Back", false);
+            anim.SetBool("Right", false);
+            anim.SetBool("Left", false);
+
+            anim.SetFloat("Speed", 0);
             CameraPositionVoteEnding();
             return;
         }
@@ -171,6 +195,15 @@ public class PlayerController : MonoBehaviour
         {
             if (isWorking)
             {
+                horizontal = .0f;
+                veritcal = .0f;
+                moveDir = Vector3.zero;
+                anim.SetBool("Forward", false);
+                anim.SetBool("Back", false);
+                anim.SetBool("Right", false);
+                anim.SetBool("Left", false);
+
+                anim.SetFloat("Speed", 0);
                 WorkingCamera();
             }
             else
@@ -179,6 +212,10 @@ public class PlayerController : MonoBehaviour
                 PlayerSlow();
                 PlayerMove();
                 PlayerAttack();
+            }
+            if (!isMurder)
+            {
+                BreathTimer();
             }
         }
         else
@@ -200,6 +237,26 @@ public class PlayerController : MonoBehaviour
             {
                 KillCooldownUpdate();
             }
+        }
+    }
+
+    private void BreathTimer()
+    {
+        if (canBreath)
+        {
+            if (breathHoldTimer >= breathHoldMaximum) breathHoldTimer = breathHoldMaximum;
+            breathHoldTimer -= Time.deltaTime;
+            if (breathHoldTimer <= 0) breathHoldTimer = 0;
+        }
+        else
+        {
+            breathHoldTimer += Time.deltaTime;
+            if (breathHoldTimer >= breathHoldMaximum)
+            {
+                EventManager.SendEvent("Player :: BreathDamage", Time.deltaTime * .07f);
+                breathHoldTimer = breathHoldMaximum;
+            }
+            EventManager.SendEvent("Refresh Breath", breathHoldTimer / breathHoldMaximum);
         }
     }
 
@@ -366,7 +423,7 @@ public class PlayerController : MonoBehaviour
         float delta = Time.deltaTime;
         Vector3 point1 = controller.bounds.center + Vector3.up * (controller.height - controller.radius * 2) / 2;
         Vector3 point2 = controller.bounds.center - Vector3.up * (controller.height - controller.radius * 2) / 2;
-        if (controller.isGrounded || Physics.CapsuleCast(point1, point2, controller.radius, Vector3.down, .02f, ~(1 << gameObject.layer)))
+        if (controller.isGrounded || Physics.CapsuleCast(point1, point2, controller.radius, Vector3.down, .02f, ~(1 << gameObject.layer), QueryTriggerInteraction.Ignore))
         {
             float sensitivity = 3f;
 
@@ -589,12 +646,19 @@ public class PlayerController : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         EventManager.SendEvent("InGameUI :: TriggerEnter", other);
-        if (other.CompareTag("DeepWater")) isWater = true;
+        if (other.CompareTag("DeepWater"))
+        {
+            isWater = true;
+        }
     }
 
     private void OnTriggerExit(Collider other)
     {
         EventManager.SendEvent("InGameUI :: TriggerExit", other);
-        if (other.CompareTag("DeepWater")) isWater = false;
+        if (other.CompareTag("DeepWater"))
+        {
+            Debug.Log(other.name, other.gameObject);
+            isWater = false;
+        }
     }
 }

@@ -28,6 +28,11 @@ public class PlayerListItem : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     private GameObject areaPlayerManagementButtons;
 
     [SerializeField]
+    private Button btnExplusion;
+    [SerializeField]
+    private Button btnBan;
+
+    [SerializeField]
     private Color clrNone;
     [SerializeField]
     private Color clrNormal;
@@ -35,6 +40,24 @@ public class PlayerListItem : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     private Color clrReady;
     [SerializeField]
     private Color clrMaster;
+
+    private void Awake()
+    {
+        btnExplusion.onClick.AddListener(() =>
+        {
+            if (PhotonNetwork.LocalPlayer.IsMasterClient)
+            {
+                EventManager.SendEvent("PUN :: Explusion", owner);
+            }
+        });
+        btnBan.onClick.AddListener(() =>
+        {
+            if (PhotonNetwork.LocalPlayer.IsMasterClient)
+            {
+                EventManager.SendEvent("PUN :: Ban", owner);
+            }
+        });
+    }
 
     public void Refresh(Player player)
     {
@@ -65,17 +88,23 @@ public class PlayerListItem : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        Vector2 size = areaNickname.sizeDelta;
-        size.x = 196f;
-        areaNickname.sizeDelta = size;
-        areaPlayerManagementButtons.SetActive(true);
+        if (PhotonNetwork.LocalPlayer.IsMasterClient)
+        {
+            Vector2 size = areaNickname.sizeDelta;
+            size.x = 196f;
+            areaNickname.sizeDelta = size;
+            areaPlayerManagementButtons.SetActive(true);
+        }
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        Vector2 size = areaNickname.sizeDelta;
-        size.x = 286f;
-        areaNickname.sizeDelta = size;
-        areaPlayerManagementButtons.SetActive(false);
+        if (PhotonNetwork.LocalPlayer.IsMasterClient)
+        {
+            Vector2 size = areaNickname.sizeDelta;
+            size.x = 286f;
+            areaNickname.sizeDelta = size;
+            areaPlayerManagementButtons.SetActive(false);
+        }
     }
 }

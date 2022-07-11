@@ -92,7 +92,8 @@ public class PlayerStemina : MonoBehaviourPun
         {
             if (normalPlayer)
             {
-                FillHungry(.4f);
+                FillHungry(.35f);
+                EventManager.SendEvent("Inventory :: Remove", "0000");
             }
         });
         EventManager.AddEvent("Item :: GrilledFish", (p) =>
@@ -100,28 +101,33 @@ public class PlayerStemina : MonoBehaviourPun
             if (normalPlayer)
             {
                 FillHungry(.75f);
+                EventManager.SendEvent("Inventory :: Remove", "0001");
             }
         });
         EventManager.AddEvent("Item :: EmptyBottle", (p) =>
         {
             if (normalPlayer)
             {
-                EventManager.SendEvent("Player :: UseEmptyBottle");
+                
             }
         });
         EventManager.AddEvent("Item :: FullBottle", (p) =>
         {
             if (normalPlayer)
             {
-                FillThirsty(.8f);
-                EventManager.SendEvent("Inventory :: Change", "0003", "0002", true);
+                if ((bool)EventManager.GetData("Inventory >> TryChange", "0003", "0002"))
+                {
+                    FillThirsty(.8f);
+                    EventManager.SendEvent("Inventory :: Change", "0003", "0002");
+                }
             }
         });
         EventManager.AddEvent("Item :: HandWarmer", (p) =>
         {
             if (normalPlayer)
             {
-                EventManager.SendEvent("Inventory :: Change", "0004", "0005", true);
+                EventManager.SendEvent("Inventory :: Change", "0004", "0005");
+                EventManager.SendEvent("Inventory :: HandWarmer", EventManager.GetData("Inventory >> FindIndex", "0005"));
             }
         });
         EventManager.AddEvent("Item :: UsingHandWarmer", (p) =>
@@ -135,7 +141,7 @@ public class PlayerStemina : MonoBehaviourPun
         {
             if (normalPlayer)
             {
-                
+                EventManager.SendEvent("Inventory :: Remove", "0006");
             }
         });
         EventManager.AddEvent("Player :: EnterWarmZone", (p) =>
@@ -158,6 +164,10 @@ public class PlayerStemina : MonoBehaviourPun
         {
             float damage = (float)p[0] / 15f;
             GetHit(-damage, DieMessage.Falling);
+        });
+        EventManager.AddEvent("Player :: BreathDamage", (p) =>
+        {
+            GetHit((float)p[0], DieMessage.Breath);
         });
     }
 
@@ -293,12 +303,18 @@ public class PlayerStemina : MonoBehaviourPun
 
     private void WarmValue()
     {
+        bool warmItem = (bool)EventManager.GetData("Inventory >> HasItem", "0005");
         if (isWarm)
         {
             warmDownTimer = .0f;
             FillWarm(.1f * Time.deltaTime);
-            return;
         }
+        if (warmItem)
+        {
+            warmDownTimer = .0f;
+            FillWarm(.04f * Time.deltaTime);
+        }
+        if (isWarm || warmItem) return;
         if (warmFullTimer >= warmFulldelay)
         {
             if (warmDownTimer >= warmDelay)

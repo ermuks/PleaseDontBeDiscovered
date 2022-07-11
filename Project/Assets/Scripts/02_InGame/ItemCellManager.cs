@@ -7,10 +7,38 @@ using TMPro;
 public class ItemCellManager : MonoBehaviour
 {
     [SerializeField] private Image imgItemImage;
+    [SerializeField] private Image imgItemCover;
     [SerializeField] private TMP_Text txtItemCount;
 
     public ItemCell cell;
-    int myIndex = -1;
+    private int myIndex = -1;
+
+    private float t = .0f;
+    private Coroutine timer = null;
+
+    public void UseHandWarmer(float lifeTime)
+    {
+        imgItemCover.gameObject.SetActive(true);
+        t = .0f;
+        if (timer != null) StopCoroutine(timer);
+        timer = StartCoroutine(HandWarmer(lifeTime));
+    }
+
+    private IEnumerator HandWarmer(float lifeTime)
+    {
+        while (true)
+        {
+            yield return new WaitForEndOfFrame();
+            t += Time.deltaTime;
+            imgItemCover.fillAmount = t / lifeTime;
+            if (t >= lifeTime)
+            {
+                EventManager.SendEvent("Inventory :: Change", "0005", "0006");
+                imgItemCover.gameObject.SetActive(false);
+                break;
+            }
+        }
+    }
 
     public void Init(int index)
     {
