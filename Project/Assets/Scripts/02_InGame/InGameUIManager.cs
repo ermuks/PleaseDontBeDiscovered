@@ -302,6 +302,11 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
                 areaTrigger.SetActive(true);
                 areaTrigger.GetComponent<TriggerUI>().SetMessage(WorkMessage.Inventory, col);
             }
+            else if (col.CompareTag("CampFire"))
+            {
+                areaTrigger.SetActive(true);
+                areaTrigger.GetComponent<TriggerUI>().SetMessage(WorkMessage.CampFire, col);
+            }
             else
             {
                 areaTrigger.SetActive(true);

@@ -50,7 +50,7 @@ public class PlayerController : MonoBehaviour
     private float slowEndTime = 3.0f;
     private bool isSlow = false;
 
-    private bool killable = true;
+    private bool killable = false;
     private float killCooldown = .0f;
     private float killTimer = .0f;
 
@@ -141,6 +141,9 @@ public class PlayerController : MonoBehaviour
                 case WorkMessage.Inventory:
                     EventManager.SendEvent("InGameUI :: OpenInventory", col);
                     isWorking = true;
+                    break;
+                case WorkMessage.CampFire:
+                    EventManager.SendEvent("Inventory :: Change", "0000", "0001");
                     break;
                 default:
                     break;
@@ -615,7 +618,6 @@ public class PlayerController : MonoBehaviour
                             killable = false;
                             killTimer = .0f;
                             EventManager.SendEvent("PUN :: Hit", GetComponent<PhotonView>().Owner, view.Owner);
-                            //view.RPC("Hit", view.Owner, GetComponent<PhotonView>().Owner);
                             break;
                         }
                     }

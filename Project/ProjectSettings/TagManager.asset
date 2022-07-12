@@ -13,6 +13,7 @@ TagManager:
   - ReportArea
   - Inventory
   - InventoryArea
+  - CampFire
   layers:
   - Default
   - TransparentFX

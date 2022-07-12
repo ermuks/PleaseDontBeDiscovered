@@ -55,6 +55,10 @@ public class PlayerWorkProgressUI : MonoBehaviour
                 message = Strings.GetString(StringKey.InGameWorkProcessInventory);
                 workEndTime = .5f;
                 break;
+            case WorkMessage.CampFire:
+                message = Strings.GetString(StringKey.InGameWorkProcessCampFire);
+                workEndTime = 20f;
+                break;
             default:
                 break;
         }

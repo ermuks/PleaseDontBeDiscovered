@@ -14,6 +14,7 @@ public enum WorkMessage
     FishZone,
     OpenVote,
     Inventory,
+    CampFire,
 }
 
 public class TriggerUI : MonoBehaviour
@@ -64,6 +65,9 @@ public class TriggerUI : MonoBehaviour
                 break;
             case WorkMessage.Inventory:
                 txtMessage.text = Strings.GetString(StringKey.InGameWorkInventory);
+                break;
+            case WorkMessage.CampFire:
+                txtMessage.text = Strings.GetString(StringKey.InGameWorkCampFire);
                 break;
             default:
                 break;
@@ -116,6 +120,23 @@ public class TriggerUI : MonoBehaviour
                             break;
                         case WorkMessage.Inventory:
                             isWorking = true;
+                            break;
+                        case WorkMessage.CampFire:
+                            if ((bool)EventManager.GetData("Inventory >> HasItem", "0000"))
+                            {
+                                if ((bool)EventManager.GetData("Inventory >> TryChange", "0000", "0001"))
+                                {
+                                    isWorking = true;
+                                }
+                                else
+                                {
+                                    err = Strings.GetString(StringKey.InGameMessageInventoryIsFull);
+                                }
+                            }
+                            else
+                            {
+                                err = Strings.GetString(StringKey.InGameMessageNotExistItem, ItemManager.GetItem("0000").itemName);
+                            }
                             break;
                         default:
                             break;
