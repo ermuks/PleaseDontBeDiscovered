@@ -26,6 +26,7 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
     [SerializeField] private Image imgCooldownTimer;
     [SerializeField] private TMP_Text txtCooldownTimer;
 
+    [SerializeField] private GameObject areaTriggerParent;
     [SerializeField] private GameObject areaTrigger;
     [SerializeField] private GameObject areaWater;
     [SerializeField] private GameObject areaDieUI;
@@ -60,6 +61,7 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
         areaInventory.SetActive(false);
         areaWatcherUI.SetActive(false);
         areaGameOver.SetActive(false);
+        areaTriggerParent.SetActive(true);
         areaTrigger.SetActive(false);
         areaVote.SetActive(false);
         areaPlayerWorkProgressUI.SetActive(false);
@@ -149,7 +151,7 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
             StartCoroutine(AnimationEnd());
             areaPlayerUI.SetActive(false);
             areaDieUI.SetActive(false);
-            areaTrigger.SetActive(false);
+            areaTriggerParent.SetActive(false);
             EventManager.SendEvent("InGameData :: PlayerPositionSetting");
         });
         EventManager.AddEvent("InGameUI :: FinishVoteAnimationPlaying", (p) =>
@@ -164,6 +166,7 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
                 EventManager.SendEvent("InGameData :: PlayerPositionSetting");
                 areaPlayerUI.SetActive(true);
             }
+            areaTriggerParent.SetActive(true);
         });
 
         EventManager.AddEvent("Refresh Stamina", (p) =>
@@ -273,17 +276,17 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
             if (col.CompareTag("TreeZone"))
             {
                 areaTrigger.SetActive(true);
-                areaTrigger.GetComponent<TriggerUI>().SetMessage(WorkMessage.Treezone);
+                areaTrigger.GetComponent<TriggerUI>().SetMessage(WorkMessage.Treezone, col);
             }
             else if (col.CompareTag("WaterZone") || col.CompareTag("DeepWater"))
             {
                 areaTrigger.SetActive(true);
-                areaTrigger.GetComponent<TriggerUI>().SetMessage(WorkMessage.WaterZone);
+                areaTrigger.GetComponent<TriggerUI>().SetMessage(WorkMessage.WaterZone, col);
             }
             else if (col.CompareTag("FishZone"))
             {
                 areaTrigger.SetActive(true);
-                areaTrigger.GetComponent<TriggerUI>().SetMessage(WorkMessage.FishZone);
+                areaTrigger.GetComponent<TriggerUI>().SetMessage(WorkMessage.FishZone, col);
             }
             else if (col.CompareTag("WarmZone"))
             {
@@ -292,12 +295,17 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
             else if (col.CompareTag("ReportArea"))
             {
                 areaTrigger.SetActive(true);
-                areaTrigger.GetComponent<TriggerUI>().SetMessage(WorkMessage.OpenVote);
+                areaTrigger.GetComponent<TriggerUI>().SetMessage(WorkMessage.OpenVote, col);
+            }
+            else if (col.CompareTag("Inventory"))
+            {
+                areaTrigger.SetActive(true);
+                areaTrigger.GetComponent<TriggerUI>().SetMessage(WorkMessage.Inventory, col);
             }
             else
             {
                 areaTrigger.SetActive(true);
-                areaTrigger.GetComponent<TriggerUI>().SetMessage(WorkMessage.None);
+                areaTrigger.GetComponent<TriggerUI>().SetMessage(WorkMessage.None, col);
             }
         });
         EventManager.AddEvent("InGameUI :: TriggerExit", (p) =>
@@ -314,11 +322,13 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
         });
         EventManager.AddEvent("InGameUI :: WorkStart", (p) =>
         {
+            areaTriggerParent.SetActive(false);
             areaPlayerWorkProgressUI.SetActive(true);
-            areaPlayerWorkProgressUI.GetComponent<PlayerWorkProgressUI>().SetWork((WorkMessage)p[0]);
+            areaPlayerWorkProgressUI.GetComponent<PlayerWorkProgressUI>().SetWork((WorkMessage)p[0], (Collider)p[1]);
         });
         EventManager.AddEvent("InGameUI :: WorkEnd", (p) =>
         {
+            areaTriggerParent.SetActive(true);
             areaPlayerWorkProgressUI.SetActive(false);
         });
         EventManager.AddEvent("InGameUI :: CreateMessage", (p) =>
@@ -337,6 +347,17 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
 
             txtCooldownTimer.text = $"{(float)p[1] - (float)p[0]:0.0}";
             txtCooldownTimer.gameObject.SetActive(!(bool)p[2]);
+        });
+        EventManager.AddEvent("InGameUI :: OpenInventory", (p) =>
+        {
+            Cursor.lockState = CursorLockMode.None;
+            areaInventory.SetActive(true);
+            areaInventory.GetComponent<InventoryUI>().Init(((Collider)p[0]).GetComponent<PublicInventory>().inventory);
+        });
+        EventManager.AddEvent("InGameUI :: CloseInventory", (p) =>
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            areaInventory.SetActive(false);
         });
     }
 

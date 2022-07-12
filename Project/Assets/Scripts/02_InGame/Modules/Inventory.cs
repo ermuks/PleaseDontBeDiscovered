@@ -21,18 +21,47 @@ public class Inventory
 
     public void AddItem(string code, int count)
     {
-        int index = System.Array.FindIndex(cells, e => e.data.itemCode == code);
-        if (index != -1)
+        int remainCount = count;
+        int index = -1;
+
+        while (remainCount > 0)
         {
-            cells[index].itemCount += count;
-        }
-        else
-        {
-            index = System.Array.FindIndex(cells, e => e.itemCount == 0);
+            index = System.Array.FindIndex(cells, index + 1, e => e.data.itemCode == code);
             if (index != -1)
             {
-                cells[index].data = ItemManager.GetItem(code);
-                cells[index].itemCount = count;
+                if (cells[index].itemCount + remainCount > cells[index].data.maxCount)
+                {
+                    remainCount -= cells[index].data.maxCount - cells[index].itemCount;
+                    cells[index].itemCount = cells[index].data.maxCount;
+                }
+                else
+                {
+                    cells[index].itemCount += remainCount;
+                    remainCount = 0;
+                }
+            }
+            else
+            {
+                index = System.Array.FindIndex(cells, e => e.itemCount == 0);
+                if (index != -1)
+                {
+                    ItemData data = ItemManager.GetItem(code);
+                    cells[index].data = data;
+                    if (remainCount > data.maxCount)
+                    {
+                        remainCount -= data.maxCount;
+                        cells[index].itemCount = data.maxCount;
+                    }
+                    else
+                    {
+                        cells[index].itemCount = remainCount;
+                        remainCount = 0;
+                    }
+                }
+                else
+                {
+                    break;
+                }
             }
         }
     }

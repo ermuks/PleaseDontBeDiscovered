@@ -15,6 +15,7 @@ public class PlayerWorkProgressUI : MonoBehaviour
     private float workProcessTimer;
     private float workEndTime;
     private WorkMessage currentWork;
+    private Collider currentCollider;
 
     private void Awake()
     {
@@ -27,10 +28,11 @@ public class PlayerWorkProgressUI : MonoBehaviour
         });
     }
 
-    public void SetWork(WorkMessage msg)
+    public void SetWork(WorkMessage msg, Collider col)
     {
         string message = "";
         currentWork = msg;
+        currentCollider = col;
         workProcessTimer = 0;
         switch (msg)
         {
@@ -49,6 +51,10 @@ public class PlayerWorkProgressUI : MonoBehaviour
                 message = Strings.GetString(StringKey.InGameWorkProcessFish);
                 workEndTime = 15f;
                 break;
+            case WorkMessage.Inventory:
+                message = Strings.GetString(StringKey.InGameWorkProcessInventory);
+                workEndTime = .5f;
+                break;
             default:
                 break;
         }
@@ -65,7 +71,7 @@ public class PlayerWorkProgressUI : MonoBehaviour
         if (workProcessTimer >= workEndTime)
         {
             gameObject.SetActive(false);
-            EventManager.SendEvent("Player :: WorkSuccess", currentWork);
+            EventManager.SendEvent("Player :: WorkSuccess", currentWork, currentCollider);
             EventManager.SendEvent("Trigger :: EndWork", currentWork);
         }
     }

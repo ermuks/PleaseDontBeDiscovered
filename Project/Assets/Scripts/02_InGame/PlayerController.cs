@@ -120,7 +120,9 @@ public class PlayerController : MonoBehaviour
 
         EventManager.AddEvent("Player :: WorkSuccess", (p) =>
         {
+            isWorking = false;
             WorkMessage msg = (WorkMessage)p[0];
+            Collider col = (Collider)p[1];
             switch (msg)
             {
                 case WorkMessage.Treezone:
@@ -135,10 +137,13 @@ public class PlayerController : MonoBehaviour
                     anim.SetBool("isWorkFish", false);
                     EventManager.SendEvent("Inventory :: AddItem", "0000", 1);
                     break;
+                case WorkMessage.Inventory:
+                    EventManager.SendEvent("InGameUI :: OpenInventory", col);
+                    isWorking = true;
+                    break;
                 default:
                     break;
             }
-            isWorking = false;
         });
         EventManager.AddEvent("Player :: WorkEnd", (p) =>
         {

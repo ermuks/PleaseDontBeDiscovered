@@ -64,10 +64,12 @@ public enum StringKey
     InGameWorkWater,
     InGameWorkFish,
     InGameWorkOpenVote,
+    InGameWorkInventory,
 
     InGameWorkProcessTree,
     InGameWorkProcessWater,
     InGameWorkProcessFish,
+    InGameWorkProcessInventory,
 
     InGameMessageInventoryIsFull,
     InGameMessageNotExistItem,
@@ -162,10 +164,12 @@ public static class Strings
                 str.Add(StringKey.InGameWorkWater, "Water");
                 str.Add(StringKey.InGameWorkFish, "Fish");
                 str.Add(StringKey.InGameWorkOpenVote, "Report");
+                str.Add(StringKey.InGameWorkInventory, "Open Chest");
 
                 str.Add(StringKey.InGameWorkProcessTree, "Tree");
                 str.Add(StringKey.InGameWorkProcessWater, "Water");
                 str.Add(StringKey.InGameWorkProcessFish, "Fish");
+                str.Add(StringKey.InGameWorkProcessInventory, "Open Chest");
 
                 str.Add(StringKey.InGameMessageInventoryIsFull, "Inventory has been full");
                 str.Add(StringKey.InGameMessageNotExistItem, "You don't have a \"{0}\"");
@@ -245,10 +249,12 @@ public static class Strings
                 str.Add(StringKey.InGameWorkWater, "물 구하기");
                 str.Add(StringKey.InGameWorkFish, "낚시하기");
                 str.Add(StringKey.InGameWorkOpenVote, "신고하기");
+                str.Add(StringKey.InGameWorkInventory, "보관소 열기");
 
                 str.Add(StringKey.InGameWorkProcessTree, "나무를 구하는 중입니다.");
                 str.Add(StringKey.InGameWorkProcessWater, "물을 퍼고있습니다.");
                 str.Add(StringKey.InGameWorkProcessFish, "물고기를 낚는중입니다.");
+                str.Add(StringKey.InGameWorkProcessInventory, "보관소를 여는중입니다.");
 
                 str.Add(StringKey.InGameMessageInventoryIsFull, "아이템을 더 이상 구할 수 없습니다!");
                 str.Add(StringKey.InGameMessageNotExistItem, "아이템이 없습니다. \"{0}\"");
@@ -323,10 +329,12 @@ public static class Strings
                 str.Add(StringKey.InGameWorkWater, "Water");
                 str.Add(StringKey.InGameWorkFish, "Fish");
                 str.Add(StringKey.InGameWorkOpenVote, "신고하기");
+                str.Add(StringKey.InGameWorkInventory, "창고 열기");
 
                 str.Add(StringKey.InGameWorkProcessTree, "Tree");
                 str.Add(StringKey.InGameWorkProcessWater, "Water");
                 str.Add(StringKey.InGameWorkProcessFish, "Fish");
+                str.Add(StringKey.InGameWorkProcessInventory, "보관소를 여는중입니다.");
 
                 str.Add(StringKey.InGameMessageInventoryIsFull, "아이템을 더 이상 구할 수 없습니다!");
                 str.Add(StringKey.InGameMessageNotExistItem, "아이템이 없습니다. \"{0}\"");
@@ -401,10 +409,12 @@ public static class Strings
                 str.Add(StringKey.InGameWorkWater, "Water");
                 str.Add(StringKey.InGameWorkFish, "Fish");
                 str.Add(StringKey.InGameWorkOpenVote, "신고하기");
+                str.Add(StringKey.InGameWorkInventory, "창고 열기");
 
                 str.Add(StringKey.InGameWorkProcessTree, "Tree");
                 str.Add(StringKey.InGameWorkProcessWater, "Water");
                 str.Add(StringKey.InGameWorkProcessFish, "Fish");
+                str.Add(StringKey.InGameWorkProcessInventory, "보관소를 여는중입니다.");
 
                 str.Add(StringKey.InGameMessageInventoryIsFull, "아이템을 더 이상 구할 수 없습니다!");
                 str.Add(StringKey.InGameMessageNotExistItem, "아이템이 없습니다. \"{0}\"");

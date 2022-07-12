@@ -6,11 +6,12 @@ using Photon.Pun;
 
 public class PublicInventory : MonoBehaviourPun, IPunObservable
 {
-    private Inventory inventory;
+    public Inventory inventory;
 
     private void Awake()
     {
         inventory = new Inventory(9);
+        inventory.AddItem("0002", 9);
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
