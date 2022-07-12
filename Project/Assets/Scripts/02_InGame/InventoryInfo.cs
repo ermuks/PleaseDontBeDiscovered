@@ -1,6 +1,7 @@
 [System.Serializable]
 public class InventoryInfo
 {
+    public int index;
     public CellInfo[] cells;
 }
 

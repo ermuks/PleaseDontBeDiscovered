@@ -8,66 +8,83 @@ using Photon.Realtime;
 public class PublicInventory : MonoBehaviourPun, IPunObservable
 {
     public Inventory inventory;
-
-    private string prevData;
-    private string inventoryJson;
+    public int index;
 
     private void Awake()
     {
         inventory = new Inventory(9);
         inventory.AddItem("0002", 9);
-    }
-
-    public void SetOwner(Player player)
-    {
-        photonView.TransferOwnership(player);
-    }
-
-    private void FixedUpdate()
-    {
-        if (inventoryJson != "")
+        EventManager.AddEvent("InventoryData :: SendData" + $"{index}", (p) =>
         {
-            if (prevData != inventoryJson)
+            photonView.RPC("GetInventoryData", RpcTarget.All, (string)p[0]);
+        });
+    }
+
+    [PunRPC]
+    private void GetInventoryData(string json)
+    {
+        InventoryInfo inventoryData = JsonUtility.FromJson<InventoryInfo>(json);
+        for (int i = 0; i < inventoryData.cells.Length; i++)
+        {
+            if (inventoryData.cells[i].itemCode != "")
             {
-                prevData = inventoryJson;
-                InventoryInfo inventoryData;
-                inventoryData = JsonUtility.FromJson<InventoryInfo>(inventoryJson);
-                for (int i = 0; i < inventoryData.cells.Length; i++)
-                {
-                    inventory[i].data = ItemManager.GetItem(inventoryData.cells[i].itemCode);
-                    inventory[i].itemCount = inventoryData.cells[i].itemCount;
-                }
-                EventManager.SendEvent("InventoryUI :: Refresh");
+                inventory[i].data = ItemManager.GetItem(inventoryData.cells[i].itemCode);
+                inventory[i].itemCount = inventoryData.cells[i].itemCount;
+            }
+            else
+            {
+                inventory[i].data = new ItemData("", "", "", -1, "");
+                inventory[i].itemCount = 0;
             }
         }
+        EventManager.SendEvent("InventoryUI :: Refresh");
+    }
+
+    public string InventoryToJson()
+    {
+        InventoryInfo data = new InventoryInfo();
+        data.cells = new CellInfo[inventory.Count];
+        for (int i = 0; i < inventory.Count; i++)
+        {
+            data.cells[i] = new CellInfo();
+            if (inventory[i].itemCount > 0)
+            {
+                data.cells[i].itemCode = inventory[i].data.itemCode;
+                data.cells[i].itemCount = inventory[i].itemCount;
+            }
+            else
+            {
+                data.cells[i].itemCode = "";
+                data.cells[i].itemCount = 0;
+            }
+            data.index = index;
+        }
+        return JsonUtility.ToJson(data);
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
         {
-            Debug.Log("B");
-            InventoryInfo data = new InventoryInfo();
-            data.cells = new CellInfo[inventory.Count];
-            for (int i = 0; i < inventory.Count; i++)
-            {
-                data.cells[i] = new CellInfo();
-                if (inventory[i].itemCount > 0)
-                {
-                    data.cells[i].itemCode = inventory[i].data.itemCode;
-                    data.cells[i].itemCount = inventory[i].itemCount;
-                }
-                else
-                {
-                    data.cells[i].itemCode = "";
-                    data.cells[i].itemCount = 0;
-                }
-            }
-            stream.SendNext(JsonUtility.ToJson(data));
+            stream.SendNext(InventoryToJson());
         }
         else
         {
-            inventoryJson = (string)stream.ReceiveNext();
+            InventoryInfo inventoryData = JsonUtility.FromJson<InventoryInfo>((string)stream.ReceiveNext());
+            for (int i = 0; i < inventoryData.cells.Length; i++)
+            {
+                if (inventoryData.cells[i].itemCode != "")
+                {
+                    inventory[i].data = ItemManager.GetItem(inventoryData.cells[i].itemCode);
+                    inventory[i].itemCount = inventoryData.cells[i].itemCount;
+                }
+                else
+                {
+                    inventory[i].data = new ItemData("", "", "", -1, "");
+                    inventory[i].itemCount = 0;
+                }
+            }
+            EventManager.SendEvent("InventoryUI :: Refresh");
         }
     }
 }

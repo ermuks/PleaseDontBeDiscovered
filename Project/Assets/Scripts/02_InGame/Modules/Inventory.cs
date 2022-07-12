@@ -7,7 +7,16 @@ public class Inventory
 {
     public int gold;
     private ItemCell[] cells;
-    public ItemCell this[int index] => cells[index];
+    public ItemCell this[int index] {
+        set
+        {
+            cells[index] = value;
+        }
+        get
+        {
+            return cells[index];
+        }
+    }
     public int Count => cells.Length;
 
     public Inventory(int count)
@@ -26,6 +35,18 @@ public class Inventory
 
         while (remainCount > 0)
         {
+            Debug.Log("===========================");
+            Debug.Log("code : " + code);
+            Debug.Log("remainCount : " + remainCount);
+            Debug.Log("index : " + index);
+            Debug.Log("cells.Length : " + cells.Length);
+            for (int i = 0; i < cells.Length; i++)
+            {
+                Debug.Log($"cells[{i}] : " + cells[i]);
+                Debug.Log($"cells[{i}].data : " + cells[i].data);
+                Debug.Log($"cells[{i}].data.itemCode : " + cells[i].data.itemCode);
+            }
+            Debug.Log("===========================");
             index = System.Array.FindIndex(cells, index + 1, e => e.data.itemCode == code);
             if (index != -1)
             {
@@ -154,6 +175,35 @@ public class Inventory
                 {
                     result = false;
                 }
+            }
+        }
+        return result;
+    }
+
+    public bool TryAddItemMulty(string code)
+    {
+        bool result = true;
+        int index = System.Array.FindIndex(cells, e => e.data.itemCode == code);
+        if (index != -1)
+        {
+            if (cells[index].data.maxCount != -1)
+            {
+                if (cells[index].itemCount >= cells[index].data.maxCount)
+                {
+                    index = System.Array.FindIndex(cells, e => e.itemCount == 0);
+                    if (index == -1)
+                    {
+                        result = false;
+                    }
+                }
+            }
+        }
+        else
+        {
+            index = System.Array.FindIndex(cells, e => e.itemCount == 0);
+            if (index == -1)
+            {
+                result = false;
             }
         }
         return result;

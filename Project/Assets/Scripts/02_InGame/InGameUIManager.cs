@@ -351,7 +351,6 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
             Cursor.lockState = CursorLockMode.None;
             areaInventory.SetActive(true);
             areaInventory.GetComponent<InventoryUI>().Init(((Collider)p[0]).GetComponent<PublicInventory>());
-            ((Collider)p[0]).GetComponent<PublicInventory>().SetOwner(PhotonNetwork.LocalPlayer);
         });
         EventManager.AddEvent("InGameUI :: CloseInventory", (p) =>
         {

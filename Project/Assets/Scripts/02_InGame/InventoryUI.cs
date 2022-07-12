@@ -69,8 +69,13 @@ public class InventoryUI : MonoBehaviour
             inventory.SwapItem(dragIndex, dropIndex);
             Refresh();
         });
+        EventManager.AddEvent("InventoryUI :: SendData", (p) =>
+        {
+            EventManager.SendEvent("InventoryData :: SendData" + $"{photonInventory.index}", photonInventory.InventoryToJson());
+        });
 
         EventManager.AddData("InventoryUI >> TryAddItem", (p) => inventory.TryAddItem((string)p[0]));
+        EventManager.AddData("InventoryUI >> TryAddItemMulty", (p) => inventory.TryAddItemMulty((string)p[0]));
     }
 
     private void Update()
@@ -78,7 +83,7 @@ public class InventoryUI : MonoBehaviour
         if (Input.GetKeyDown(Settings.instance.GetKey(KeySettings.CancelWork)))
         {
             EventManager.SendEvent("Player :: WorkEnd");
-            EventManager.SendEvent("InGameUI :: CloseInventory", photonInventory);
+            EventManager.SendEvent("InGameUI :: CloseInventory");
             ResetEvent();
         }
     }

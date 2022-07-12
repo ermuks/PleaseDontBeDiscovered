@@ -59,16 +59,17 @@ public class InventoryCells : EventTrigger
         {
             if (isMine)
             {
-                if ((bool)EventManager.GetData("InventoryUI >> TryAddItem", cell.data.itemCode)) 
+                if ((bool)EventManager.GetData("InventoryUI >> TryAddItemMulty", cell.data.itemCode)) 
                 {
+                    Debug.Log("A");
                     string code = cell.data.itemCode;
                     EventManager.SendEvent("InventoryUI :: AddItem", code);
                     EventManager.SendEvent("Inventory :: RemoveIndex", index, 1);
-                    EventManager.SendEvent("Inventory :: Refresh");
-                    EventManager.SendEvent("InventoryUI :: Refresh");
+                    EventManager.SendEvent("InventoryUI :: SendData");
                 }
                 else
                 {
+                    Debug.Log("B");
                     EventManager.SendEvent("InGameUI :: CreateMessage", Strings.GetString(StringKey.InGameMessageCantMoveItem));
                 }
             }
@@ -76,17 +77,20 @@ public class InventoryCells : EventTrigger
             {
                 if ((bool)EventManager.GetData("Inventory >> TryAddItem", cell.data.itemCode))
                 {
+                    Debug.Log("C");
                     string code = cell.data.itemCode;
                     EventManager.SendEvent("Inventory :: AddItem", code, 1);
                     EventManager.SendEvent("InventoryUI :: Remove", index);
-                    EventManager.SendEvent("InventoryUI :: Refresh");
-                    EventManager.SendEvent("Inventory :: Refresh");
+                    EventManager.SendEvent("InventoryUI :: SendData");
                 }
                 else
                 {
+                    Debug.Log("D");
                     EventManager.SendEvent("InGameUI :: CreateMessage", Strings.GetString(StringKey.InGameMessageCantMoveItem));
                 }
             }
+            EventManager.SendEvent("Inventory :: Refresh");
+            EventManager.SendEvent("InventoryUI :: Refresh");
         }
     }
 
@@ -129,6 +133,7 @@ public class InventoryCells : EventTrigger
                     if (!dragCell.isMine && !isMine)
                     {
                         EventManager.SendEvent("InventoryUI :: SwapItem", dragCell.index, index);
+                        EventManager.SendEvent("InventoryUI :: SendData");
                     }
                     else if (dragCell.isMine && isMine)
                     {
@@ -136,7 +141,6 @@ public class InventoryCells : EventTrigger
                         {
                             EventManager.SendEvent("Inventory :: SwapItem", dragCell.index, index);
                             EventManager.SendEvent("Inventory :: Refresh");
-                            EventManager.SendEvent("InventoryUI :: Refresh");
                         }
                         else
                         {
@@ -150,6 +154,7 @@ public class InventoryCells : EventTrigger
                         cell.SetCell(newCell);
                         EventManager.SendEvent("Inventory :: Refresh");
                         EventManager.SendEvent("InventoryUI :: Refresh");
+                        EventManager.SendEvent("InventoryUI :: SendData");
                     }
                 }
             }

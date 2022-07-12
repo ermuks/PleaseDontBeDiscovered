@@ -81,6 +81,7 @@ public class PlayerController : MonoBehaviour
         EventManager.AddEvent("Player :: Die", (p) =>
         {
             EventManager.SendEvent("Player :: WorkEnd");
+            EventManager.SendEvent("InGameUI :: CloseInventory");
             if (p[0].GetType() == typeof(Player))
             {
                 SetDie((Player)p[0]);
@@ -601,7 +602,7 @@ public class PlayerController : MonoBehaviour
     {
         if (killable)
         {
-            RaycastHit[] hits = Physics.BoxCastAll(transform.position + controller.center, Vector3.one * .5f, Quaternion.Euler(currentAngleX, currentAngleY, 0) * Vector3.forward, Quaternion.identity, 2.5f, 1 << gameObject.layer);
+            RaycastHit[] hits = Physics.BoxCastAll(transform.position + controller.center, Vector3.one * .5f, Quaternion.Euler(currentAngleX, currentAngleY, 0) * Vector3.forward, Quaternion.identity, 2.5f, 1 << gameObject.layer, QueryTriggerInteraction.Ignore);
             foreach (var item in hits)
             {
                 if (item.collider.gameObject.CompareTag("Player"))
