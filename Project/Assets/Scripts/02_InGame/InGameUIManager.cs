@@ -322,13 +322,11 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
         });
         EventManager.AddEvent("InGameUI :: WorkStart", (p) =>
         {
-            areaTriggerParent.SetActive(false);
             areaPlayerWorkProgressUI.SetActive(true);
             areaPlayerWorkProgressUI.GetComponent<PlayerWorkProgressUI>().SetWork((WorkMessage)p[0], (Collider)p[1]);
         });
         EventManager.AddEvent("InGameUI :: WorkEnd", (p) =>
         {
-            areaTriggerParent.SetActive(true);
             areaPlayerWorkProgressUI.SetActive(false);
         });
         EventManager.AddEvent("InGameUI :: CreateMessage", (p) =>
@@ -352,7 +350,8 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
         {
             Cursor.lockState = CursorLockMode.None;
             areaInventory.SetActive(true);
-            areaInventory.GetComponent<InventoryUI>().Init(((Collider)p[0]).GetComponent<PublicInventory>().inventory);
+            areaInventory.GetComponent<InventoryUI>().Init(((Collider)p[0]).GetComponent<PublicInventory>());
+            ((Collider)p[0]).GetComponent<PublicInventory>().SetOwner(PhotonNetwork.LocalPlayer);
         });
         EventManager.AddEvent("InGameUI :: CloseInventory", (p) =>
         {

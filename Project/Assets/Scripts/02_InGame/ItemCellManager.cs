@@ -9,6 +9,7 @@ public class ItemCellManager : MonoBehaviour
     [SerializeField] private Image imgItemImage;
     [SerializeField] private Image imgItemCover;
     [SerializeField] private TMP_Text txtItemCount;
+    [SerializeField] private TMP_Text txtRemoveTimer;
 
     public ItemCell cell;
     private int myIndex = -1;
@@ -35,6 +36,32 @@ public class ItemCellManager : MonoBehaviour
             {
                 EventManager.SendEvent("Inventory :: Change", "0005", "0006");
                 imgItemCover.gameObject.SetActive(false);
+                break;
+            }
+        }
+    }
+
+    public void SetRemoveItemTimer(float lifeTime)
+    {
+        imgItemCover.gameObject.SetActive(true);
+        txtRemoveTimer.gameObject.SetActive(true);
+        t = .0f;
+        if (timer != null) StopCoroutine(timer);
+        timer = StartCoroutine(RemoveItemTimer(lifeTime));
+    }
+
+    private IEnumerator RemoveItemTimer(float lifeTime)
+    {
+        while (true)
+        {
+            yield return new WaitForEndOfFrame();
+            t += Time.deltaTime;
+            imgItemCover.fillAmount = 1f - t / lifeTime;
+            txtRemoveTimer.text = $"{lifeTime - t:0}";
+            if (t >= lifeTime)
+            {
+                imgItemCover.gameObject.SetActive(false);
+                txtRemoveTimer.gameObject.SetActive(false);
                 break;
             }
         }

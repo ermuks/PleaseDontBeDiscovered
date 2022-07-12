@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using Photon.Pun;
+
 public class InventoryManager : MonoBehaviour
 {
     private Inventory inventory;
@@ -13,17 +15,26 @@ public class InventoryManager : MonoBehaviour
         inventory = new Inventory(2);
 
         EventManager.AddEvent("Inventory :: AddItem", (p) => AddItem((string)p[0], (int)p[1]));
-        EventManager.AddEvent("Inventory :: RemoveItem", (p) => RemoveItem((int)p[0], (int)p[1]));
+        EventManager.AddEvent("Inventory :: RemoveIndex", (p) => RemoveItem((int)p[0], (int)p[1]));
         EventManager.AddEvent("Inventory :: UseItem", (p) => UseItem((int)p[0]));
         EventManager.AddEvent("Inventory :: Change", (p) => ChangeItem((string)p[0], (string)p[1]));
         EventManager.AddEvent("Inventory :: Remove", (p) => RemoveItem((string)p[0], 1));
+        EventManager.AddEvent("Inventory :: SwapItem", (p) => SwapItem((int)p[0], (int)p[1]));
+        EventManager.AddEvent("Inventory :: Refresh", (p) => Refresh());
 
         EventManager.AddEvent("Inventory :: HandWarmer", (p) => cells[(int)p[0]].UseHandWarmer(10f));
+        EventManager.AddEvent("Inventory :: SetRemoveItemTimer", (p) => 
+        {
+            cells[0].SetRemoveItemTimer((float)p[0]);
+            cells[1].SetRemoveItemTimer((float)p[0]);
+        });
 
         EventManager.AddData("Inventory >> TryAddItem", (p) => inventory.TryAddItem((string)p[0]));
         EventManager.AddData("Inventory >> TryChange", (p) => inventory.TryChange((string)p[0], (string)p[1]));
         EventManager.AddData("Inventory >> HasItem", (p) => inventory.HasItem((string)p[0]));
         EventManager.AddData("Inventory >> FindIndex", (p) => inventory.FindIndex((string)p[0]));
+
+        EventManager.AddData("Inventory", (p) => inventory);
 
         for (int i = 0; i < cells.Length; i++)
         {
@@ -43,7 +54,18 @@ public class InventoryManager : MonoBehaviour
             }
             else
             {
-                UseItem(0);
+                if ((bool)PhotonNetwork.LocalPlayer.CustomProperties["isMurder"])
+                {
+                    if ((bool)EventManager.GetData("Player >> CanRemove"))
+                    {
+                        EventManager.SendEvent("Player :: SetRemoveItemTimer");
+                        RemoveItem(0, 1);
+                    }
+                }
+                else
+                {
+                    UseItem(0);
+                }
             }
         }
         if (Input.GetKeyDown(Settings.instance.GetKey(KeySettings.UseItem2)))
@@ -54,7 +76,18 @@ public class InventoryManager : MonoBehaviour
             }
             else
             {
-                UseItem(1);
+                if ((bool)PhotonNetwork.LocalPlayer.CustomProperties["isMurder"])
+                {
+                    if ((bool)EventManager.GetData("Player >> CanRemove"))
+                    {
+                        EventManager.SendEvent("Player :: SetRemoveItemTimer");
+                        RemoveItem(1, 1);
+                    }
+                }
+                else
+                {
+                    UseItem(1);
+                }
             }
         }
         if (Input.GetKeyDown(KeyCode.F1))
@@ -123,6 +156,12 @@ public class InventoryManager : MonoBehaviour
     private void ChangeItem(string origin, string code)
     {
         inventory.ChangeItem(origin, code);
+        Refresh();
+    }
+
+    private void SwapItem(int dragIndex, int dropIndex)
+    {
+        inventory.SwapItem(dragIndex, dropIndex);
         Refresh();
     }
 

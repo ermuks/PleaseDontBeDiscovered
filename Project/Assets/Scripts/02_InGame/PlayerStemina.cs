@@ -85,6 +85,9 @@ public class PlayerStemina : MonoBehaviourPun
 
     bool normalPlayer = false;
 
+    float removeTimer = 60f;
+    float removeDelay = 60f;
+    bool canRemove = false;
     private void Awake()
     {
         normalPlayer = !(bool)PhotonNetwork.LocalPlayer.CustomProperties["isMurder"] && !(bool)PhotonNetwork.LocalPlayer.CustomProperties["isDead"];
@@ -95,6 +98,10 @@ public class PlayerStemina : MonoBehaviourPun
                 FillHungry(.35f);
                 EventManager.SendEvent("Inventory :: Remove", "0000");
             }
+            else
+            {
+                EventManager.SendEvent("Inventory :: Remove", "0000");
+            }
         });
         EventManager.AddEvent("Item :: GrilledFish", (p) =>
         {
@@ -103,12 +110,20 @@ public class PlayerStemina : MonoBehaviourPun
                 FillHungry(.75f);
                 EventManager.SendEvent("Inventory :: Remove", "0001");
             }
+            else
+            {
+                EventManager.SendEvent("Inventory :: Remove", "0001");
+            }
         });
         EventManager.AddEvent("Item :: EmptyBottle", (p) =>
         {
             if (normalPlayer)
             {
-                
+
+            }
+            else
+            {
+                EventManager.SendEvent("Inventory :: Remove", "0002");
             }
         });
         EventManager.AddEvent("Item :: FullBottle", (p) =>
@@ -121,6 +136,10 @@ public class PlayerStemina : MonoBehaviourPun
                     EventManager.SendEvent("Inventory :: Change", "0003", "0002");
                 }
             }
+            else
+            {
+                EventManager.SendEvent("Inventory :: Remove", "0003");
+            }
         });
         EventManager.AddEvent("Item :: HandWarmer", (p) =>
         {
@@ -129,20 +148,25 @@ public class PlayerStemina : MonoBehaviourPun
                 EventManager.SendEvent("Inventory :: Change", "0004", "0005");
                 EventManager.SendEvent("Inventory :: HandWarmer", EventManager.GetData("Inventory >> FindIndex", "0005"));
             }
+            else
+            {
+                EventManager.SendEvent("Inventory :: Remove", "0004");
+            }
         });
         EventManager.AddEvent("Item :: UsingHandWarmer", (p) =>
         {
             if (normalPlayer)
             {
-                
+
+            }
+            else
+            {
+                EventManager.SendEvent("Inventory :: Remove", "0005");
             }
         });
         EventManager.AddEvent("Item :: ColdHandWarmer", (p) =>
         {
-            if (normalPlayer)
-            {
-                EventManager.SendEvent("Inventory :: Remove", "0006");
-            }
+            EventManager.SendEvent("Inventory :: Remove", "0006");
         });
         EventManager.AddEvent("Player :: EnterWarmZone", (p) =>
         {
@@ -169,6 +193,12 @@ public class PlayerStemina : MonoBehaviourPun
         {
             GetHit((float)p[0], DieMessage.Breath);
         });
+        EventManager.AddData("Player >> CanRemove", (p) => canRemove);
+        EventManager.AddEvent("Player :: SetRemoveItemTimer", (p) =>
+        {
+            EventManager.SendEvent("Inventory :: SetRemoveItemTimer", removeDelay);
+            removeTimer = .0f;
+        });
     }
 
     private void Update()
@@ -182,6 +212,16 @@ public class PlayerStemina : MonoBehaviourPun
             WarmValue();
             WetValue();
         }
+        if (!normalPlayer && !(bool)PhotonNetwork.LocalPlayer.CustomProperties["isDead"])
+        {
+            RemoveItemDelay();
+        }
+    }
+
+    private void RemoveItemDelay()
+    {
+        removeTimer += Time.deltaTime;
+        canRemove = removeTimer >= removeDelay;
     }
 
     private void CalcStamina()

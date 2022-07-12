@@ -74,75 +74,73 @@ public class TriggerUI : MonoBehaviour
     {
         if (!(bool)EventManager.GetData("InGameUI >> VoteUIActive"))
         {
-            if (!(bool)EventManager.GetData("InGameUI >> VoteUIActive"))
+            if (Input.GetKeyDown(Settings.instance.GetKey(KeySettings.Work)) && !isWorking)
             {
-                if (Input.GetKeyDown(Settings.instance.GetKey(KeySettings.Work)) && !isWorking)
-                {
-                    bool isDead = (bool)Photon.Pun.PhotonNetwork.LocalPlayer.CustomProperties["isDead"];
+                bool isDead = (bool)Photon.Pun.PhotonNetwork.LocalPlayer.CustomProperties["isDead"];
 
-                    if (!isDead)
+                if (!isDead)
+                {
+                    bool isReport = false;
+                    string err = "";
+                    switch (currentWork)
                     {
-                        bool isReport = false;
-                        string err = "";
-                        switch (currentWork)
-                        {
-                            case WorkMessage.None:
-                                break;
-                            case WorkMessage.Treezone:
-                                if ((bool)EventManager.GetData("Inventory >> TryAddItem", "0007")) isWorking = true;
-                                else err = Strings.GetString(StringKey.InGameMessageInventoryIsFull);
-                                break;
-                            case WorkMessage.WaterZone:
-                                if ((bool)EventManager.GetData("Inventory >> HasItem", "0002"))
+                        case WorkMessage.None:
+                            break;
+                        case WorkMessage.Treezone:
+                            if ((bool)EventManager.GetData("Inventory >> TryAddItem", "0007")) isWorking = true;
+                            else err = Strings.GetString(StringKey.InGameMessageInventoryIsFull);
+                            break;
+                        case WorkMessage.WaterZone:
+                            if ((bool)EventManager.GetData("Inventory >> HasItem", "0002"))
+                            {
+                                if ((bool)EventManager.GetData("Inventory >> TryChange", "0002", "0003"))
                                 {
-                                    if ((bool)EventManager.GetData("Inventory >> TryChange", "0002", "0003"))
-                                    {
-                                        isWorking = true;
-                                    }
-                                    else
-                                    {
-                                        err = Strings.GetString(StringKey.InGameMessageInventoryIsFull);
-                                    }
+                                    isWorking = true;
                                 }
                                 else
                                 {
-                                    err = Strings.GetString(StringKey.InGameMessageNotExistItem, ItemManager.GetItem("0002").itemName);
+                                    err = Strings.GetString(StringKey.InGameMessageInventoryIsFull);
                                 }
-                                break;
-                            case WorkMessage.FishZone:
-                                if ((bool)EventManager.GetData("Inventory >> TryAddItem", "0000")) isWorking = true;
-                                else err = Strings.GetString(StringKey.InGameMessageInventoryIsFull);
-                                break;
-                            case WorkMessage.OpenVote:
-                                isReport = true;
-                                break;
-                            case WorkMessage.Inventory:
-                                isWorking = true;
-                                break;
-                            default:
-                                break;
-                        }
-                        if (isReport)
-                        {
-                            var properties = PhotonNetwork.CurrentRoom.CustomProperties;
-                            properties["Vote"] = true;
-                            PhotonNetwork.CurrentRoom.SetCustomProperties(properties);
-                        }
-                        else
-                        {
-                            if (isWorking)
-                            {
-                                EventManager.SendEvent("Player :: WorkStart", currentWork);
-                                EventManager.SendEvent("InGameUI :: WorkStart", currentWork, currentCollider);
                             }
                             else
                             {
-                                EventManager.SendEvent("InGameUI :: CreateMessage", err);
+                                err = Strings.GetString(StringKey.InGameMessageNotExistItem, ItemManager.GetItem("0002").itemName);
                             }
+                            break;
+                        case WorkMessage.FishZone:
+                            if ((bool)EventManager.GetData("Inventory >> TryAddItem", "0000")) isWorking = true;
+                            else err = Strings.GetString(StringKey.InGameMessageInventoryIsFull);
+                            break;
+                        case WorkMessage.OpenVote:
+                            isReport = true;
+                            break;
+                        case WorkMessage.Inventory:
+                            isWorking = true;
+                            break;
+                        default:
+                            break;
+                    }
+                    if (isReport)
+                    {
+                        var properties = PhotonNetwork.CurrentRoom.CustomProperties;
+                        properties["Vote"] = true;
+                        PhotonNetwork.CurrentRoom.SetCustomProperties(properties);
+                    }
+                    else
+                    {
+                        if (isWorking)
+                        {
+                            EventManager.SendEvent("Player :: WorkStart", currentWork);
+                            EventManager.SendEvent("InGameUI :: WorkStart", currentWork, currentCollider);
+                        }
+                        else
+                        {
+                            EventManager.SendEvent("InGameUI :: CreateMessage", err);
                         }
                     }
                 }
             }
+            
             if (Input.GetKeyDown(Settings.instance.GetKey(KeySettings.CancelWork)) && isWorking)
             {
                 isWorking = false;

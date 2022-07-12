@@ -72,6 +72,7 @@ public enum StringKey
     InGameWorkProcessInventory,
 
     InGameMessageInventoryIsFull,
+    InGameMessageCantMoveItem,
     InGameMessageNotExistItem,
     InGameMessageWorkingTryOtherAction,
 
@@ -172,6 +173,7 @@ public static class Strings
                 str.Add(StringKey.InGameWorkProcessInventory, "Open Chest");
 
                 str.Add(StringKey.InGameMessageInventoryIsFull, "Inventory has been full");
+                str.Add(StringKey.InGameMessageCantMoveItem, "Item cannot be moved!");
                 str.Add(StringKey.InGameMessageNotExistItem, "You don't have a \"{0}\"");
                 str.Add(StringKey.InGameMessageWorkingTryOtherAction, "You cannot try actions while working.");
 
@@ -257,6 +259,7 @@ public static class Strings
                 str.Add(StringKey.InGameWorkProcessInventory, "보관소를 여는중입니다.");
 
                 str.Add(StringKey.InGameMessageInventoryIsFull, "아이템을 더 이상 구할 수 없습니다!");
+                str.Add(StringKey.InGameMessageCantMoveItem, "아이템을 옮길 수 없습니다!");
                 str.Add(StringKey.InGameMessageNotExistItem, "아이템이 없습니다. \"{0}\"");
                 str.Add(StringKey.InGameMessageWorkingTryOtherAction, "작업 중에는 작업을 시도할 수 없습니다.");
 
@@ -337,6 +340,7 @@ public static class Strings
                 str.Add(StringKey.InGameWorkProcessInventory, "보관소를 여는중입니다.");
 
                 str.Add(StringKey.InGameMessageInventoryIsFull, "아이템을 더 이상 구할 수 없습니다!");
+                str.Add(StringKey.InGameMessageCantMoveItem, "아이템을 옮길 수 없습니다!");
                 str.Add(StringKey.InGameMessageNotExistItem, "아이템이 없습니다. \"{0}\"");
                 str.Add(StringKey.InGameMessageWorkingTryOtherAction, "작업 중에는 다른 행동을 시도할 수 없습니다.");
 
@@ -417,6 +421,7 @@ public static class Strings
                 str.Add(StringKey.InGameWorkProcessInventory, "보관소를 여는중입니다.");
 
                 str.Add(StringKey.InGameMessageInventoryIsFull, "아이템을 더 이상 구할 수 없습니다!");
+                str.Add(StringKey.InGameMessageCantMoveItem, "아이템을 옮길 수 없습니다!");
                 str.Add(StringKey.InGameMessageNotExistItem, "아이템이 없습니다. \"{0}\"");
                 str.Add(StringKey.InGameMessageWorkingTryOtherAction, "작업 중에는 작업을 시도할 수 없습니다.");
 

@@ -50,11 +50,11 @@ public class NetworkManager_InGame : MonoBehaviourPunCallbacks
             isAlreadyVoted = (bool)p[0];
         });
 
-        GameObject[] inventoryArea = GameObject.FindGameObjectsWithTag("InventoryArea");
-        for (int i = 0; i < inventoryArea.Length; i++)
-        {
-            PhotonNetwork.InstantiateRoomObject("Prefabs/Inventory", inventoryArea[i].transform.position, inventoryArea[i].transform.rotation);
-        }
+        //GameObject[] inventoryArea = GameObject.FindGameObjectsWithTag("InventoryArea");
+        //for (int i = 0; i < inventoryArea.Length; i++)
+        //{
+        //    PhotonNetwork.InstantiateRoomObject("Prefabs/Inventory", inventoryArea[i].transform.position, inventoryArea[i].transform.rotation);
+        //}
     }
 
     public override void OnPlayerLeftRoom(Player otherPlayer)

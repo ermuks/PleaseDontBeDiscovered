@@ -27,7 +27,7 @@ public class EventManager : MonoBehaviour
         if (key == "")
         {
             //#if UNITY_EDITOR
-            if (key.IndexOf("Refresh") == -1 && key.IndexOf("SetKillCooldown") == -1)
+            if (key.IndexOf("Refresh") == -1 && key.IndexOf("SetKillCooldown") == -1 && key.IndexOf("FollowItem") == -1)
             {
                 Debug.Log($"<b><color=#ff2025>[ Fail ]</color></b>\nEvent Key : <color=#c9f5f9>{key}</color>\nParameters Count : <color=#c9f5f9>{param.Length}</color>");
             }
@@ -39,7 +39,7 @@ public class EventManager : MonoBehaviour
             {
                 eventList[key](param);
                 //#if UNITY_EDITOR
-                if (key.IndexOf("Refresh") == -1 && key.IndexOf("SetKillCooldown") == -1)
+                if (key.IndexOf("Refresh") == -1 && key.IndexOf("SetKillCooldown") == -1 && key.IndexOf("FollowItem") == -1)
                 {
                     string p = "";
                     for (int i = 0; i < param.Length; i++)
