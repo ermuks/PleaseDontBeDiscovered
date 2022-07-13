@@ -35,18 +35,6 @@ public class Inventory
 
         while (remainCount > 0)
         {
-            Debug.Log("===========================");
-            Debug.Log("code : " + code);
-            Debug.Log("remainCount : " + remainCount);
-            Debug.Log("index : " + index);
-            Debug.Log("cells.Length : " + cells.Length);
-            for (int i = 0; i < cells.Length; i++)
-            {
-                Debug.Log($"cells[{i}] : " + cells[i]);
-                Debug.Log($"cells[{i}].data : " + cells[i].data);
-                Debug.Log($"cells[{i}].data.itemCode : " + cells[i].data.itemCode);
-            }
-            Debug.Log("===========================");
             index = System.Array.FindIndex(cells, index + 1, e => e.data.itemCode == code);
             if (index != -1)
             {

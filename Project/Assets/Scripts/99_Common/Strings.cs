@@ -210,7 +210,7 @@ public static class Strings
                 str.Add(StringKey.MainTextNoRoomNameInInputField, "방 이름을 입력해주세요");
                 str.Add(StringKey.MainTextRoomNameTitle, "방 이름");
 
-                str.Add(StringKey.MainTextMurdererCount, "살인자 수 : <color=#ffffff>{0}</color>");
+                str.Add(StringKey.MainTextMurdererCount, "범인 수 : <color=#ffffff>{0}</color>");
                 str.Add(StringKey.MainTextMoveSpeed, "이동속도 : <color=#ffffff>{0}</color>");
                 str.Add(StringKey.MainTextKillCooldown, "킬 쿨타임 : <color=#ffffff>{0}</color>");
                 str.Add(StringKey.MainTextVoteTime, "투표 시간 : <color=#ffffff>{0}</color>");
@@ -247,8 +247,8 @@ public static class Strings
                 str.Add(StringKey.InGameDieMessageVote, "투표로 인해 쫓겨났습니다.");
                 str.Add(StringKey.InGameDieMessageBreath, "질식으로 인해 사망했습니다");
                 str.Add(StringKey.InGameDieMessageNone, "Unknown");
-                str.Add(StringKey.InGameMurderWin, "살인자에게 모두 당했습니다.");
-                str.Add(StringKey.InGamePlayerWin, "살인자를 모두 처리했습니다.");
+                str.Add(StringKey.InGameMurderWin, "범인에게 모두 당했습니다.");
+                str.Add(StringKey.InGamePlayerWin, "범인을 모두 처리했습니다.");
 
                 str.Add(StringKey.InGameWorkNoMessage, "None");
                 str.Add(StringKey.InGameWorkTree, "나무 구하기");
@@ -271,9 +271,9 @@ public static class Strings
 
                 str.Add(StringKey.InGameMessageCompleteVote, "{0}님이 투표를 완료했습니다.");
                 str.Add(StringKey.InGameFinishVoteNone, "아무도 내보내지 않았습니다.");
-                str.Add(StringKey.InGameFinishVoteMurderTrue, "{0}님은 <color=#ee3333>살인자</color>였습니다.");
-                str.Add(StringKey.InGameFinishVoteMurderFalse, "{0}님은 <color=#ee3333>살인자</color>가 아니였습니다.");
-                str.Add(StringKey.InGameFinishVoteMurderCount, "<color=#ee3333>살인자</color>가 {0}명 있습니다.");
+                str.Add(StringKey.InGameFinishVoteMurderTrue, "{0}님은 <color=#ee3333>범인</color>이였습니다.");
+                str.Add(StringKey.InGameFinishVoteMurderFalse, "{0}님은 <color=#ee3333>범인</color>이 아니였습니다.");
+                str.Add(StringKey.InGameFinishVoteMurderCount, "<color=#ee3333>범인</color>이 {0}명 있습니다.");
                 str.Add(StringKey.InGameVoteTimer, "남은 투표시간 : <color=#ffeeaa>{0}</color> 초");
                 break;
             case Language.Japanese:
@@ -293,7 +293,7 @@ public static class Strings
                 str.Add(StringKey.MainTextNoRoomNameInInputField, "部屋の名前を入力してください");
                 str.Add(StringKey.MainTextRoomNameTitle, "部屋名");
 
-                str.Add(StringKey.MainTextMurdererCount, "살인자 수 : <color=#ffffff>{0}</color>");
+                str.Add(StringKey.MainTextMurdererCount, "범인 수 : <color=#ffffff>{0}</color>");
                 str.Add(StringKey.MainTextMoveSpeed, "이동속도 : <color=#ffffff>{0}</color>");
                 str.Add(StringKey.MainTextKillCooldown, "킬 쿨타임 : <color=#ffffff>{0}</color>");
                 str.Add(StringKey.MainTextVoteTime, "투표 시간 : <color=#ffffff>{0}</color>");
@@ -354,9 +354,9 @@ public static class Strings
 
                 str.Add(StringKey.InGameMessageCompleteVote, "{0}님이 투표를 완료했습니다.");
                 str.Add(StringKey.InGameFinishVoteNone, "아무도 내보내지 않았습니다.");
-                str.Add(StringKey.InGameFinishVoteMurderTrue, "{0}님은 <color=#ee3333>살인자</color>였습니다.");
-                str.Add(StringKey.InGameFinishVoteMurderFalse, "{0}님은 <color=#ee3333>살인자</color>가 아니였습니다.");
-                str.Add(StringKey.InGameFinishVoteMurderCount, "<color=#ee3333>살인자</color>가 {0}명 있습니다.");
+                str.Add(StringKey.InGameFinishVoteMurderTrue, "{0}님은 <color=#ee3333>범인</color>이였습니다.");
+                str.Add(StringKey.InGameFinishVoteMurderFalse, "{0}님은 <color=#ee3333>범인</color>이 아니였습니다.");
+                str.Add(StringKey.InGameFinishVoteMurderCount, "<color=#ee3333>범인</color>이 {0}명 있습니다.");
                 str.Add(StringKey.InGameVoteTimer, "남은 투표시간 : <color=#ffeeaa>{0}</color> 초");
                 break;
             case Language.Chinese:
@@ -376,7 +376,7 @@ public static class Strings
                 str.Add(StringKey.MainTextNoRoomNameInInputField, "请输入房间名称");
                 str.Add(StringKey.MainTextRoomNameTitle, "房间名称");
 
-                str.Add(StringKey.MainTextMurdererCount, "살인자 수 : <color=#ffffff>{0}</color>");
+                str.Add(StringKey.MainTextMurdererCount, "범인 수 : <color=#ffffff>{0}</color>");
                 str.Add(StringKey.MainTextMoveSpeed, "이동속도 : <color=#ffffff>{0}</color>");
                 str.Add(StringKey.MainTextKillCooldown, "킬 쿨타임 : <color=#ffffff>{0}</color>");
                 str.Add(StringKey.MainTextVoteTime, "투표 시간 : <color=#ffffff>{0}</color>");
@@ -437,9 +437,9 @@ public static class Strings
 
                 str.Add(StringKey.InGameMessageCompleteVote, "{0}님이 투표를 완료했습니다.");
                 str.Add(StringKey.InGameFinishVoteNone, "아무도 내보내지 않았습니다.");
-                str.Add(StringKey.InGameFinishVoteMurderTrue, "{0}님은 <color=#ee3333>살인자</color>였습니다.");
-                str.Add(StringKey.InGameFinishVoteMurderFalse, "{0}님은 <color=#ee3333>살인자</color>가 아니였습니다.");
-                str.Add(StringKey.InGameFinishVoteMurderCount, "<color=#ee3333>살인자</color>가 {0}명 있습니다.");
+                str.Add(StringKey.InGameFinishVoteMurderTrue, "{0}님은 <color=#ee3333>범인</color>이였습니다.");
+                str.Add(StringKey.InGameFinishVoteMurderFalse, "{0}님은 <color=#ee3333>범인</color>이 아니였습니다.");
+                str.Add(StringKey.InGameFinishVoteMurderCount, "<color=#ee3333>범인</color>이 {0}명 있습니다.");
                 str.Add(StringKey.InGameVoteTimer, "남은 투표시간 : <color=#ffeeaa>{0}</color> 초");
                 break;
         }

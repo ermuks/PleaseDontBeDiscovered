@@ -186,7 +186,7 @@ public class PlayerStemina : MonoBehaviourPun
         });
         EventManager.AddEvent("Player :: FallingDamage", (p) =>
         {
-            float damage = (float)p[0] / 15f;
+            float damage = (float)p[0] / 100f;
             GetHit(-damage, DieMessage.Falling);
         });
         EventManager.AddEvent("Player :: BreathDamage", (p) =>

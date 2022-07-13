@@ -7,15 +7,16 @@ using Photon.Pun;
 public class PlayerController : MonoBehaviour
 {
     private float speed = 5f;
-    private float run = 2.3f;
-    private float jump = 9f;
-    private float currentDistance = 3.5f;
+    private float run = 1.8f;
+    private float jump = 11f;
+    private float currentDistance = 2f;
+
     [SerializeField]
-    private float normalDistance = 3.5f;
+    private float normalDistance = 2f;
     [SerializeField]
-    private float runDistance = 5.6f;
+    private float runDistance = 3.5f;
     [SerializeField]
-    private Vector3 offset = new Vector3(1f, 4f, 0);
+    private Vector3 offset = new Vector3(.8f, 3.6f, 0);
 
     private Transform camParent;
     private Transform cam;
@@ -29,8 +30,15 @@ public class PlayerController : MonoBehaviour
     private float currentAngleX, currentAngleY;
     private float targetAngleX, targetAngleY;
     private float gravityY;
+
+    float sensitivity = 3f;
+    float negativeSensitivity => sensitivity * 3f;
+
     private Vector3 moveDir;
-    private float horizontal, veritcal;
+    private float horizontal, vertical;
+
+    private float jumpTimer = .4f;
+    private float jumpDelay = .4f;
 
     private float airTimer = .0f;
 
@@ -62,6 +70,9 @@ public class PlayerController : MonoBehaviour
     private bool canBreath = true;
     private float breathHoldTimer = .0f;
     private float breathHoldMaximum = 20f;
+
+    public Vector3 hitNormal;
+    public float hitAngle;
 
     private void Awake()
     {
@@ -184,6 +195,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        Debug.DrawLine(controller.bounds.center, controller.bounds.center + Vector3.down * (controller.bounds.extents.y + .42f), Color.red);
         if (Input.GetKeyDown(KeyCode.H))
         {
             isWorking = false;
@@ -205,7 +217,7 @@ public class PlayerController : MonoBehaviour
             if (isWorking)
             {
                 horizontal = .0f;
-                veritcal = .0f;
+                vertical = .0f;
                 moveDir = Vector3.zero;
                 anim.SetBool("Forward", false);
                 anim.SetBool("Back", false);
@@ -218,7 +230,6 @@ public class PlayerController : MonoBehaviour
             else
             {
                 CameraRotate();
-                PlayerSlow();
                 PlayerMove();
                 PlayerAttack();
             }
@@ -226,6 +237,8 @@ public class PlayerController : MonoBehaviour
             {
                 BreathTimer();
             }
+            PlayerSlow();
+            PlayerJumpTimer();
         }
         else
         {
@@ -286,6 +299,11 @@ public class PlayerController : MonoBehaviour
         {
             killable = true;
         }
+    }
+
+    private void PlayerJumpTimer()
+    {
+        jumpTimer += Time.deltaTime;
     }
 
     private void PlayerSlow()
@@ -432,135 +450,142 @@ public class PlayerController : MonoBehaviour
         float delta = Time.deltaTime;
         Vector3 point1 = controller.bounds.center + Vector3.up * (controller.height - controller.radius * 2) / 2;
         Vector3 point2 = controller.bounds.center - Vector3.up * (controller.height - controller.radius * 2) / 2;
-        if (controller.isGrounded || Physics.CapsuleCast(point1, point2, controller.radius, Vector3.down, .02f, ~(1 << gameObject.layer), QueryTriggerInteraction.Ignore))
+        //~(1 << gameObject.layer), QueryTriggerInteraction.Ignore
+
+        bool isRun = Input.GetKey(Settings.instance.GetKey(KeySettings.RunKey)) && isMurder;
+        bool forward = Input.GetKey(Settings.instance.GetKey(KeySettings.ForwardKey));
+        bool backward = Input.GetKey(Settings.instance.GetKey(KeySettings.BackwardKey));
+        bool right = Input.GetKey(Settings.instance.GetKey(KeySettings.RightKey));
+        bool left = Input.GetKey(Settings.instance.GetKey(KeySettings.LeftKey));
+
+        if (right == left)
         {
-            float sensitivity = 3f;
-
-            bool isRun = Input.GetKey(Settings.instance.GetKey(KeySettings.RunKey)) && isMurder;
-            bool forward = Input.GetKey(Settings.instance.GetKey(KeySettings.ForwardKey));
-            bool backward = Input.GetKey(Settings.instance.GetKey(KeySettings.BackwardKey));
-            bool right = Input.GetKey(Settings.instance.GetKey(KeySettings.RightKey));
-            bool left = Input.GetKey(Settings.instance.GetKey(KeySettings.LeftKey));
-
-            if (forward) veritcal += delta * sensitivity;
-            if (backward) veritcal -= delta * sensitivity;
-            if (right) horizontal += delta * sensitivity;
-            if (left) horizontal -= delta * sensitivity;
-
-            if (right == left)
+            if (horizontal > 0)
             {
-                if (horizontal > 0)
+                if (horizontal - delta * negativeSensitivity < 0)
                 {
-                    if (horizontal - delta * sensitivity < 0)
-                    {
-                        horizontal = 0;
-                    }
-                    else
-                    {
-                        horizontal -= delta * sensitivity;
-                    }
+                    horizontal = 0;
                 }
                 else
                 {
-                    if (horizontal + delta * sensitivity > 0)
-                    {
-                        horizontal = 0;
-                    }
-                    else
-                    {
-                        horizontal += delta * sensitivity;
-                    }
+                    horizontal -= delta * negativeSensitivity;
                 }
             }
-            if (forward == backward)
+            else
             {
-                if (veritcal > 0)
+                if (horizontal + delta * negativeSensitivity > 0)
                 {
-                    if (veritcal - delta * sensitivity <= 0)
-                    {
-                        veritcal = 0;
-                    }
-                    else
-                    {
-                        veritcal -= delta * sensitivity;
-                    }
+                    horizontal = 0;
                 }
                 else
                 {
-                    if (veritcal + delta * sensitivity >= 0)
-                    {
-                        veritcal = 0;
-                    }
-                    else
-                    {
-                        veritcal += delta * sensitivity;
-                    }
+                    horizontal += delta * negativeSensitivity;
                 }
             }
-
-            horizontal = Mathf.Clamp(horizontal, -1f, 1f);
-            veritcal = Mathf.Clamp(veritcal, -1f, 1f);
-            if (gravityY < -8f && isFallingDamage)
+        }
+        if (forward == backward)
+        {
+            if (vertical > 0)
             {
-                EventManager.SendEvent("InGameUI :: Hurt");
-                EventManager.SendEvent("Player :: FallingDamage", gravityY + 8f);
-                slowTimer = .0f;
+                if (vertical - delta * negativeSensitivity <= 0)
+                {
+                    vertical = 0;
+                }
+                else
+                {
+                    vertical -= delta * negativeSensitivity;
+                }
             }
-            gravityY = .0f;
-            anim.SetBool("Air", false);
-
-            if (!isWater && Input.GetKey(Settings.instance.GetKey(KeySettings.JumpKey)))
+            else
             {
-                anim.SetBool("Air", true);
-                gravityY = jump;
+                if (vertical + delta * negativeSensitivity >= 0)
+                {
+                    vertical = 0;
+                }
+                else
+                {
+                    vertical += delta * negativeSensitivity;
+                }
             }
+        }
 
-            moveDir = Quaternion.Euler(0, isAround ? rememberAngleY : currentAngleY, 0) * new Vector3(horizontal, 0, veritcal);
-            moveDir *= isSlow ? .5f : 1f;
+        hitAngle = Vector3.Angle(Vector3.up, hitNormal);
+        if (Physics.CapsuleCast(point1, point2, controller.radius, Vector3.down, .02f, ~(1 << gameObject.layer), QueryTriggerInteraction.Ignore))
+        //if ()//Physics.Raycast(controller.bounds.center, Vector3.down, controller.bounds.extents.y + .42f, ~(1 << gameObject.layer), QueryTriggerInteraction.Ignore))
+        {
+            if (hitAngle <= controller.slopeLimit)
+            {
+                if (forward) vertical += delta * sensitivity;
+                if (backward) vertical -= delta * sensitivity;
+                if (right) horizontal += delta * sensitivity;
+                if (left) horizontal -= delta * sensitivity;
 
-            if (moveDir.magnitude > 1) moveDir.Normalize();
-            if (isRun) moveDir *= run;
+                horizontal = Mathf.Clamp(horizontal, -1f, 1f);
+                vertical = Mathf.Clamp(vertical, -1f, 1f);
+                anim.SetBool("Air", false);
 
-            float angle = Vector3.Angle(transform.forward, moveDir);
-            angle *= horizontal < 0 ? -1 : 1;
+                if (gravityY < -10f && isFallingDamage)
+                {
+                    EventManager.SendEvent("InGameUI :: Hurt");
+                    EventManager.SendEvent("Player :: FallingDamage", gravityY + 10f);
+                    slowTimer = .0f;
+                }
+                Debug.Log(gravityY);
+                gravityY = .0f;
+                if (!isWater && Input.GetKey(Settings.instance.GetKey(KeySettings.JumpKey)) && jumpTimer >= jumpDelay)
+                {
+                    jumpTimer = .0f;
+                    anim.SetBool("Air", true);
+                    gravityY = jump;
+                }
 
-            bool moveForward, moveBackward, moveRight, moveLeft;
+                moveDir = Quaternion.Euler(0, isAround ? rememberAngleY : currentAngleY, 0) * new Vector3(horizontal, 0, vertical);
+                moveDir *= isSlow ? .5f : 1f;
 
-            moveForward = CheckAngleInRange(angle, -45f, 45f);
-            moveBackward = angle < -135f || angle >= 135f;
-            moveRight = CheckAngleInRange(angle, 45f, 135f);
-            moveLeft = CheckAngleInRange(angle, -135f, -45f);
+                if (moveDir.magnitude > 1) moveDir.Normalize();
+                if (isRun) moveDir *= run;
 
-            anim.SetBool("Forward", moveForward);
-            anim.SetBool("Back", moveBackward);
-            anim.SetBool("Right", moveRight);
-            anim.SetBool("Left", moveLeft);
+                float angle = Vector3.Angle(transform.forward, moveDir);
+                angle *= horizontal < 0 ? -1 : 1;
 
-            anim.SetFloat("Speed", moveDir.magnitude);
+                bool moveForward, moveBackward, moveRight, moveLeft;
 
-            moveDir *= speed;
-            airTimer = .0f;
+                moveForward = CheckAngleInRange(angle, -45f, 45f);
+                moveBackward = angle < -135f || angle >= 135f;
+                moveRight = CheckAngleInRange(angle, 45f, 135f);
+                moveLeft = CheckAngleInRange(angle, -135f, -45f);
+
+                anim.SetBool("Forward", moveForward);
+                anim.SetBool("Back", moveBackward);
+                anim.SetBool("Right", moveRight);
+                anim.SetBool("Left", moveLeft);
+
+                anim.SetFloat("Speed", moveDir.magnitude);
+
+                moveDir *= speed;
+                airTimer = .0f;
+            }
+            else
+            {
+                if (!isWater && Input.GetKey(Settings.instance.GetKey(KeySettings.JumpKey)) && jumpTimer >= jumpDelay)
+                {
+                    jumpTimer = .0f;
+                    anim.SetBool("Air", true);
+                    gravityY = jump * (1f - hitNormal.y);
+                    moveDir.x += (1f - hitNormal.y) * hitNormal.x * jump / 3f;
+                    moveDir.z += (1f - hitNormal.y) * hitNormal.z * jump / 3f;
+                }
+                moveDir.x = Mathf.Lerp(moveDir.x, (1f - hitNormal.y) * hitNormal.x * speed / 2f, Time.deltaTime * 12f);
+                moveDir.z = Mathf.Lerp(moveDir.z, (1f - hitNormal.y) * hitNormal.z * speed / 2f, Time.deltaTime * 12f);
+            }
         }
         else
         {
             airTimer += delta;
         }
 
-        if (isWater)
-        {
-            if (Input.GetKey(Settings.instance.GetKey(KeySettings.JumpKey)))
-            {
-                anim.SetBool("Air", true);
-                gravityY = 4.4f;
-            }
-            gravityY = Mathf.Lerp(gravityY, .0f, delta * 3f);
-            moveDir.y = gravityY;
-        }
-        else
-        {
-            gravityY += Physics.gravity.y * delta;
-            moveDir.y = gravityY;
-        }
+        gravityY += Physics.gravity.y * delta;
+        moveDir.y = gravityY;
 
         controller.Move(moveDir * delta);
 
@@ -668,5 +693,10 @@ public class PlayerController : MonoBehaviour
             Debug.Log(other.name, other.gameObject);
             isWater = false;
         }
+    }
+
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        hitNormal = hit.normal;
     }
 }
