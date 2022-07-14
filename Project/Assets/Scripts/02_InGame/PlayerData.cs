@@ -8,6 +8,7 @@ using Photon.Realtime;
 public class PlayerData : MonoBehaviourPun, IPunObservable
 {
     [SerializeField] private Transform nickname;
+    [SerializeField] private GameObject[] childs;
 
     private CharacterController controller;
     private Animator anim;
@@ -48,6 +49,14 @@ public class PlayerData : MonoBehaviourPun, IPunObservable
             //}
         }
         nickname.LookAt(Camera.main.transform);
+    }
+
+    public void DestroyPlayer()
+    {
+        for (int i = 0; i < childs.Length; i++)
+        {
+            childs[i].gameObject.SetActive(false);
+        }
     }
 
 

@@ -217,12 +217,12 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
         EventManager.AddEvent("Refresh Cold", (p) =>
         {
             float value = (float)p[0];
-            areaThirstyValue.fillAmount = value;
+            areaColdValue.fillAmount = value;
 
-            if (value >= .6f) areaThirstyValue.color = new Color(.8f, .8f, .8f);
-            else if (value >= .3f) areaThirstyValue.color = Color.white;
-            else if (value >= .15f) areaThirstyValue.color = new Color(1, 1, .4f);
-            else areaThirstyValue.color = new Color(1, .4f, .4f);
+            if (value >= .6f) areaColdValue.color = new Color(.8f, .8f, .8f);
+            else if (value >= .3f) areaColdValue.color = Color.white;
+            else if (value >= .15f) areaColdValue.color = new Color(1, 1, .4f);
+            else areaColdValue.color = new Color(1, .4f, .4f);
         });
         EventManager.AddEvent("InGameUI :: SetDie", (p) =>
         {

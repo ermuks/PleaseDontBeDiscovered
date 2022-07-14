@@ -1031,6 +1031,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nickname: {fileID: 1702679896}
+  childs: []
 --- !u!114 &5371547621946169775
 MonoBehaviour:
   m_ObjectHideFlags: 0
