@@ -183,13 +183,31 @@ public class PlayerController : MonoBehaviour
         {
             canBreath = false;
         });
+        EventManager.AddEvent("Player :: EndGame", (p) =>
+        {
+            GameObject spawnArea;
+            if ((bool)p[0] == isMurder) {
+                spawnArea =
+                isMurder ?
+                GameObject.FindGameObjectWithTag("MurdererSpawnZone") :
+                GameObject.FindGameObjectWithTag("PlayerSpawnZone");
+                Bounds bounds = spawnArea.GetComponent<Collider>().bounds;
+
+                float x = bounds.extents.x;
+                float y = bounds.extents.y;
+                float z = bounds.extents.z;
+                controller.enabled = false;
+                transform.position = bounds.center + new Vector3(Random.Range(-x, x), Random.Range(-y, y), Random.Range(-z, z));
+                controller.enabled = true;
+            }
+        });
     }
 
     private void Start()
     {
         if ((bool)PhotonNetwork.CurrentRoom.CustomProperties["startItem"])
         {
-            ItemManager.SetItemRandom(1, 2);
+            ItemManager.SetItemRandom();
         }
     }
 

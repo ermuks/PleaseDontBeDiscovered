@@ -47,7 +47,17 @@ public class PlayerData : MonoBehaviourPun, IPunObservable
         {
             
         }
-        nickname.rotation = Quaternion.FromToRotation(Vector3.forward, Camera.main.transform.rotation * Vector3.forward);
+        nickname.rotation = Camera.main.transform.rotation;
+    }
+
+    private void WalkSound()
+    {
+        EventManager.SendEvent(
+            "Sound :: Create 3D",
+            $"FootstepGrass0{Random.Range(1, 4)}",
+            controller.bounds.center + Vector3.down * controller.bounds.extents.y, 
+            17f, 
+            .4f);
     }
 
     public void DestroyPlayer()

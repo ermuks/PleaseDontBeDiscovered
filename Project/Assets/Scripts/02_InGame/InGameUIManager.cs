@@ -48,6 +48,9 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
     [SerializeField] private Transform voteEndingCamPosition;
     [SerializeField] private Transform voteEndingCamAnimation;
 
+    [SerializeField] private Transform playerCamera;
+    [SerializeField] private Transform murdererCamera;
+
     private void Awake()
     {
         messageUIPrefab = Resources.Load<GameObject>("Prefabs/UI/InGameMessageUI");
@@ -86,6 +89,9 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
             votePlayer.Init(player, null);
             playerList.Add(votePlayer);
         }
+
+        EventManager.AddData("InGameUI >> playerCamera", (p) => playerCamera);
+        EventManager.AddData("InGameUI >> murdererCamera", (p) => murdererCamera);
 
         EventManager.AddData("InGameUI >> VoteUIActive", (p) => areaVote.activeSelf);
         EventManager.AddData("InGameUI >> VoteEndingPosition", (p) => voteEndingCamPosition);
@@ -263,13 +269,14 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
         });
         EventManager.AddEvent("InGameUI :: GameOver", (p) =>
         {
-            bool murderWin = (bool)p[0];
+            bool murdererWin = (bool)p[0];
             areaPlayerUI.SetActive(false);
             areaDieUI.SetActive(false);
             areaWatcherUI.SetActive(false);
             areaGameOver.SetActive(true);
             Cursor.lockState = CursorLockMode.None;
-            areaGameOver.GetComponent<GameOverUI>().SetGameOver(murderWin);
+            areaGameOver.GetComponent<GameOverUI>().SetGameOver(murdererWin);
+            EventManager.SendEvent("Player :: EndGame", murdererWin);
         });
         EventManager.AddEvent("InGameUI :: TriggerEnter", (p) =>
         {

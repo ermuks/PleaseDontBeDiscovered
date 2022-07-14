@@ -12,6 +12,9 @@ public class GameOverUI : MonoBehaviour
     [SerializeField] private Image imgWinnerBackground;
     [SerializeField] private Button btnReturnRoom;
 
+    [SerializeField] private GameObject playerWinObject;
+    [SerializeField] private GameObject murdererWinObject;
+
     private void Awake()
     {
         btnReturnRoom.onClick.AddListener(() =>
@@ -22,6 +25,8 @@ public class GameOverUI : MonoBehaviour
 
     public void SetGameOver(bool murderWin)
     {
+        playerWinObject.SetActive(!murderWin);
+        murdererWinObject.SetActive(murderWin);
         if (murderWin)
         {
             txtWinner.text = Strings.GetString(StringKey.InGameMurderWin);

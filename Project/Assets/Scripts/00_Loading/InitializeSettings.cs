@@ -13,13 +13,8 @@ public class InitializeSettings : MonoBehaviour
         {
             DontDestroyOnLoad(objects[i]);
         }
-        ItemManager.AddItem(
-            new ItemData(
-                "0000", 
-                Strings.GetString(StringKey.ItemFish),
-                Strings.GetString(StringKey.ItemFishDescript), 
-                3, 
-                "Item :: Fish"));
+        ItemManager.AddItem(new ItemData("0000", Strings.GetString(StringKey.ItemFish), Strings.GetString(StringKey.ItemFishDescript), 3,
+            "Item :: Fish"));
 
         ItemManager.AddItem(new ItemData("0001", Strings.GetString(StringKey.ItemGrilledFish), Strings.GetString(StringKey.ItemGrilledFishDescript), 3, 
             "Item :: GrilledFish"));
@@ -41,5 +36,11 @@ public class InitializeSettings : MonoBehaviour
 
         ItemManager.AddItem(new ItemData("0007", Strings.GetString(StringKey.ItemWood), Strings.GetString(StringKey.ItemWoodDescript), 10, 
             "Item :: Wood"));
+
+        AudioClip[] clips = Resources.LoadAll<AudioClip>("Sounds");
+        for (int i = 0; i < clips.Length; i++)
+        {
+            SoundManager.AddItem(clips[i]);
+        }
     }
 }
