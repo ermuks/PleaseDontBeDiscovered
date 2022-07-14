@@ -45,12 +45,9 @@ public class PlayerData : MonoBehaviourPun, IPunObservable
         Vector3 point2 = controller.bounds.center - Vector3.up * (controller.height - controller.radius * 2) / 2;
         if (controller.isGrounded || Physics.CapsuleCast(point1, point2, controller.radius, Vector3.down, .02f, ~(1 << gameObject.layer)))
         {
-            //if (anim.GetBool("Run"))
-            //{
-
-            //}
+            
         }
-        nickname.LookAt(Camera.main.transform);
+        nickname.rotation = Quaternion.FromToRotation(Vector3.forward, Camera.main.transform.rotation * Vector3.forward);
     }
 
     public void DestroyPlayer()
