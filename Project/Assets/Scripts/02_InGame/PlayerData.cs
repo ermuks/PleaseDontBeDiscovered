@@ -8,8 +8,10 @@ using Photon.Realtime;
 public class PlayerData : MonoBehaviourPun, IPunObservable
 {
     [SerializeField] private Transform nickname;
+    [SerializeField] private GameObject reportArea;
     [SerializeField] private GameObject[] childs;
 
+    public GameObject ReportArea => reportArea;
     private CharacterController controller;
     private Animator anim;
 
@@ -57,8 +59,13 @@ public class PlayerData : MonoBehaviourPun, IPunObservable
         {
             childs[i].gameObject.SetActive(false);
         }
+        reportArea.SetActive(false);
     }
 
+    private void EnableReportArea()
+    {
+        reportArea.SetActive(true);
+    }
 
     private void VoteDie()
     {

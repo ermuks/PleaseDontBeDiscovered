@@ -38,9 +38,6 @@ public class NetworkManager_InGame : MonoBehaviourPunCallbacks
         });
         EventManager.SendEvent("InGameData :: PlayerPositionSetting");
 
-        EventManager.AddData("InGameData >> FinishVoteAnimationPlaying", (p) => isFinishVote);
-        EventManager.AddData("InGameData >> AlreadyVoted", (p) => isAlreadyVoted);
-
         EventManager.AddEvent("InGameData :: FinishVoteAnimationPlaying", (p) =>
         {
             isFinishVote = (bool)p[0];
@@ -49,6 +46,13 @@ public class NetworkManager_InGame : MonoBehaviourPunCallbacks
         {
             isAlreadyVoted = (bool)p[0];
         });
+        EventManager.AddEvent("InGameData :: ClearDeadPlayer", (p) =>
+        {
+            ClearDeadPlayer();
+        });
+
+        EventManager.AddData("InGameData >> FinishVoteAnimationPlaying", (p) => isFinishVote);
+        EventManager.AddData("InGameData >> AlreadyVoted", (p) => isAlreadyVoted);
 
         //GameObject[] inventoryArea = GameObject.FindGameObjectsWithTag("InventoryArea");
         //for (int i = 0; i < inventoryArea.Length; i++)
@@ -82,6 +86,19 @@ public class NetworkManager_InGame : MonoBehaviourPunCallbacks
                 {
                     EventManager.SendEvent("InGameUI :: CloseVoteUI");
                 }
+            }
+        }
+    }
+
+    private void ClearDeadPlayer()
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        for (int i = 0; i < players.Length; i++)
+        {
+            Player p = players[i].GetComponent<PhotonView>().Owner;
+            if ((bool)p.CustomProperties["isDead"])
+            {
+                players[i].GetComponent<PlayerData>().DestroyPlayer();
             }
         }
     }

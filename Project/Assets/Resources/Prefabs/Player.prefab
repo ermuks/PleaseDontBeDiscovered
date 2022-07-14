@@ -209,9 +209,8 @@ Transform:
   m_Children:
   - {fileID: 1702679896}
   - {fileID: 4748319938850164648}
-  - {fileID: 3030471643703880940}
   m_Father: {fileID: 7323305051471309197}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4249846437634859668
 GameObject:
@@ -989,6 +988,7 @@ Transform:
   - {fileID: 7323305051471309305}
   - {fileID: 73600484608981552}
   - {fileID: 4425443498558820467}
+  - {fileID: 3030471643703880940}
   - {fileID: 2259946059354609174}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -1031,7 +1031,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nickname: {fileID: 1702679896}
-  childs: []
+  reportArea: {fileID: 7874891367804078727}
+  childs:
+  - {fileID: 7323305051471148463}
+  - {fileID: 4249846437634859668}
+  - {fileID: 4378917345389080159}
+  - {fileID: 4186874591825060968}
 --- !u!114 &5371547621946169775
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2644,7 +2649,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3030471643703880940}
   - component: {fileID: 47104561457015062}
-  m_Layer: 10
+  m_Layer: 15
   m_Name: ReportArea
   m_TagString: ReportArea
   m_Icon: {fileID: 0}
@@ -2662,8 +2667,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 2259946059354609174}
-  m_RootOrder: 2
+  m_Father: {fileID: 7323305051471309197}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &47104561457015062
 SphereCollider:

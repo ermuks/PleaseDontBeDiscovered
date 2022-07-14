@@ -153,6 +153,7 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
             areaDieUI.SetActive(false);
             areaTriggerParent.SetActive(false);
             EventManager.SendEvent("InGameData :: PlayerPositionSetting");
+            EventManager.SendEvent("InGameData :: ClearDeadPlayer");
         });
         EventManager.AddEvent("InGameUI :: FinishVoteAnimationPlaying", (p) =>
         {

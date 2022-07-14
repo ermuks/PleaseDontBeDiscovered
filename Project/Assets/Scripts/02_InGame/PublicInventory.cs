@@ -12,32 +12,38 @@ public class PublicInventory : MonoBehaviourPun, IPunObservable
 
     private void Awake()
     {
+        index = photonView.ViewID;
         inventory = new Inventory(9);
         inventory.AddItem("0002", 9);
         EventManager.AddEvent("InventoryData :: SendData" + $"{index}", (p) =>
         {
-            photonView.RPC("GetInventoryData", RpcTarget.All, (string)p[0]);
+            photonView.RPC("GetInventoryData", RpcTarget.All, (string)p[0], index);
         });
     }
 
     [PunRPC]
-    private void GetInventoryData(string json)
+    private void GetInventoryData(string json, int index)
     {
-        InventoryInfo inventoryData = JsonUtility.FromJson<InventoryInfo>(json);
-        for (int i = 0; i < inventoryData.cells.Length; i++)
+        Debug.Log(json);
+        Debug.Log(index);
+        if (this.index == index)
         {
-            if (inventoryData.cells[i].itemCode != "")
+            InventoryInfo inventoryData = JsonUtility.FromJson<InventoryInfo>(json);
+            for (int i = 0; i < inventoryData.cells.Length; i++)
             {
-                inventory[i].data = ItemManager.GetItem(inventoryData.cells[i].itemCode);
-                inventory[i].itemCount = inventoryData.cells[i].itemCount;
+                if (inventoryData.cells[i].itemCode != "")
+                {
+                    inventory[i].data = ItemManager.GetItem(inventoryData.cells[i].itemCode);
+                    inventory[i].itemCount = inventoryData.cells[i].itemCount;
+                }
+                else
+                {
+                    inventory[i].data = new ItemData("", "", "", -1, "");
+                    inventory[i].itemCount = 0;
+                }
             }
-            else
-            {
-                inventory[i].data = new ItemData("", "", "", -1, "");
-                inventory[i].itemCount = 0;
-            }
+            EventManager.SendEvent("InventoryUI :: Refresh");
         }
-        EventManager.SendEvent("InventoryUI :: Refresh");
     }
 
     public string InventoryToJson()

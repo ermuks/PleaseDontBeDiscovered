@@ -195,7 +195,6 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        Debug.DrawLine(controller.bounds.center, controller.bounds.center + Vector3.down * (controller.bounds.extents.y + .42f), Color.red);
         if (Input.GetKeyDown(KeyCode.H))
         {
             isWorking = false;
@@ -398,7 +397,6 @@ public class PlayerController : MonoBehaviour
     private void CameraRotate()
     {
         bool isRun = Input.GetKey(Settings.instance.GetKey(KeySettings.RunKey));
-        Debug.DrawLine(camParent.position, camParent.position + -cam.forward * (isRun ? runDistance : normalDistance), Color.red);
         if (Physics.Raycast(camParent.position, -cam.forward, out RaycastHit hit, isRun ? runDistance : normalDistance, ~(1 << gameObject.layer), QueryTriggerInteraction.Ignore))
         {
             currentDistance = hit.distance;
@@ -530,7 +528,6 @@ public class PlayerController : MonoBehaviour
                     EventManager.SendEvent("Player :: FallingDamage", gravityY + 10f);
                     slowTimer = .0f;
                 }
-                Debug.Log(gravityY);
                 gravityY = .0f;
                 if (!isWater && Input.GetKey(Settings.instance.GetKey(KeySettings.JumpKey)) && jumpTimer >= jumpDelay)
                 {
@@ -678,6 +675,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (other.gameObject == GetComponent<PlayerData>().ReportArea) return;
         EventManager.SendEvent("InGameUI :: TriggerEnter", other);
         if (other.CompareTag("DeepWater"))
         {
