@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EventManager : MonoBehaviour
+public class EventManager
 {
     public delegate void OnEvent(params object[] param);
     public delegate object GetDataFunction(params object[] param);
@@ -26,19 +26,19 @@ public class EventManager : MonoBehaviour
     {
         if (key == "")
         {
-            //#if UNITY_EDITOR
+            #if UNITY_EDITOR
             if (key.IndexOf("Refresh") == -1 && key.IndexOf("SetKillCooldown") == -1 && key.IndexOf("FollowItem") == -1)
             {
                 Debug.Log($"<b><color=#ff2025>[ Fail ]</color></b>\nEvent Key : <color=#c9f5f9>{key}</color>\nParameters Count : <color=#c9f5f9>{param.Length}</color>");
             }
-            //#endif
+            #endif
         }
         else
         {
             if (eventList.ContainsKey(key))
             {
                 eventList[key](param);
-                //#if UNITY_EDITOR
+                #if UNITY_EDITOR
                 if (key.IndexOf("Refresh") == -1 && key.IndexOf("SetKillCooldown") == -1 && key.IndexOf("FollowItem") == -1)
                 {
                     string p = "";
@@ -48,7 +48,7 @@ public class EventManager : MonoBehaviour
                     }
                     Debug.Log($"<color=#fff335>[ Success ]</color>\nEvent Key : <color=#c9f5f9>{key}</color>{p}");
                 }
-                //#endif
+                #endif
             }
         }
     }

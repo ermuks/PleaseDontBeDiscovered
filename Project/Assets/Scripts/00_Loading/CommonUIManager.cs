@@ -4,11 +4,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class PopupMessage : MonoBehaviour
+public class CommonUIManager : MonoBehaviour
 {
     [SerializeField] private GameObject areaMessagePopupUI;
     [SerializeField] private TMP_Text txtContent;
     [SerializeField] private Button btnSubmit;
+
+    [SerializeField] private GameObject areaSettings;
+    [SerializeField] private Button[] btnTabs;
 
     private void Awake()
     {
@@ -27,9 +30,12 @@ public class PopupMessage : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Return) && areaMessagePopupUI.activeSelf)
+        if (areaMessagePopupUI.activeSelf)
         {
-            areaMessagePopupUI.SetActive(false);
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                areaMessagePopupUI.SetActive(false);
+            }
         }
     }
 }

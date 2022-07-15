@@ -38,6 +38,10 @@ public class Settings : MonoBehaviour
     public bool isDebug = true;
     public bool isMurderMode = true;
 
+    public bool isFullScreen;
+    public bool isAntiAliasing;
+    public bool isVSync;
+
     private Dictionary<KeySettings, KeyCode> keys = new Dictionary<KeySettings, KeyCode>();
 
     private KeyCode[] defaultKeys = {
@@ -97,6 +101,29 @@ public class Settings : MonoBehaviour
                 Debug.Log($"{p.Key} :: {p.Value}");
             }
             EventManager.SendEvent("InGameUI :: CreateMessage", "디버그용 버튼 (F5)");
+        }
+    }
+
+    public void SetAntiAliasing(bool value)
+    {
+        QualitySettings.antiAliasing = value ? 3 : 0;
+    }
+
+    public void SetVSync(bool value)
+    {
+        QualitySettings.vSyncCount = value ? 1 : 0;
+    }
+
+    public void SetFullScreen(bool value)
+    {
+        Screen.fullScreen = value;
+    }
+
+    public void SetWindow(int width, int height)
+    {
+        if (!Screen.fullScreen)
+        {
+            Screen.SetResolution(width, height, false);
         }
     }
 }
