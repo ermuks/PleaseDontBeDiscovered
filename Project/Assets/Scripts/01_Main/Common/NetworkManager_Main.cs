@@ -15,7 +15,6 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
     [Header("UI Settings")]
     [SerializeField] private GameObject areaInputNickname;
     [SerializeField] private GameObject areaRoomList;
-    [SerializeField] private GameObject areaPlayerSettings;
     [SerializeField] private GameObject areaRoomSettings;
     [SerializeField] private GameObject areaRoomUI;
 
@@ -311,7 +310,6 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
     private void CheckRoomLobby()
     {
         areaRoomSettings.SetActive(false);
-        areaPlayerSettings.SetActive(false);
         if (PhotonNetwork.InRoom)
         {
             areaInputNickname.SetActive(false);
@@ -601,7 +599,7 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
 
         btnPlayerSettings.onClick.AddListener(() =>
         {
-            areaPlayerSettings.SetActive(true);
+            // 세팅창 열기
         });
         btnRoomSettings.onClick.AddListener(() =>
         {
