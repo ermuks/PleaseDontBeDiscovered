@@ -32,6 +32,6 @@ public class SoundPlayer : MonoBehaviour
     {
         if (audio == null) audio = GetComponent<AudioSource>();
         yield return new WaitUntil(() => !audio.isPlaying);
-        //Destroy(gameObject);
+        Destroy(gameObject);
     }
 }
