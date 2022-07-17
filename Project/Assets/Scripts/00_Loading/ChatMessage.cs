@@ -8,10 +8,9 @@ using Photon.Realtime;
 
 public class ChatMessage : MonoBehaviour
 {
-    [SerializeField] private Image imgNicknameBackground;
     [SerializeField] private Image imgContentBackground;
-    [SerializeField] private TMP_Text txtNickname;
-    [SerializeField] private TMP_Text txtContent;
+    [SerializeField] private Text txtNickname;
+    [SerializeField] private Text txtContent;
 
     public void SetMessage(Player player, string message, bool richText, bool inGame = false)
     {
@@ -20,7 +19,6 @@ public class ChatMessage : MonoBehaviour
         {
             if (player.IsMasterClient && !inGame)
             {
-                imgNicknameBackground.color = new Color(.6f, .4f, .4f);
                 imgContentBackground.color = new Color(.9f, .8f, .8f);
                 txtNickname.color = new Color(.9f, .8f, .8f);
             }
@@ -29,7 +27,7 @@ public class ChatMessage : MonoBehaviour
 
         if (txtNickname != null) txtNickname.text = nickname;
         txtContent.text = message;
-        txtContent.richText = richText;
+        txtContent.supportRichText = richText;
     }
 
     public void SetMessage(string message, bool richText)

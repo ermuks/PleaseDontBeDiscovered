@@ -607,6 +607,10 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
             {
                 areaRoomSettings.SetActive(true);
             }
+            else
+            {
+                EventManager.SendEvent("PopupMessage", $"권한이 없습니다.");
+            }
         });
     }
     // ***** CreateRoom ***** //

@@ -11,7 +11,8 @@ public class ChattingCallbacks : MonoBehaviourPun, IPunObservable
     [SerializeField]
     private Transform chatParent;
 
-    private GameObject chatPrefab;
+    private GameObject myPrefab;
+    private GameObject otherPrefab;
     private GameObject alamPrefab;
     private GameObject noticePrefab;
 
@@ -21,7 +22,8 @@ public class ChattingCallbacks : MonoBehaviourPun, IPunObservable
 
     private void Awake()
     {
-        chatPrefab = Resources.Load<GameObject>("Prefabs/UI/ChatMessage");
+        myPrefab = Resources.Load<GameObject>("Prefabs/UI/MyMessage");
+        otherPrefab = Resources.Load<GameObject>("Prefabs/UI/ChatMessage");
         alamPrefab = Resources.Load<GameObject>("Prefabs/UI/AlamMessage");
         noticePrefab = Resources.Load<GameObject>("Prefabs/UI/NoticeMessage");
 
@@ -66,6 +68,15 @@ public class ChattingCallbacks : MonoBehaviourPun, IPunObservable
 
     private void AddMessage(Player player, string message, bool richText)
     {
+        GameObject chatPrefab;
+        if (player == PhotonNetwork.LocalPlayer)
+        {
+            chatPrefab = myPrefab;
+        }
+        else
+        {
+            chatPrefab = otherPrefab;
+        }
         ChatMessage item = Instantiate(chatPrefab, chatParent).GetComponent<ChatMessage>();
         item.SetMessage(player, message, richText);
         StartCoroutine(ReCalculateChattingHeight());
