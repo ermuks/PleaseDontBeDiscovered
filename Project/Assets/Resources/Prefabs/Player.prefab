@@ -1044,6 +1044,7 @@ MonoBehaviour:
   objGlovesLeft: {fileID: 0}
   objGlovesRight: {fileID: 0}
   objShoes: {fileID: 0}
+  skin: {fileID: 7323305051459582125}
 --- !u!114 &5371547621946169775
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1226,7 +1227,7 @@ SkinnedMeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   serializedVersion: 2
-  m_Quality: 0
+  m_Quality: 4
   m_UpdateWhenOffscreen: 0
   m_SkinnedMotionVectors: 1
   m_Mesh: {fileID: 4300000, guid: e4299bf26a09e9049839e1a1b75e562c, type: 3}

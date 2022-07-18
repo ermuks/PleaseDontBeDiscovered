@@ -7,9 +7,25 @@ using Photon.Realtime;
 
 public class NetworkManager_Loading : MonoBehaviourPunCallbacks
 {
+    int color;
+
     private void Awake()
     {
+        LoadData();
         PhotonNetwork.ConnectUsingSettings();
+    }
+
+    private void LoadData()
+    {
+        if (PlayerPrefs.HasKey("color"))
+        {
+            color = PlayerPrefs.GetInt("color");
+        }
+        else
+        {
+            color = Random.Range(0, 18);
+            PlayerPrefs.SetInt("color", color);
+        }
     }
 
     public override void OnConnectedToMaster()
@@ -21,7 +37,7 @@ public class NetworkManager_Loading : MonoBehaviourPunCallbacks
             { "isMurder", false },
             { "alreadyVoted", false },
             { "voteMembers", 0 },
-            { "color", new Color(0, 0, 0) }
+            { "color", color }
         });
         EventManager.SendEvent("OpenScene", "Main");
     }

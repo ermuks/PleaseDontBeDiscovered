@@ -5,8 +5,44 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 
+public enum PlayerColor
+{
+    Red = 0, Orange, Pink, Yellow, 
+    Apricot, Lime, LightGreen, Green, 
+    Mint, Cyan, Blue, Purple, 
+    Lavender, Magenta, Black, Brown, 
+    LightBrown, Gray
+}
+
 public class PlayerData : MonoBehaviourPun, IPunObservable
 {
+    public static Color GetColor(Player player)
+    {
+        Color[] colors = new Color[]
+        {
+            new Color(1f, 0f, 0f), // Red
+            new Color(1f, .5f, 0f), // Orange
+            new Color(1f, .5f, 1f), // Pink
+            new Color(1f, 1f, 0f), // Yellow
+            new Color(1f, .8f, .5f), // Apricot
+            new Color(.5f, 1f, .5f), // Lime
+            new Color(0f, 0f, 1f), // LightGreen
+            new Color(0f, 0f, .5f), // Green
+            new Color(.5f, 1f, .8f), // Mint
+            new Color(0f, 1f, 1f), // Cyan
+            new Color(0f, 0f, 1f), // Blue
+            new Color(.5f, 0f, 1f), // Purple
+            new Color(.8f, .5f, 1f), // Lavender
+            new Color(.2f, .2f, .2f), // Black
+            new Color(.5f, .2f, 0f), // Brown
+            new Color(.8f, .4f, .2f), // LightBrown
+            new Color(.6f, .6f, .6f), // Gray
+        };
+        int index = (int)player.CustomProperties["color"];
+        index = Mathf.Clamp(index, 0, colors.Length - 1);
+        return colors[index];
+    }
+
     [SerializeField] private Transform nickname;
     [SerializeField] private GameObject reportArea;
     [SerializeField] private GameObject[] childs;
@@ -23,11 +59,17 @@ public class PlayerData : MonoBehaviourPun, IPunObservable
     private CharacterController controller;
     private Animator anim;
 
+    [SerializeField]
+    private SkinnedMeshRenderer skin;
+
     private void Awake()
     {
+        Player player = photonView.Owner;
         controller = GetComponent<CharacterController>();
         anim = GetComponent<Animator>();
-        nickname.GetComponent<TMPro.TMP_Text>().text = photonView.Owner.NickName;
+        nickname.GetComponent<TMPro.TMP_Text>().text = player.NickName;
+        skin.material.SetColor("_Color", GetColor(player));
+
         if (photonView.IsMine)
         {
             nickname.gameObject.SetActive(false);

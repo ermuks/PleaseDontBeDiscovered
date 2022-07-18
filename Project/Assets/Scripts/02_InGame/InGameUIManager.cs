@@ -28,6 +28,7 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
 
     [SerializeField] private GameObject areaTriggerParent;
     [SerializeField] private GameObject areaTrigger;
+    [SerializeField] private GameObject areaCCTV;
     [SerializeField] private GameObject areaWater;
     [SerializeField] private GameObject areaDieUI;
     [SerializeField] private GameObject areaInventory;
@@ -66,6 +67,7 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
         areaGameOver.SetActive(false);
         areaTriggerParent.SetActive(true);
         areaTrigger.SetActive(false);
+        areaCCTV.SetActive(false);
         areaVote.SetActive(false);
         areaPlayerWorkProgressUI.SetActive(false);
 
@@ -369,6 +371,16 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
         {
             Cursor.lockState = CursorLockMode.Locked;
             areaInventory.SetActive(false);
+        });
+        EventManager.AddEvent("InGameUI :: OpenCCTV", (p) =>
+        {
+            Cursor.lockState = CursorLockMode.None;
+            areaCCTV.SetActive(true);
+        });
+        EventManager.AddEvent("InGameUI :: CloseCCTV", (p) =>
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            areaCCTV.SetActive(false);
         });
     }
 

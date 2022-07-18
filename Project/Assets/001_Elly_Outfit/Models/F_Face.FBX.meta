@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: 32497dcd3fa128943a634269547d8f40
 ModelImporter:
-  serializedVersion: 19300
+  serializedVersion: 20200
   internalIDToNameTable: []
   externalObjects:
   - first:
@@ -28,7 +28,7 @@ ModelImporter:
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
     importConstraints: 0
-    animationCompression: 1
+    animationCompression: 3
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
@@ -48,11 +48,13 @@ ModelImporter:
     importBlendShapes: 1
     importCameras: 1
     importLights: 1
+    fileIdsGeneration: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
     keepQuads: 0
     weldVertices: 1
+    bakeAxisConversion: 0
     preserveHierarchy: 0
     skinWeightsMode: 0
     maxBonesPerVertex: 4
@@ -62,6 +64,9 @@ ModelImporter:
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 1
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
     useFileScale: 1
   tangentSpace:
@@ -77,7 +82,12 @@ ModelImporter:
   humanDescription:
     serializedVersion: 3
     human: []
-    skeleton: []
+    skeleton:
+    - name: F_Face(Clone)
+      parentName: 
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0.00000008146034, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
     armTwist: 0.5
     foreArmTwist: 0.5
     upperLegTwist: 0.5
@@ -95,6 +105,7 @@ ModelImporter:
   animationType: 2
   humanoidOversampling: 1
   avatarSetup: 0
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 0
   additionalBone: 0
   userData: 
   assetBundleName: 

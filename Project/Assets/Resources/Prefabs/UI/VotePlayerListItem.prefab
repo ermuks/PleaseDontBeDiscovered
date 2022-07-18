@@ -801,7 +801,7 @@ MonoBehaviour:
   areaVoteButtons: {fileID: 2890207399107902127}
   imgProfile: {fileID: 8474143057710592483}
   imgDie: {fileID: 5967429759370283155}
-  txtNickname: {fileID: 0}
+  txtNickname: {fileID: 5960094346140464814}
   btnSelect: {fileID: 3970633764107364824}
   btnCancel: {fileID: 2347162702344298740}
 --- !u!114 &4547273835348968729

@@ -1334,7 +1334,7 @@ MonoBehaviour:
   nickname: {fileID: 1702679896}
   reportArea: {fileID: 7874891367804078727}
   childs:
-  - {fileID: 0}
+  - {fileID: 4814574529287998011}
   - {fileID: 4249846437634859668}
   - {fileID: 4378917345389080159}
   - {fileID: 4186874591825060968}
@@ -1345,6 +1345,7 @@ MonoBehaviour:
   objGlovesLeft: {fileID: 0}
   objGlovesRight: {fileID: 0}
   objShoes: {fileID: 0}
+  skin: {fileID: 0}
 --- !u!114 &5371547621946169775
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1427,99 +1428,13 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7323305051471148461}
   m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: e4299bf26a09e9049839e1a1b75e562c, type: 3}
+  m_Avatar: {fileID: 9000000, guid: 05eb46d6197a716479046354399999c3, type: 3}
   m_Controller: {fileID: 9100000, guid: 6fc43c80363b10246b74e220cea32bae, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
-  m_WarningMessage: '
-
-    Transform ''LeftToes'' has been deleted
-
-    Transform
-    ''LeftFoot'' has been deleted
-
-    Transform ''LeftLeg'' has been deleted
-
-    Transform
-    ''LeftUpLeg'' has been deleted
-
-    Transform ''RightToes'' has been deleted
-
-    Transform
-    ''RightFoot'' has been deleted
-
-    Transform ''RightLeg'' has been deleted
-
-    Transform
-    ''RightUpLeg'' has been deleted
-
-    Transform ''LeftHandIndex3'' has been deleted
-
-    Transform
-    ''LeftHandIndex2'' has been deleted
-
-    Transform ''LeftHandIndex1'' has been
-    deleted
-
-    Transform ''LeftHandThumb2'' has been deleted
-
-    Transform ''LeftHandThumb1''
-    has been deleted
-
-    Transform ''LeftHand'' has been deleted
-
-    Transform
-    ''LeftForeArm'' has been deleted
-
-    Transform ''LeftArm'' has been deleted
-
-    Transform
-    ''LeftShoulder'' has been deleted
-
-    Transform ''Head'' has been deleted
-
-    Transform
-    ''Neck'' has been deleted
-
-    Transform ''RightHandIndex3'' has been deleted
-
-    Transform
-    ''RightHandIndex2'' has been deleted
-
-    Transform ''RightHandIndex1'' has been
-    deleted
-
-    Transform ''RightHandThumb2'' has been deleted
-
-    Transform ''RightHandThumb1''
-    has been deleted
-
-    Transform ''RightHand'' has been deleted
-
-    Transform
-    ''RightForeArm'' has been deleted
-
-    Transform ''RightArm'' has been deleted
-
-    Transform
-    ''RightShoulder'' has been deleted
-
-    Transform ''UpperChest'' has been deleted
-
-    Transform
-    ''Chest'' has been deleted
-
-    Transform ''Spine'' has been deleted
-
-    Transform
-    ''Hips'' has been deleted
-
-    Transform ''HipsCtrl'' has been deleted
-
-    Transform
-    ''Root'' has been deleted'
+  m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
