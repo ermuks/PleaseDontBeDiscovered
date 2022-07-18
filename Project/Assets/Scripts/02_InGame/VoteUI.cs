@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 using Photon.Pun;
 using TMPro;
@@ -8,6 +9,7 @@ using TMPro;
 public class VoteUI : MonoBehaviourPunCallbacks
 {
     [SerializeField] private TMP_Text txtVoteTime;
+    [SerializeField] private Image imgVoteGauge;
 
     bool isVoting = false;
     float timer = .0f;
@@ -38,7 +40,28 @@ public class VoteUI : MonoBehaviourPunCallbacks
                     PhotonNetwork.CurrentRoom.SetCustomProperties(roomProperties);
                 }
             }
-            txtVoteTime.text = Strings.GetString(StringKey.InGameVoteTimer, $"{maxTime - timer:0}");
+
+            string txtColor = "ffffff";
+            Color imgColor = Color.white;
+            float remainTime = maxTime - timer;
+            if (remainTime <= 5)
+            {
+                imgColor = new Color(224f, 144f, 163f, 255f) / 255f;
+                txtColor = "e090a3";
+            }
+            else if (timer >= maxTime / 2)
+            {
+                imgColor = new Color(255f, 204f, 136f, 255f) / 255f;
+                txtColor = "ffcc88";
+            }
+            else
+            {
+                imgColor = Color.white;
+                txtColor = "ffffff";
+            }
+            txtVoteTime.text = Strings.GetString(StringKey.InGameVoteTimer, $"{maxTime - timer:0}", txtColor);
+            imgVoteGauge.color = imgColor;
+            imgVoteGauge.fillAmount = timer / maxTime;
         }
     }
 

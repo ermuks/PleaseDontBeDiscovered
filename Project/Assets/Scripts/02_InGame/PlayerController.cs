@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
 {
     private float speed = 5f;
     private float run = 1.8f;
+    private float walk = .7f;
     private float jump = 11f;
     private float currentDistance = 2f;
 
@@ -469,6 +470,7 @@ public class PlayerController : MonoBehaviour
         //~(1 << gameObject.layer), QueryTriggerInteraction.Ignore
 
         bool isRun = Input.GetKey(Settings.instance.GetKey(KeySettings.RunKey)) && isMurder;
+        bool isWalk = Input.GetKey(Settings.instance.GetKey(KeySettings.WalkKey));
         bool forward = Input.GetKey(Settings.instance.GetKey(KeySettings.ForwardKey));
         bool backward = Input.GetKey(Settings.instance.GetKey(KeySettings.BackwardKey));
         bool right = Input.GetKey(Settings.instance.GetKey(KeySettings.RightKey));
@@ -536,8 +538,8 @@ public class PlayerController : MonoBehaviour
                 if (right) horizontal += delta * sensitivity;
                 if (left) horizontal -= delta * sensitivity;
 
-                horizontal = Mathf.Clamp(horizontal, -1f, 1f);
-                vertical = Mathf.Clamp(vertical, -1f, 1f);
+                horizontal = Mathf.Clamp(horizontal, -.7f, .7f);
+                vertical = Mathf.Clamp(vertical, -.5f, 1f);
                 anim.SetBool("Air", false);
 
                 if (gravityY < -10f && isFallingDamage)
@@ -559,6 +561,7 @@ public class PlayerController : MonoBehaviour
 
                 if (moveDir.magnitude > 1) moveDir.Normalize();
                 if (isRun) moveDir *= run;
+                if (isWalk) moveDir *= walk;
 
                 float angle = Vector3.Angle(transform.forward, moveDir);
                 angle *= horizontal < 0 ? -1 : 1;

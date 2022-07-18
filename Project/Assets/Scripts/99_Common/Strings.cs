@@ -187,7 +187,7 @@ public static class Strings
                 str.Add(StringKey.InGameFinishVoteMurderFalse, "{0} was not murderer");
                 str.Add(StringKey.InGameFinishVoteMurderCount, "Remain murderer count : {0}");
 
-                str.Add(StringKey.InGameVoteTimer, "Remain time : {0}s");
+                str.Add(StringKey.InGameVoteTimer, "Remain time : <color=#{1}>{0}</color>s");
 
 
 
@@ -274,7 +274,7 @@ public static class Strings
                 str.Add(StringKey.InGameFinishVoteMurderTrue, "{0}님은 <color=#ee3333>범인</color>이였습니다.");
                 str.Add(StringKey.InGameFinishVoteMurderFalse, "{0}님은 <color=#ee3333>범인</color>이 아니였습니다.");
                 str.Add(StringKey.InGameFinishVoteMurderCount, "<color=#ee3333>범인</color>이 {0}명 있습니다.");
-                str.Add(StringKey.InGameVoteTimer, "남은 투표시간 : <color=#ffeeaa>{0}</color> 초");
+                str.Add(StringKey.InGameVoteTimer, "남은 투표시간 : <color=#{1}>{0}</color> 초");
                 break;
             case Language.Japanese:
                 str.Add(StringKey.InitializeConnectingMessage, "サーバーに接続中...");
@@ -357,7 +357,7 @@ public static class Strings
                 str.Add(StringKey.InGameFinishVoteMurderTrue, "{0}님은 <color=#ee3333>범인</color>이였습니다.");
                 str.Add(StringKey.InGameFinishVoteMurderFalse, "{0}님은 <color=#ee3333>범인</color>이 아니였습니다.");
                 str.Add(StringKey.InGameFinishVoteMurderCount, "<color=#ee3333>범인</color>이 {0}명 있습니다.");
-                str.Add(StringKey.InGameVoteTimer, "남은 투표시간 : <color=#ffeeaa>{0}</color> 초");
+                str.Add(StringKey.InGameVoteTimer, "남은 투표시간 : <color=#{1}>{0}</color> 초");
                 break;
             case Language.Chinese:
                 str.Add(StringKey.InitializeConnectingMessage, "正在连接服务器...");
@@ -440,7 +440,7 @@ public static class Strings
                 str.Add(StringKey.InGameFinishVoteMurderTrue, "{0}님은 <color=#ee3333>범인</color>이였습니다.");
                 str.Add(StringKey.InGameFinishVoteMurderFalse, "{0}님은 <color=#ee3333>범인</color>이 아니였습니다.");
                 str.Add(StringKey.InGameFinishVoteMurderCount, "<color=#ee3333>범인</color>이 {0}명 있습니다.");
-                str.Add(StringKey.InGameVoteTimer, "남은 투표시간 : <color=#ffeeaa>{0}</color> 초");
+                str.Add(StringKey.InGameVoteTimer, "남은 투표시간 : <color=#{1}>{0}</color> 초");
                 break;
         }
     }

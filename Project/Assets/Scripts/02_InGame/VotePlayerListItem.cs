@@ -13,7 +13,7 @@ public class VotePlayerListItem : MonoBehaviour
 
     [SerializeField] private Image imgProfile;
     [SerializeField] private GameObject imgDie;
-    [SerializeField] private TMP_Text txtNickname;
+    [SerializeField] private Text txtNickname;
 
     [SerializeField] private Button btnSelect;
     [SerializeField] private Button btnCancel;

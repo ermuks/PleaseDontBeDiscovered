@@ -11,6 +11,14 @@ public class PlayerData : MonoBehaviourPun, IPunObservable
     [SerializeField] private GameObject reportArea;
     [SerializeField] private GameObject[] childs;
 
+    [SerializeField] private Transform objHair;
+    [SerializeField] private Transform objHat;
+    [SerializeField] private Transform objCloth;
+    [SerializeField] private Transform objPants;
+    [SerializeField] private Transform objGlovesLeft;
+    [SerializeField] private Transform objGlovesRight;
+    [SerializeField] private Transform objShoes;
+
     public GameObject ReportArea => reportArea;
     private CharacterController controller;
     private Animator anim;

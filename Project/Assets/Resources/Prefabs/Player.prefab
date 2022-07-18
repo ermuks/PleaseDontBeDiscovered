@@ -1037,6 +1037,13 @@ MonoBehaviour:
   - {fileID: 4249846437634859668}
   - {fileID: 4378917345389080159}
   - {fileID: 4186874591825060968}
+  objHair: {fileID: 7323305051471309189}
+  objHat: {fileID: 7323305051471309189}
+  objCloth: {fileID: 0}
+  objPants: {fileID: 0}
+  objGlovesLeft: {fileID: 0}
+  objGlovesRight: {fileID: 0}
+  objShoes: {fileID: 0}
 --- !u!114 &5371547621946169775
 MonoBehaviour:
   m_ObjectHideFlags: 0
