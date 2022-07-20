@@ -91,6 +91,7 @@ public class PlayerListItem : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     public void Clear()
     {
+        playerColor.gameObject.SetActive(false);
         statusObject.color = clrNone;
         txtNickname.text = "";
     }

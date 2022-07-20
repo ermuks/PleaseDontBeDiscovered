@@ -97,6 +97,7 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
 
         EventManager.AddData("InGameUI >> VoteUIActive", (p) => areaVote.activeSelf);
         EventManager.AddData("InGameUI >> VoteEndingPosition", (p) => voteEndingCamPosition);
+        EventManager.AddData("InGameUI >> FinishVoteAnimationActive", (p) => areaFinishVote.activeSelf);
         EventManager.AddEvent("InGameUI :: OpenVoteUI", (p) =>
         {
             if ((bool)PhotonNetwork.LocalPlayer.CustomProperties["isDead"])
@@ -427,7 +428,7 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
         }
         if (isEqualVotes) manyVotePlayer = null;
         areaFinishVote.GetComponent<FinishVoteBackgroundUI>().SetMessage(manyVotePlayer);
-        yield return new WaitForSeconds(5f);
+        yield return new WaitUntil(() => !areaFinishVote.activeSelf);
         if (PhotonNetwork.LocalPlayer.IsMasterClient)
         {
             if (manyVotePlayer != null)

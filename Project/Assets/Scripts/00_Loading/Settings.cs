@@ -19,7 +19,7 @@ public enum KeySettings
 
     AroundKey,
     WatchNextPlayer,
-    WatchPreviewPlayer,
+    WatchPrevPlayer,
 
     UseItem1,
     UseItem2,
@@ -55,6 +55,8 @@ public class Settings : MonoBehaviourPunCallbacks
     [SerializeField] private TMP_Text txtWindowSize;
     [SerializeField] private GameObject areaWindowSizeList;
 
+    [SerializeField] private GameObject areaKeyboard;
+
     private List<int> indexList
     {
         get
@@ -78,8 +80,10 @@ public class Settings : MonoBehaviourPunCallbacks
         }
     }
     [SerializeField] private Transform colorSelectParent;
+    [SerializeField] private Transform controlParent;
 
     private List<ColorSelectButton> btnColorList = new List<ColorSelectButton>();
+    private List<ControllerList> btnControllerList = new List<ControllerList>();
 
     private Dictionary<KeySettings, KeyCode> keys = new Dictionary<KeySettings, KeyCode>();
 
@@ -108,10 +112,14 @@ public class Settings : MonoBehaviourPunCallbacks
     private void Awake()
     {
         GameObject colorPrefab = Resources.Load<GameObject>("Prefabs/UI/ColorSelectButton");
+        GameObject controlPrefab = Resources.Load<GameObject>("Prefabs/UI/ControllerList");
         AddEvent();
         for (int i = 0; i < (int)KeySettings.KeyCount; i++)
         {
             keys.Add((KeySettings)i, defaultKeys[i]);
+            ControllerList control = Instantiate(controlPrefab, controlParent).GetComponent<ControllerList>();
+            control.Init((KeySettings)i, defaultKeys[i]);
+            btnControllerList.Add(control);
         }
         for (int i = 0; i < PlayerData.colors.Length; i++)
         {
@@ -183,6 +191,32 @@ public class Settings : MonoBehaviourPunCallbacks
                     OpenSettings(index);
                 }
             });
+        }
+    }
+
+    public void OpenKeyboard(KeySettings key)
+    {
+        areaKeyboard.SetActive(true);
+        areaKeyboard.GetComponent<KeyboardUI>().Open(key);
+    }
+
+    public void SetKey(KeySettings key, KeyCode code)
+    {
+        keys[key] = code;
+        KeyRefresh();
+    }
+
+    public void SetKey(KeySettings key, char character)
+    {
+        keys[key] = (KeyCode)character;
+        KeyRefresh();
+    }
+
+    private void KeyRefresh()
+    {
+        for (int i = 0; i < btnControllerList.Count; i++)
+        {
+            btnControllerList[i].Refresh();
         }
     }
 

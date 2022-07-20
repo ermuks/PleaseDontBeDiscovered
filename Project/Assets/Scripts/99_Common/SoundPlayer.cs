@@ -4,34 +4,34 @@ using UnityEngine;
 
 public class SoundPlayer : MonoBehaviour
 {
-    AudioSource audio;
+    AudioSource audioSource;
 
     public void Play(AudioClip clip, Vector3 pos, float maxDistance, float volume)
     {
-        audio = GetComponent<AudioSource>();
-        audio.clip = clip;
-        audio.spatialBlend = 1;
-        audio.maxDistance = maxDistance;
-        audio.volume = volume;
+        audioSource = GetComponent<AudioSource>();
+        audioSource.clip = clip;
+        audioSource.spatialBlend = 1;
+        audioSource.maxDistance = maxDistance;
+        audioSource.volume = volume;
         transform.position = pos;
-        if (!audio.isPlaying) audio.Play();
+        if (!audioSource.isPlaying) audioSource.Play();
         StartCoroutine(AutoDestroy());
     }
 
     public void Play(AudioClip clip, float volume)
     {
-        audio = GetComponent<AudioSource>();
-        audio.clip = clip;
-        audio.spatialBlend = 0;
-        audio.volume = volume;
-        if (!audio.isPlaying) audio.Play();
+        audioSource = GetComponent<AudioSource>();
+        audioSource.clip = clip;
+        audioSource.spatialBlend = 0;
+        audioSource.volume = volume;
+        if (!audioSource.isPlaying) audioSource.Play();
         StartCoroutine(AutoDestroy());
     }
 
     private IEnumerator AutoDestroy()
     {
-        if (audio == null) audio = GetComponent<AudioSource>();
-        yield return new WaitUntil(() => !audio.isPlaying);
+        if (audioSource == null) audioSource = GetComponent<AudioSource>();
+        yield return new WaitUntil(() => !audioSource.isPlaying);
         Destroy(gameObject);
     }
 }

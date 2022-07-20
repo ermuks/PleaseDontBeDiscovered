@@ -42,7 +42,7 @@ public class PlayerStemina : MonoBehaviourPun
     private float thirstyFulldelay = 30f;
     private float thirstyFullTimer = .0f;
     private float thirstyDownTimer = .0f;
-    private float thirstyDelay = 4.5f;
+    private float thirstyDelay = 3.2f;
     #endregion
 
     #region HungryValue
@@ -61,7 +61,7 @@ public class PlayerStemina : MonoBehaviourPun
     private float hungryFulldelay = 30f;
     private float hungryFullTimer = .0f;
     private float hungryDownTimer = .0f;
-    private float hungryDelay = 2.1f;
+    private float hungryDelay = 4.1f;
     #endregion
 
     #region ColdValue
@@ -80,7 +80,7 @@ public class PlayerStemina : MonoBehaviourPun
     private float warmFulldelay = 30f;
     private float warmFullTimer = .0f;
     private float warmDownTimer = .0f;
-    private float warmDelay = 3.5f;
+    private float warmDelay = 5.5f;
     #endregion
 
     bool normalPlayer = false;
@@ -132,7 +132,7 @@ public class PlayerStemina : MonoBehaviourPun
             {
                 if ((bool)EventManager.GetData("Inventory >> TryChange", "0003", "0002"))
                 {
-                    FillThirsty(.8f);
+                    FillThirsty(.7f);
                     EventManager.SendEvent("Inventory :: Change", "0003", "0002");
                 }
             }
@@ -288,11 +288,11 @@ public class PlayerStemina : MonoBehaviourPun
             if (thirstyDownTimer >= thirstyDelay)
             {
                 thirstyDownTimer -= thirstyDelay;
-                thirstValue -= .04f;
+                thirstValue -= .02f;
                 if (thirstValue < 0)
                 {
                     thirstValue = 0;
-                    GetHit(.02f, DieMessage.Hungry);
+                    GetHit(.012f, DieMessage.Hungry);
                 }
             }
             else
@@ -318,11 +318,11 @@ public class PlayerStemina : MonoBehaviourPun
             if (hungryDownTimer >= hungryDelay)
             {
                 hungryDownTimer -= hungryDelay;
-                hungryValue -= .025f;
+                hungryValue -= .035f;
                 if (hungryValue < 0)
                 {
                     hungryValue = 0;
-                    GetHit(.02f, DieMessage.Hungry);
+                    GetHit(.015f, DieMessage.Hungry);
                 }
             }
             else

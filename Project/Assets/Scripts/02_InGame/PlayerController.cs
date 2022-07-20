@@ -361,7 +361,7 @@ public class PlayerController : MonoBehaviour
                 goto ReFind;
             }
         }
-        if (Input.GetKeyDown(Settings.instance.GetKey(KeySettings.WatchPreviewPlayer)))
+        if (Input.GetKeyDown(Settings.instance.GetKey(KeySettings.WatchPrevPlayer)))
         {
             GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
         ReFind:

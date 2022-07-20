@@ -612,7 +612,7 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
         {
             if (PhotonNetwork.LocalPlayer.IsMasterClient)
             {
-                areaRoomSettings.SetActive(true);
+                OpenRoomSettings();
             }
             else
             {
@@ -620,6 +620,24 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
             }
         });
     }
+
+    private void OpenRoomSettings()
+    {
+        var roomInfo = PhotonNetwork.CurrentRoom;
+        var properties = roomInfo.CustomProperties;
+        inputRoomTitle.text = roomInfo.Name;
+        sliderRoomMaxPlayer.value = roomInfo.MaxPlayers;
+        sliderMurderCount.value = (int)properties["murdererCount"];
+        sliderMoveSpeed.value = (float)properties["moveSpeed"];
+        sliderKillCooldown.value = (float)properties["killCooldown"];
+        sliderVoteTime.value = (float)properties["voteTime"];
+        tglNickname.isOn = (bool)properties["nicknameVisible"];
+        tglFallingDamage.isOn = (bool)properties["fallingDamage"];
+        tglStartItem.isOn = (bool)properties["startItem"];
+        tglRunable.isOn = (bool)properties["runable"];
+        areaRoomSettings.SetActive(true);
+    }
+
     // ***** CreateRoom ***** //
     private void CreateRoom()
     {

@@ -12,6 +12,25 @@ public enum StringKey
     InitializeConnectingMessage = 0,
     InitializeTextNickname,
     InitializeButtonGameStart,
+
+    SettingsKeyDescriptForwardKey,
+    SettingsKeyDescriptBackwardKey,
+    SettingsKeyDescriptRightKey,
+    SettingsKeyDescriptLeftKey,
+    SettingsKeyDescriptJumpKey,
+    SettingsKeyDescriptSitKey,
+    SettingsKeyDescriptRunKey,
+    SettingsKeyDescriptWalkKey,
+    
+    SettingsKeyDescriptAroundKey,
+    SettingsKeyDescriptWatchNextPlayer,
+    SettingsKeyDescriptWatchPrevPlayer,
+    
+    SettingsKeyDescriptUseItem1,
+    SettingsKeyDescriptUseItem2,
+    SettingsKeyDescriptWork,
+    SettingsKeyDescriptCancelWork,
+
     MainButtonOpenCreateRoomUI,
     MainButtonRoomListRefresh,
     MainButtonOpenCreateRoomUIInRoomList,
@@ -108,6 +127,25 @@ public static class Strings
                 str.Add(StringKey.InitializeConnectingMessage, "Connecting to server...");
                 str.Add(StringKey.InitializeTextNickname, "Write your nickname");
                 str.Add(StringKey.InitializeButtonGameStart, "Play");
+
+                str.Add(StringKey.SettingsKeyDescriptForwardKey, "Move Forward");
+                str.Add(StringKey.SettingsKeyDescriptBackwardKey, "Move Backward");
+                str.Add(StringKey.SettingsKeyDescriptRightKey, "Move Right");
+                str.Add(StringKey.SettingsKeyDescriptLeftKey, "Move Left");
+                str.Add(StringKey.SettingsKeyDescriptJumpKey, "Jump");
+                str.Add(StringKey.SettingsKeyDescriptSitKey, "Sit down");
+                str.Add(StringKey.SettingsKeyDescriptRunKey, "Run");
+                str.Add(StringKey.SettingsKeyDescriptWalkKey, "Walk");
+                
+                str.Add(StringKey.SettingsKeyDescriptAroundKey, "Look around");
+                str.Add(StringKey.SettingsKeyDescriptWatchNextPlayer, "Spectate the next player");
+                str.Add(StringKey.SettingsKeyDescriptWatchPrevPlayer, "Spectate the prev player");
+                
+                str.Add(StringKey.SettingsKeyDescriptUseItem1, "Use item 1");
+                str.Add(StringKey.SettingsKeyDescriptUseItem2, "Use item 2");
+                str.Add(StringKey.SettingsKeyDescriptWork, "Interaction");
+                str.Add(StringKey.SettingsKeyDescriptCancelWork, "Cancel interaction");
+
                 str.Add(StringKey.MainButtonOpenCreateRoomUI, "Create");
                 str.Add(StringKey.MainButtonRoomListRefresh, "Refresh");
                 str.Add(StringKey.MainButtonOpenCreateRoomUIInRoomList, "Create Room");
@@ -197,6 +235,24 @@ public static class Strings
                 str.Add(StringKey.InitializeTextNickname, "닉네임을 입력해주세요");
                 str.Add(StringKey.InitializeButtonGameStart, "시작");
 
+                str.Add(StringKey.SettingsKeyDescriptForwardKey, "앞으로 움직이기");
+                str.Add(StringKey.SettingsKeyDescriptBackwardKey, "뒤로 움직이기");
+                str.Add(StringKey.SettingsKeyDescriptRightKey, "오른쪽으로 움직이기");
+                str.Add(StringKey.SettingsKeyDescriptLeftKey, "왼쪽으로 움직이기");
+                str.Add(StringKey.SettingsKeyDescriptJumpKey, "점프하기");
+                str.Add(StringKey.SettingsKeyDescriptSitKey, "앉기");
+                str.Add(StringKey.SettingsKeyDescriptRunKey, "달리기");
+                str.Add(StringKey.SettingsKeyDescriptWalkKey, "걷기");
+
+                str.Add(StringKey.SettingsKeyDescriptAroundKey, "주변 둘러보기");
+                str.Add(StringKey.SettingsKeyDescriptWatchNextPlayer, "다음 플레이어 관전하기");
+                str.Add(StringKey.SettingsKeyDescriptWatchPrevPlayer, "이전 플레이어 관전하기");
+
+                str.Add(StringKey.SettingsKeyDescriptUseItem1, "1번 아이템 사용하기");
+                str.Add(StringKey.SettingsKeyDescriptUseItem2, "2번 아이템 사용하기");
+                str.Add(StringKey.SettingsKeyDescriptWork, "상호작용 키");
+                str.Add(StringKey.SettingsKeyDescriptCancelWork, "작업 취소하기");
+
                 str.Add(StringKey.MainButtonOpenCreateRoomUI, "만들기");
                 str.Add(StringKey.MainButtonRoomListRefresh, "갱신");
                 str.Add(StringKey.MainButtonOpenCreateRoomUIInRoomList, "방 만들기");
@@ -280,6 +336,25 @@ public static class Strings
                 str.Add(StringKey.InitializeConnectingMessage, "サーバーに接続中...");
                 str.Add(StringKey.InitializeTextNickname, "クリック後にニックネームを作成");
                 str.Add(StringKey.InitializeButtonGameStart, "入場");
+
+                str.Add(StringKey.SettingsKeyDescriptForwardKey, "앞으로 움직이기");
+                str.Add(StringKey.SettingsKeyDescriptBackwardKey, "뒤로 움직이기");
+                str.Add(StringKey.SettingsKeyDescriptRightKey, "오른쪽으로 움직이기");
+                str.Add(StringKey.SettingsKeyDescriptLeftKey, "왼쪽으로 움직이기");
+                str.Add(StringKey.SettingsKeyDescriptJumpKey, "점프하기");
+                str.Add(StringKey.SettingsKeyDescriptSitKey, "앉기");
+                str.Add(StringKey.SettingsKeyDescriptRunKey, "달리기");
+                str.Add(StringKey.SettingsKeyDescriptWalkKey, "걷기");
+
+                str.Add(StringKey.SettingsKeyDescriptAroundKey, "주변 둘러보기");
+                str.Add(StringKey.SettingsKeyDescriptWatchNextPlayer, "다음 플레이어 관전하기");
+                str.Add(StringKey.SettingsKeyDescriptWatchPrevPlayer, "이전 플레이어 관전하기");
+
+                str.Add(StringKey.SettingsKeyDescriptUseItem1, "1번 아이템 사용하기");
+                str.Add(StringKey.SettingsKeyDescriptUseItem2, "2번 아이템 사용하기");
+                str.Add(StringKey.SettingsKeyDescriptWork, "상호작용 키");
+                str.Add(StringKey.SettingsKeyDescriptCancelWork, "작업 취소하기");
+
                 str.Add(StringKey.MainButtonOpenCreateRoomUI, "作る");
                 str.Add(StringKey.MainButtonRoomListRefresh, "リフレッシュ");
                 str.Add(StringKey.MainButtonOpenCreateRoomUIInRoomList, "遊ぶ場所を作る");
@@ -363,6 +438,25 @@ public static class Strings
                 str.Add(StringKey.InitializeConnectingMessage, "正在连接服务器...");
                 str.Add(StringKey.InitializeTextNickname, "点击并写下您的昵称");
                 str.Add(StringKey.InitializeButtonGameStart, "开始");
+
+                str.Add(StringKey.SettingsKeyDescriptForwardKey, "앞으로 움직이기");
+                str.Add(StringKey.SettingsKeyDescriptBackwardKey, "뒤로 움직이기");
+                str.Add(StringKey.SettingsKeyDescriptRightKey, "오른쪽으로 움직이기");
+                str.Add(StringKey.SettingsKeyDescriptLeftKey, "왼쪽으로 움직이기");
+                str.Add(StringKey.SettingsKeyDescriptJumpKey, "점프하기");
+                str.Add(StringKey.SettingsKeyDescriptSitKey, "앉기");
+                str.Add(StringKey.SettingsKeyDescriptRunKey, "달리기");
+                str.Add(StringKey.SettingsKeyDescriptWalkKey, "걷기");
+
+                str.Add(StringKey.SettingsKeyDescriptAroundKey, "주변 둘러보기");
+                str.Add(StringKey.SettingsKeyDescriptWatchNextPlayer, "다음 플레이어 관전하기");
+                str.Add(StringKey.SettingsKeyDescriptWatchPrevPlayer, "이전 플레이어 관전하기");
+
+                str.Add(StringKey.SettingsKeyDescriptUseItem1, "1번 아이템 사용하기");
+                str.Add(StringKey.SettingsKeyDescriptUseItem2, "2번 아이템 사용하기");
+                str.Add(StringKey.SettingsKeyDescriptWork, "상호작용 키");
+                str.Add(StringKey.SettingsKeyDescriptCancelWork, "작업 취소하기");
+
                 str.Add(StringKey.MainButtonOpenCreateRoomUI, "创建");
                 str.Add(StringKey.MainButtonRoomListRefresh, "更新");
                 str.Add(StringKey.MainButtonOpenCreateRoomUIInRoomList, "创建房间");
