@@ -200,6 +200,11 @@ public class Settings : MonoBehaviourPunCallbacks
         areaKeyboard.GetComponent<KeyboardUI>().Open(key);
     }
 
+    public void CloseKeyboard()
+    {
+        areaKeyboard.SetActive(false);
+    }
+
     public void SetKey(KeySettings key, KeyCode code)
     {
         keys[key] = code;
