@@ -1,6 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
+using Photon.Pun;
+using Photon.Realtime;
 
 public enum KeySettings
 {
@@ -25,7 +29,7 @@ public enum KeySettings
     KeyCount,
 }
 
-public class Settings : MonoBehaviour
+public class Settings : MonoBehaviourPunCallbacks
 {
     private static Settings _instance;
     public static Settings instance
@@ -38,10 +42,44 @@ public class Settings : MonoBehaviour
     }
     public bool isDebug = true;
     public bool isMurderMode = true;
+    [SerializeField] private Button[] btnTabs;
+    [SerializeField] private GameObject[] areaTabs;
 
-    public bool isFullScreen;
-    public bool isAntiAliasing;
-    public bool isVSync;
+    [SerializeField] private Button btnExitSettings;
+    [SerializeField] private GameObject areaSettings;
+
+    [SerializeField] private Toggle tglVSync;
+    [SerializeField] private Toggle tglAntiAliasing;
+    [SerializeField] private Toggle tglFullScreen;
+    [SerializeField] private Button btnToggleDropDown;
+    [SerializeField] private TMP_Text txtWindowSize;
+    [SerializeField] private GameObject areaWindowSizeList;
+
+    private List<int> indexList
+    {
+        get
+        {
+            List<int> list = new List<int>();
+            if (PhotonNetwork.InRoom)
+            {
+                foreach (var player in PhotonNetwork.CurrentRoom.Players.Values)
+                {
+                    if (player != PhotonNetwork.LocalPlayer)
+                    {
+                        int index = (int)player.CustomProperties["color"];
+                        if (!list.Contains(index))
+                        {
+                            list.Add(index);
+                        }
+                    }
+                }
+            }
+            return list;
+        }
+    }
+    [SerializeField] private Transform colorSelectParent;
+
+    private List<ColorSelectButton> btnColorList = new List<ColorSelectButton>();
 
     private Dictionary<KeySettings, KeyCode> keys = new Dictionary<KeySettings, KeyCode>();
 
@@ -69,9 +107,17 @@ public class Settings : MonoBehaviour
 
     private void Awake()
     {
+        GameObject colorPrefab = Resources.Load<GameObject>("Prefabs/UI/ColorSelectButton");
+        AddEvent();
         for (int i = 0; i < (int)KeySettings.KeyCount; i++)
         {
             keys.Add((KeySettings)i, defaultKeys[i]);
+        }
+        for (int i = 0; i < PlayerData.colors.Length; i++)
+        {
+            ColorSelectButton colorButton = Instantiate(colorPrefab, colorSelectParent).GetComponent<ColorSelectButton>();
+            colorButton.Init(i);
+            btnColorList.Add(colorButton);
         }
     }
 
@@ -106,6 +152,95 @@ public class Settings : MonoBehaviour
         }
     }
 
+    public override void OnJoinedRoom()
+    {
+        int colorIndex = (int)PhotonNetwork.LocalPlayer.CustomProperties["color"];
+        if (indexList.FindIndex(e => e == colorIndex) != -1)
+        {
+            SetSelectRandomColor();
+        }
+    }
+
+    public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
+    {
+        PlayerColorRefresh();
+    }
+
+    private void AddEvent()
+    {
+        tglVSync.onValueChanged.AddListener((v) => SetVSync(v));
+        tglAntiAliasing.onValueChanged.AddListener((v) => SetAntiAliasing(v));
+        tglFullScreen.onValueChanged.AddListener((v) => SetFullScreen(v));
+        btnExitSettings.onClick.AddListener(() => CloseSettings());
+        btnToggleDropDown.onClick.AddListener(() => areaWindowSizeList.SetActive(!areaWindowSizeList.activeSelf));
+        for (int i = 0; i < btnTabs.Length; i++)
+        {
+            int index = i;
+            btnTabs[i].onClick.AddListener(() =>
+            {
+                for (int j = 0; j < areaTabs.Length; j++)
+                {
+                    OpenSettings(index);
+                }
+            });
+        }
+    }
+
+    public void SetPlayerColor(int index)
+    {
+        var properties = PhotonNetwork.LocalPlayer.CustomProperties;
+        properties["color"] = index;
+        PhotonNetwork.LocalPlayer.SetCustomProperties(properties);
+        PlayerColorRefresh();
+    }
+
+    public void PlayerColorRefresh()
+    {
+        for (int i = 0; i < btnColorList.Count; i++)
+        {
+            bool alreadySelected = indexList.FindIndex(e => e == i) != -1;
+            btnColorList[i].Checked(false);
+            btnColorList[i].Interactable(!alreadySelected);
+        }
+        int myIndex = (int)PhotonNetwork.LocalPlayer.CustomProperties["color"];
+        btnColorList[myIndex].Checked(true);
+        btnColorList[myIndex].Interactable(true);
+    }
+
+    public void SetSelectRandomColor()
+    {
+        bool find = false;
+        while (!find)
+        {
+            int colorIndex = Random.Range(0, PlayerData.colors.Length);
+            if (indexList.FindIndex(e => e == colorIndex) == -1)
+            {
+                SetPlayerColor(colorIndex);
+                find = true;
+            }
+        }
+    }
+
+    public void OpenSettings(int index = 0)
+    {
+        areaSettings.SetActive(true);
+        for (int j = 0; j < areaTabs.Length; j++)
+        {
+            areaTabs[j].SetActive(index == j);
+        }
+        PlayerColorRefresh();
+    }
+
+    public void CloseSettings()
+    {
+        areaSettings.SetActive(false);
+    }
+
+    public void CloseDropDownUI()
+    {
+        areaWindowSizeList.SetActive(false);
+    }
+
     public void SetAntiAliasing(bool value)
     {
         QualitySettings.antiAliasing = value ? 3 : 0;
@@ -125,6 +260,7 @@ public class Settings : MonoBehaviour
     {
         if (!Screen.fullScreen)
         {
+            txtWindowSize.text = $"{width} * {height}";
             Screen.SetResolution(width, height, false);
         }
     }

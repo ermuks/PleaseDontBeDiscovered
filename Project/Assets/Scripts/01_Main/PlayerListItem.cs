@@ -78,6 +78,15 @@ public class PlayerListItem : MonoBehaviour, IPointerEnterHandler, IPointerExitH
             }
         }
         txtNickname.text = player.NickName;
+        if (player != null)
+        {
+            playerColor.gameObject.SetActive(true);
+            playerColor.color = PlayerData.GetColor(player);
+        }
+        else
+        {
+            playerColor.gameObject.SetActive(false);
+        }
     }
 
     public void Clear()
@@ -90,10 +99,13 @@ public class PlayerListItem : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     {
         if (PhotonNetwork.LocalPlayer.IsMasterClient)
         {
-            Vector2 size = areaNickname.sizeDelta;
-            size.x = 196f;
-            areaNickname.sizeDelta = size;
-            areaPlayerManagementButtons.SetActive(true);
+            if (owner != null)
+            {
+                Vector2 size = areaNickname.sizeDelta;
+                size.x = 196f;
+                areaNickname.sizeDelta = size;
+                areaPlayerManagementButtons.SetActive(true);
+            }
         }
     }
 

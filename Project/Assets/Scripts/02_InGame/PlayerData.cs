@@ -16,17 +16,15 @@ public enum PlayerColor
 
 public class PlayerData : MonoBehaviourPun, IPunObservable
 {
-    public static Color GetColor(Player player)
+    public static Color[] colors = new Color[]
     {
-        Color[] colors = new Color[]
-        {
             new Color(1f, 0f, 0f), // Red
             new Color(1f, .5f, 0f), // Orange
             new Color(1f, .5f, 1f), // Pink
             new Color(1f, 1f, 0f), // Yellow
             new Color(1f, .8f, .5f), // Apricot
             new Color(.5f, 1f, .5f), // Lime
-            new Color(0f, 0f, 1f), // LightGreen
+            new Color(.2f, 1f, .2f), // LightGreen
             new Color(0f, 0f, .5f), // Green
             new Color(.5f, 1f, .8f), // Mint
             new Color(0f, 1f, 1f), // Cyan
@@ -37,8 +35,15 @@ public class PlayerData : MonoBehaviourPun, IPunObservable
             new Color(.5f, .2f, 0f), // Brown
             new Color(.8f, .4f, .2f), // LightBrown
             new Color(.6f, .6f, .6f), // Gray
-        };
+    };
+    public static Color GetColor(Player player)
+    {
         int index = (int)player.CustomProperties["color"];
+        index = Mathf.Clamp(index, 0, colors.Length - 1);
+        return colors[index];
+    }
+    public static Color GetColor(int index)
+    {
         index = Mathf.Clamp(index, 0, colors.Length - 1);
         return colors[index];
     }

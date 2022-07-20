@@ -20,6 +20,7 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
 
     [Header("UI Settings")]
     [SerializeField] private Button btnGameExit;
+    [SerializeField] private Button btnOpenPlayerSettings;
 
     [Header("** Create Room UI **")]
     [SerializeField] private TMP_InputField inputRoomTitle;
@@ -345,6 +346,12 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
             Application.Quit(); // 어플리케이션 종료
 #endif
         });
+
+        btnOpenPlayerSettings.onClick.AddListener(() =>
+        {
+            Settings.instance.OpenSettings();
+        });
+
         btnOpenCreateRoom.onClick.AddListener(() =>
         {
             inputRoomTitle.text = randomTitle[Random.Range(0, randomTitle.Length)];
@@ -599,7 +606,7 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
 
         btnPlayerSettings.onClick.AddListener(() =>
         {
-            // 세팅창 열기
+            Settings.instance.OpenSettings();
         });
         btnRoomSettings.onClick.AddListener(() =>
         {

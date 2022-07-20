@@ -9,8 +9,8 @@ using Photon.Realtime;
 public class ChatMessage : MonoBehaviour
 {
     [SerializeField] private Image imgContentBackground;
-    [SerializeField] private Text txtNickname;
-    [SerializeField] private Text txtContent;
+    [SerializeField] private TMP_Text txtNickname;
+    [SerializeField] private TMP_Text txtContent;
 
     public void SetMessage(Player player, string message, bool richText, bool inGame = false)
     {
@@ -27,7 +27,7 @@ public class ChatMessage : MonoBehaviour
 
         if (txtNickname != null) txtNickname.text = nickname;
         txtContent.text = message;
-        txtContent.supportRichText = richText;
+        txtContent.richText = richText;
     }
 
     public void SetMessage(string message, bool richText)
