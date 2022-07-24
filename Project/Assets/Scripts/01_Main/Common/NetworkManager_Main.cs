@@ -125,6 +125,7 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
     // ***** Awake ***** //
     private void Awake()
     {
+        LoadData();
         LoadPrefab();
         CheckRoomLobby();
         UIAddEvents();
@@ -301,6 +302,14 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
     #endregion Photon Method
 
     #region Custom Method
+
+    private void LoadData()
+    {
+        if (PlayerPrefs.HasKey("Nickname"))
+        {
+            inputNickname.text = PlayerPrefs.GetString("Nickname");
+        }
+    }
 
     private void LoadPrefab()
     {
@@ -804,6 +813,7 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
         else
         {
             PhotonNetwork.NickName = nickname;
+            PlayerPrefs.SetString("Nickname", PhotonNetwork.NickName);
             areaInputNickname.SetActive(false);
             areaRoomList.SetActive(true);
         }

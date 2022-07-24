@@ -67,7 +67,7 @@ public class InGameChattingCallbacks : MonoBehaviourPun, IPunObservable
     {
         bool deadPlayer = (bool)player.CustomProperties["isDead"];
         bool isDead = (bool)PhotonNetwork.LocalPlayer.CustomProperties["isDead"];
-        bool isMurderer = (bool)PhotonNetwork.LocalPlayer.CustomProperties["isMurderer"];
+        bool isMurderer = (bool)PhotonNetwork.LocalPlayer.CustomProperties["isMurder"];
         //   dead    me
         //    t      t      t
         //    f      t      t

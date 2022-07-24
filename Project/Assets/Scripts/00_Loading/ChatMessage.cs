@@ -17,7 +17,7 @@ public class ChatMessage : MonoBehaviour
     {
         string nickname = "";
         bool deadPlayer = (bool)player.CustomProperties["isDead"];
-        bool isMurderer = (bool)PhotonNetwork.LocalPlayer.CustomProperties["isMurderer"];
+        bool isMurderer = (bool)PhotonNetwork.LocalPlayer.CustomProperties["isMurder"];
         if (player != null)
         {
             if (player.IsMasterClient && !inGame)
@@ -32,7 +32,7 @@ public class ChatMessage : MonoBehaviour
             }
             if (isMurderer)
             {
-                if ((bool)player.CustomProperties["isMurderer"])
+                if ((bool)player.CustomProperties["isMurder"])
                 {
                     if ((bool)player.CustomProperties["isDead"])
                     {
