@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 using TMPro;
+using Photon.Pun;
 using Photon.Realtime;
 
 public class ChatMessage : MonoBehaviour
@@ -15,12 +16,33 @@ public class ChatMessage : MonoBehaviour
     public void SetMessage(Player player, string message, bool richText, bool inGame = false)
     {
         string nickname = "";
+        bool deadPlayer = (bool)player.CustomProperties["isDead"];
+        bool isMurderer = (bool)PhotonNetwork.LocalPlayer.CustomProperties["isMurderer"];
         if (player != null)
         {
             if (player.IsMasterClient && !inGame)
             {
                 imgContentBackground.color = new Color(.9f, .8f, .8f);
                 txtNickname.color = new Color(.9f, .8f, .8f);
+            }
+            if (deadPlayer)
+            {
+                imgContentBackground.color = new Color(1f, .8f, .8f, .4f);
+                txtNickname.color = new Color(.9f, .8f, .8f, .75f);
+            }
+            if (isMurderer)
+            {
+                if ((bool)player.CustomProperties["isMurderer"])
+                {
+                    if ((bool)player.CustomProperties["isDead"])
+                    {
+                        txtNickname.color = new Color(1f, .2f, .25f);
+                    }
+                    else
+                    {
+                        txtNickname.color = new Color(1f, .2f, .25f, .75f);
+                    }
+                }
             }
             nickname = player.NickName;
         }

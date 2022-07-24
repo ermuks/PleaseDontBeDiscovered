@@ -65,7 +65,32 @@ public class InGameChattingCallbacks : MonoBehaviourPun, IPunObservable
     [PunRPC]
     private void InGameRecieveMessage(Player player, string messsage)
     {
-        AddMessage(player, messsage, false);
+        bool deadPlayer = (bool)player.CustomProperties["isDead"];
+        bool isDead = (bool)PhotonNetwork.LocalPlayer.CustomProperties["isDead"];
+        bool isMurderer = (bool)PhotonNetwork.LocalPlayer.CustomProperties["isMurderer"];
+        //   dead    me
+        //    t      t      t
+        //    f      t      t
+        //    t      f      f
+        //    f      f      t
+        if (deadPlayer)
+        {
+            if (isDead)
+            {
+                AddMessage(player, messsage, false);
+            }
+            else
+            {
+                if (isMurderer)
+                {
+                    AddMessage(player, messsage, false);
+                }
+            }
+        }
+        else
+        {
+            AddMessage(player, messsage, false);
+        }
     }
 
     private void Init()
