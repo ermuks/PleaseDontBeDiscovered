@@ -26,6 +26,8 @@ public class CameraRotate : MonoBehaviour
 
             angleX = Mathf.Lerp(angleX, targetAngleX, Time.deltaTime * speed);
             angleY = Mathf.Lerp(angleY, targetAngleY, Time.deltaTime * speed);
+            angleX = Mathf.Clamp(angleX, -20, 20);
+            angleY = Mathf.Clamp(angleY, -75, 25);
             transform.rotation = Quaternion.Euler(angleX, angleY, 0);
 
             if (Physics.Raycast(GetComponent<Camera>().ViewportPointToRay(Vector3.one * .5f), out RaycastHit hit, 1 << LayerMask.NameToLayer("SelectionObject")))
@@ -60,6 +62,50 @@ public class CameraRotate : MonoBehaviour
             targetAngleY = transform.eulerAngles.y;
             angleX = transform.eulerAngles.x;
             angleY = transform.eulerAngles.y;
+        }
+
+        if (targetAngleX > 180f)
+        {
+            targetAngleX %= 360f;
+            targetAngleX -= 360f;
+        }
+        if (targetAngleX < -180f)
+        {
+            targetAngleX %= 360f;
+            targetAngleX += 360f;
+        }
+
+        if (angleX > 180f)
+        {
+            angleX %= 360f;
+            angleX -= 360f;
+        }
+        if (angleX < -180f)
+        {
+            angleX %= 360f;
+            angleX += 360f;
+        }
+
+        if (targetAngleY > 180f)
+        {
+            targetAngleY %= 360f;
+            targetAngleY -= 360f;
+        }
+        if (targetAngleY < -180f)
+        {
+            targetAngleY %= 360f;
+            targetAngleY += 360f;
+        }
+
+        if (angleY > 180f)
+        {
+            angleY %= 360f;
+            angleY -= 360f;
+        }
+        if (angleY < -180f)
+        {
+            angleY %= 360f;
+            angleY += 360f;
         }
     }
 }

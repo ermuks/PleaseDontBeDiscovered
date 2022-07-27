@@ -14,7 +14,7 @@ PlayerSettings:
   accelerometerFrequency: 60
   companyName: ROCT Games
   productName: PleaseDontBeDiscovered
-  defaultCursor: {fileID: 0}
+  defaultCursor: {fileID: 2800000, guid: c3615539e9e874f48bf4b61d1f4ec818, type: 3}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0, g: 0, b: 0, a: 1}
   m_ShowUnitySplashScreen: 1
@@ -157,7 +157,7 @@ PlayerSettings:
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
     Android: com.ROCTGames.PleaseDontBeDiscovered
-    Standalone: com.DefaultCompany.AnimationExample220513
+    Standalone: com.ROCT-Games.PleaseDontBeDiscovered
   buildNumber:
     Standalone: 0
     iPhone: 0
