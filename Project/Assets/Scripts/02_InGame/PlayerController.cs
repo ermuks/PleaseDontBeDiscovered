@@ -214,12 +214,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            isWorking = false;
-        }
-        if ((bool)EventManager.GetData("InGameUI >> VoteUIActive")) return;
-        if ((bool)EventManager.GetData("InGameData >> FinishVoteAnimationPlaying"))
+        if ((bool)EventManager.GetData("InGameUI >> VoteUIActive"))
         {
             anim.SetBool("Forward", false);
             anim.SetBool("Back", false);
@@ -227,6 +222,10 @@ public class PlayerController : MonoBehaviour
             anim.SetBool("Left", false);
 
             anim.SetFloat("Speed", 0);
+            return;
+        }
+        if ((bool)EventManager.GetData("InGameData >> FinishVoteAnimationPlaying"))
+        {
             CameraPositionVoteEnding();
             return;
         }
