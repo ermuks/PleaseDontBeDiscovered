@@ -12,11 +12,13 @@ public enum KeySettings
     BackwardKey,
     RightKey,
     LeftKey,
+
     JumpKey,
-    SitKey,
     RunKey,
     WalkKey,
+
     MinimapKey,
+    CCTVKey,
 
     AroundKey,
     WatchNextPlayer,
@@ -93,11 +95,13 @@ public class Settings : MonoBehaviourPunCallbacks
         KeyCode.S,
         KeyCode.D,
         KeyCode.A,
+
         KeyCode.Space,
-        KeyCode.C,
         KeyCode.LeftShift,
         KeyCode.LeftControl,
+
         KeyCode.Tab,
+        KeyCode.C,
 
         KeyCode.LeftAlt,
         KeyCode.PageUp,

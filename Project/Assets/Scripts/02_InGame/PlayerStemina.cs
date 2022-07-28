@@ -186,8 +186,8 @@ public class PlayerStemina : MonoBehaviourPun
         });
         EventManager.AddEvent("Player :: FallingDamage", (p) =>
         {
-            float damage = (float)p[0] / 10f;
-            GetHit(-damage, DieMessage.Falling);
+            float damage = (float)p[0];
+            GetHit(damage, DieMessage.Falling);
         });
         EventManager.AddEvent("Player :: BreathDamage", (p) =>
         {
@@ -401,8 +401,7 @@ public class PlayerStemina : MonoBehaviourPun
 
     private void GetHit(float value, DieMessage msg)
     {
-        hp -= value;
-        if (hp <= 0f && !(bool)PhotonNetwork.LocalPlayer.CustomProperties["isDead"])
+        if (hp - value <= 0f && !(bool)PhotonNetwork.LocalPlayer.CustomProperties["isDead"])
         {
             EventManager.SendEvent("InGameUI :: Die", msg);
             EventManager.SendEvent("Data :: Die", msg, true, true);
@@ -412,9 +411,13 @@ public class PlayerStemina : MonoBehaviourPun
             warmValue = .0f;
             wetValue = .0f;
         }
-        else if (hp > 1f)
+        else if (hp - value > 1f)
         {
             hp = 1f;
+        }
+        else
+        {
+            hp -= value;
         }
         CalcStamina();
     }

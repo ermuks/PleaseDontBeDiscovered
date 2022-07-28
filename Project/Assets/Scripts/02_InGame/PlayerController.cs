@@ -75,6 +75,8 @@ public class PlayerController : MonoBehaviour
     public Vector3 hitNormal;
     public float hitAngle;
 
+    private float rememberHeight;
+
     private void Awake()
     {
         speed = (float)PhotonNetwork.CurrentRoom.CustomProperties["moveSpeed"];
@@ -257,6 +259,7 @@ public class PlayerController : MonoBehaviour
             PlayerSlow();
             PlayerJumpTimer();
             PlayerMinimap();
+            PlayerCCTV();
         }
         else
         {
@@ -336,6 +339,7 @@ public class PlayerController : MonoBehaviour
 
     private void PlayerMinimap()
     {
+        EventManager.SendEvent("Refresh Minimap", transform);
         if (Input.GetKeyDown(Settings.instance.GetKey(KeySettings.MinimapKey)))
         {
             EventManager.SendEvent("InGameUI :: OpenMinimap");
@@ -343,6 +347,18 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyUp(Settings.instance.GetKey(KeySettings.MinimapKey)))
         {
             EventManager.SendEvent("InGameUI :: CloseMinimap");
+        }
+    }
+
+    private void PlayerCCTV()
+    {
+        if (Input.GetKeyDown(Settings.instance.GetKey(KeySettings.CCTVKey)))
+        {
+            EventManager.SendEvent("InGameUI :: OpenCCTV");
+        }
+        if (Input.GetKeyUp(Settings.instance.GetKey(KeySettings.CCTVKey)))
+        {
+            EventManager.SendEvent("InGameUI :: CloseCCTV");
         }
     }
 
@@ -470,7 +486,6 @@ public class PlayerController : MonoBehaviour
         cam.localPosition = -Vector3.forward * currentDistance;
 
         camParent.rotation = Quaternion.Euler(currentAngleX, currentAngleY, 0);
-        //cam.position = transform.position + Quaternion.Euler(currentAngleX, currentAngleY, 0) * -Vector3.forward * distance + Quaternion.Euler(targetAngleX, targetAngleY, 0) * offset;
         transform.rotation = Quaternion.Euler(0, isAround ? rememberAngleY : currentAngleY, 0);
     }
 
@@ -479,7 +494,6 @@ public class PlayerController : MonoBehaviour
         float delta = Time.deltaTime;
         Vector3 point1 = controller.bounds.center + Vector3.up * (controller.height - controller.radius * 2) / 2;
         Vector3 point2 = controller.bounds.center - Vector3.up * (controller.height - controller.radius * 2) / 2;
-        //~(1 << gameObject.layer), QueryTriggerInteraction.Ignore
 
         bool isRun = Input.GetKey(Settings.instance.GetKey(KeySettings.RunKey)) && isMurder;
         bool isWalk = Input.GetKey(Settings.instance.GetKey(KeySettings.WalkKey));
@@ -541,7 +555,6 @@ public class PlayerController : MonoBehaviour
 
         hitAngle = Vector3.Angle(Vector3.up, hitNormal);
         if (Physics.CapsuleCast(point1, point2, controller.radius, Vector3.down, .02f, ~(1 << gameObject.layer), QueryTriggerInteraction.Ignore))
-        //if ()//Physics.Raycast(controller.bounds.center, Vector3.down, controller.bounds.extents.y + .42f, ~(1 << gameObject.layer), QueryTriggerInteraction.Ignore))
         {
             if (hitAngle <= controller.slopeLimit)
             {
@@ -554,12 +567,16 @@ public class PlayerController : MonoBehaviour
                 vertical = Mathf.Clamp(vertical, -.5f, 1f);
                 anim.SetBool("Air", false);
 
-                if (gravityY < -10f && isFallingDamage)
+                float currentHeight = transform.position.y;
+                float damage = rememberHeight - currentHeight - 8;
+                if (damage > 0 && isFallingDamage)
                 {
                     EventManager.SendEvent("InGameUI :: Hurt");
-                    EventManager.SendEvent("Player :: FallingDamage", gravityY + 10f);
+                    EventManager.SendEvent("Player :: FallingDamage", damage * 2f / 100f);
                     slowTimer = .0f;
                 }
+                rememberHeight = currentHeight;
+
                 gravityY = .0f;
                 if (!isWater && Input.GetKey(Settings.instance.GetKey(KeySettings.JumpKey)) && jumpTimer >= jumpDelay)
                 {

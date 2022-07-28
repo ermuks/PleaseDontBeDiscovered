@@ -39,7 +39,6 @@ public class NetworkManager_Loading : MonoBehaviourPunCallbacks
             { "voteMembers", 0 },
             { "color", color }
         });
-        Debug.Log((int)PhotonNetwork.LocalPlayer.CustomProperties["color"]);
         EventManager.SendEvent("OpenScene", "Main");
     }
 }

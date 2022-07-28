@@ -53,12 +53,19 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
     [SerializeField] private Transform playerCamera;
     [SerializeField] private Transform murdererCamera;
 
+    [SerializeField] private RectTransform minimap;
+    [SerializeField] private RectTransform minimapPlayer;
+    [SerializeField] private RectTransform minimapPlayerSight;
+    [SerializeField] private Image minimapPlayerColor;
+
     private void Awake()
     {
         messageUIPrefab = Resources.Load<GameObject>("Prefabs/UI/InGameMessageUI");
         bloodUIPrefab = Resources.Load<GameObject>("Prefabs/UI/BloodEffect");
 
         playerListPrefab = Resources.Load<GameObject>("Prefabs/UI/VotePlayerListItem");
+
+        minimapPlayerColor.color = PlayerData.GetColor((int)PhotonNetwork.LocalPlayer.CustomProperties["color"]);
 
         areaFinishVote.SetActive(false);
         areaDieUI.SetActive(false);
@@ -190,6 +197,12 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
             else if (value >= .3f) areaHPValue.color = Color.white;
             else if (value >= .15f) areaHPValue.color = new Color(1, 1, .4f);
             else areaHPValue.color = new Color(1, .4f, .4f);
+        });
+        EventManager.AddEvent("Refresh Minimap", (p) =>
+        {
+            Transform player = (Transform)p[0];
+            minimapPlayer.anchoredPosition = new Vector2(player.position.x, player.position.z);
+            minimapPlayer.localRotation = Quaternion.Euler(0, 0, -player.eulerAngles.y);
         });
         EventManager.AddEvent("Refresh Hungry" , (p) =>
         {

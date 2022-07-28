@@ -1,9 +1,19 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class EventManager
 {
+#if UNITY_EDITOR
+    public static string[] ignoreKeys = new string[]
+    {
+        "Drag",
+        "Refresh",
+        "Sound"
+    };
+#endif
+
     public delegate void OnEvent(params object[] param);
     public delegate object GetDataFunction(params object[] param);
 
@@ -24,22 +34,12 @@ public class EventManager
 
     public static void SendEvent(string key, params object[] param)
     {
-        if (key == "")
-        {
-            #if UNITY_EDITOR
-            if (key.IndexOf("Refresh") == -1 && key.IndexOf("SetKillCooldown") == -1 && key.IndexOf("FollowItem") == -1)
-            {
-                Debug.Log($"<b><color=#ff2025>[ Fail ]</color></b>\nEvent Key : <color=#c9f5f9>{key}</color>\nParameters Count : <color=#c9f5f9>{param.Length}</color>");
-            }
-            #endif
-        }
-        else
+        if (key != "")
         {
             if (eventList.ContainsKey(key))
             {
-                eventList[key](param);
-                #if UNITY_EDITOR
-                if (key.IndexOf("Refresh") == -1 && key.IndexOf("SetKillCooldown") == -1 && key.IndexOf("FollowItem") == -1)
+#if UNITY_EDITOR
+                if (Array.FindIndex(ignoreKeys, e => key.IndexOf(e) != -1) == -1)
                 {
                     string p = "";
                     for (int i = 0; i < param.Length; i++)
@@ -48,7 +48,8 @@ public class EventManager
                     }
                     Debug.Log($"<color=#fff335>[ Success ]</color>\nEvent Key : <color=#c9f5f9>{key}</color>{p}");
                 }
-                #endif
+#endif
+                eventList[key](param);
             }
         }
     }

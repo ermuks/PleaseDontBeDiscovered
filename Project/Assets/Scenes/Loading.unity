@@ -5088,7 +5088,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 982d907d31b06a447b96b6bbc00c4b51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isDebug: 0
+  isDebug: 1
   isMurderMode: 0
   btnTabs:
   - {fileID: 1618875046}
