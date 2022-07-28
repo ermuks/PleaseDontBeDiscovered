@@ -256,6 +256,7 @@ public class PlayerController : MonoBehaviour
             }
             PlayerSlow();
             PlayerJumpTimer();
+            PlayerMinimap();
         }
         else
         {
@@ -331,6 +332,18 @@ public class PlayerController : MonoBehaviour
             slowTimer = slowEndTime;
         }
         isSlow = slowTimer < slowEndTime;
+    }
+
+    private void PlayerMinimap()
+    {
+        if (Input.GetKeyDown(Settings.instance.GetKey(KeySettings.MinimapKey)))
+        {
+            EventManager.SendEvent("InGameUI :: OpenMinimap");
+        }
+        if (Input.GetKeyUp(Settings.instance.GetKey(KeySettings.MinimapKey)))
+        {
+            EventManager.SendEvent("InGameUI :: CloseMinimap");
+        }
     }
 
     private void WorkingCamera() 

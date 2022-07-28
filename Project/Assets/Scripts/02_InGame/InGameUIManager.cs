@@ -29,6 +29,7 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
     [SerializeField] private GameObject areaTriggerParent;
     [SerializeField] private GameObject areaTrigger;
     [SerializeField] private GameObject areaCCTV;
+    [SerializeField] private GameObject areaMinimap;
     [SerializeField] private GameObject areaWater;
     [SerializeField] private GameObject areaDieUI;
     [SerializeField] private GameObject areaInventory;
@@ -68,6 +69,7 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
         areaTriggerParent.SetActive(true);
         areaTrigger.SetActive(false);
         areaCCTV.SetActive(false);
+        areaMinimap.SetActive(false);
         areaVote.SetActive(false);
         areaPlayerWorkProgressUI.SetActive(false);
 
@@ -382,6 +384,14 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
         {
             Cursor.lockState = CursorLockMode.Locked;
             areaCCTV.SetActive(false);
+        });
+        EventManager.AddEvent("InGameUI :: OpenMinimap", (p) =>
+        {
+            areaMinimap.SetActive(true);
+        });
+        EventManager.AddEvent("InGameUI :: CloseMinimap", (p) =>
+        {
+            areaMinimap.SetActive(false);
         });
     }
 

@@ -54,6 +54,7 @@ public class ChatMessage : MonoBehaviour
 
     public void SetMessage(string message, bool richText)
     {
-        SetMessage(null, message, richText);
+        txtContent.text = message;
+        txtContent.richText = richText;
     }
 }

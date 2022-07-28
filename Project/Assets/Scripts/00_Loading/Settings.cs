@@ -16,6 +16,7 @@ public enum KeySettings
     SitKey,
     RunKey,
     WalkKey,
+    MinimapKey,
 
     AroundKey,
     WatchNextPlayer,
@@ -96,6 +97,7 @@ public class Settings : MonoBehaviourPunCallbacks
         KeyCode.C,
         KeyCode.LeftShift,
         KeyCode.LeftControl,
+        KeyCode.Tab,
 
         KeyCode.LeftAlt,
         KeyCode.PageUp,

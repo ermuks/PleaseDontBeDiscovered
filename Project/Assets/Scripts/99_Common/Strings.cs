@@ -21,6 +21,7 @@ public enum StringKey
     SettingsKeyDescriptSitKey,
     SettingsKeyDescriptRunKey,
     SettingsKeyDescriptWalkKey,
+    SettingsKeyDescriptMinimapKey,
     
     SettingsKeyDescriptAroundKey,
     SettingsKeyDescriptWatchNextPlayer,
@@ -136,6 +137,7 @@ public static class Strings
                 str.Add(StringKey.SettingsKeyDescriptSitKey, "Sit down");
                 str.Add(StringKey.SettingsKeyDescriptRunKey, "Run");
                 str.Add(StringKey.SettingsKeyDescriptWalkKey, "Walk");
+                str.Add(StringKey.SettingsKeyDescriptMinimapKey, "Minimap Open");
                 
                 str.Add(StringKey.SettingsKeyDescriptAroundKey, "Look around");
                 str.Add(StringKey.SettingsKeyDescriptWatchNextPlayer, "Spectate the next player");
@@ -243,6 +245,7 @@ public static class Strings
                 str.Add(StringKey.SettingsKeyDescriptSitKey, "앉기");
                 str.Add(StringKey.SettingsKeyDescriptRunKey, "달리기");
                 str.Add(StringKey.SettingsKeyDescriptWalkKey, "걷기");
+                str.Add(StringKey.SettingsKeyDescriptMinimapKey, "미니맵 열기");
 
                 str.Add(StringKey.SettingsKeyDescriptAroundKey, "주변 둘러보기");
                 str.Add(StringKey.SettingsKeyDescriptWatchNextPlayer, "다음 플레이어 관전하기");
@@ -345,6 +348,7 @@ public static class Strings
                 str.Add(StringKey.SettingsKeyDescriptSitKey, "앉기");
                 str.Add(StringKey.SettingsKeyDescriptRunKey, "달리기");
                 str.Add(StringKey.SettingsKeyDescriptWalkKey, "걷기");
+                str.Add(StringKey.SettingsKeyDescriptMinimapKey, "미니맵 열기");
 
                 str.Add(StringKey.SettingsKeyDescriptAroundKey, "주변 둘러보기");
                 str.Add(StringKey.SettingsKeyDescriptWatchNextPlayer, "다음 플레이어 관전하기");
@@ -447,6 +451,7 @@ public static class Strings
                 str.Add(StringKey.SettingsKeyDescriptSitKey, "앉기");
                 str.Add(StringKey.SettingsKeyDescriptRunKey, "달리기");
                 str.Add(StringKey.SettingsKeyDescriptWalkKey, "걷기");
+                str.Add(StringKey.SettingsKeyDescriptMinimapKey, "미니맵 열기");
 
                 str.Add(StringKey.SettingsKeyDescriptAroundKey, "주변 둘러보기");
                 str.Add(StringKey.SettingsKeyDescriptWatchNextPlayer, "다음 플레이어 관전하기");
