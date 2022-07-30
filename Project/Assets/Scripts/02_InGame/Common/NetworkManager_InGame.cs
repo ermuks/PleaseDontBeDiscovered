@@ -11,7 +11,8 @@ public class NetworkManager_InGame : MonoBehaviourPunCallbacks
     private bool isOver = false;
 
     private bool isFinishVote = false;
-    private bool isAlreadyVoted = false;
+
+    //private bool isAlreadyVoted = false;
 
     private void Awake()
     {
@@ -44,7 +45,7 @@ public class NetworkManager_InGame : MonoBehaviourPunCallbacks
         });
         EventManager.AddEvent("InGameData :: AlreadyVoted", (p) =>
         {
-            isAlreadyVoted = (bool)p[0];
+            PhotonNetwork.LocalPlayer.CustomProperties["alreadyVoted"] = p[0];
         });
         EventManager.AddEvent("InGameData :: ClearDeadPlayer", (p) =>
         {
@@ -52,17 +53,11 @@ public class NetworkManager_InGame : MonoBehaviourPunCallbacks
         });
 
         EventManager.AddData("InGameData >> FinishVoteAnimationPlaying", (p) => isFinishVote);
-        EventManager.AddData("InGameData >> AlreadyVoted", (p) => isAlreadyVoted);
-
-        //GameObject[] inventoryArea = GameObject.FindGameObjectsWithTag("InventoryArea");
-        //for (int i = 0; i < inventoryArea.Length; i++)
-        //{
-        //    PhotonNetwork.InstantiateRoomObject("Prefabs/Inventory", inventoryArea[i].transform.position, inventoryArea[i].transform.rotation);
-        //}
     }
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
+        EventManager.SendEvent("InGameUI :: RefreshVotePlayerList");
         if (!isOver && !Settings.instance.isDebug) CheckPlayers();
     }
 
@@ -84,7 +79,7 @@ public class NetworkManager_InGame : MonoBehaviourPunCallbacks
                 }
                 if (!(bool)properties["Vote"] && (bool)EventManager.GetData("InGameUI >> VoteUIActive"))
                 {
-                    EventManager.SendEvent("InGameUI :: CloseVoteUI");
+                    EventManager.SendEvent("InGameUI :: EndVote");
                 }
             }
         }

@@ -42,9 +42,15 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
     [SerializeField] private GameObject areaFinishVote;
     [SerializeField] private Transform playerListParent;
     private GameObject playerListPrefab;
-    private List<VotePlayerListItem> playerList = new List<VotePlayerListItem>();
+    private List<VotePlayerListItem> votePlayerList = new List<VotePlayerListItem>();
     private int voteCount = 0;
     private int voteAmount = 0;
+
+    private bool isVoting = false;
+    private float maxTime;
+    private float timer;
+
+    private Coroutine voteTimer;
 
     [SerializeField] private Animator areaFaded;
     [SerializeField] private Transform voteEndingCamPosition;
@@ -89,17 +95,12 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
         areaThirstyValue.color = new Color(.8f, .8f, .8f);
         areaColdValue.color = new Color(.8f, .8f, .8f);
 
+        maxTime = (float)PhotonNetwork.CurrentRoom.CustomProperties["voteTime"];
+
         EventManager.AddEvent("PUN :: Hit", (p) =>
         {
             photonView.RPC("Hit", (Player)p[1], (Player)p[0]);
         });
-
-        foreach (var player in PhotonNetwork.CurrentRoom.Players.Values)
-        {
-            VotePlayerListItem votePlayer = Instantiate(playerListPrefab, playerListParent).GetComponent<VotePlayerListItem>();
-            votePlayer.Init(player, null);
-            playerList.Add(votePlayer);
-        }
 
         EventManager.AddData("InGameUI >> playerCamera", (p) => playerCamera);
         EventManager.AddData("InGameUI >> murdererCamera", (p) => murdererCamera);
@@ -107,8 +108,11 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
         EventManager.AddData("InGameUI >> VoteUIActive", (p) => areaVote.activeSelf);
         EventManager.AddData("InGameUI >> VoteEndingPosition", (p) => voteEndingCamPosition);
         EventManager.AddData("InGameUI >> FinishVoteAnimationActive", (p) => areaFinishVote.activeSelf);
+
+        RefreshVotePlayerList();
         EventManager.AddEvent("InGameUI :: OpenVoteUI", (p) =>
         {
+            RefreshVotePlayerList();
             if ((bool)PhotonNetwork.LocalPlayer.CustomProperties["isDead"])
             {
                 EventManager.SendEvent("Player :: SetWatching");
@@ -125,21 +129,25 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
             voteCount = 0;
             EventManager.SendEvent("InGameData :: AlreadyVoted", false);
             EventManager.SendEvent("Player :: WorkEnd");
-            EventManager.SendEvent("InGameUI :: Vote :: InitTimer", false);
 
-            for (int i = 0; i < playerList.Count; i++)
-            {
-                bool isDead = (bool)playerList[i].player.CustomProperties["isDead"];
-                playerList[i].SetDie(isDead);
-            }
-            
+            if (voteTimer != null) StopCoroutine(voteTimer);
+
+            isVoting = true;
+            timer = 0;
+            voteTimer = StartCoroutine(VoteTimer());
+
             RefreshVoteAmount();
             EventManager.SendEvent("InGameUI :: VoteChatInit");
         });
+        EventManager.AddEvent("InGameUI :: RefreshVotePlayerList", (p) => RefreshVotePlayerList());
         EventManager.AddEvent("InGameUI :: FinishVoteUI", (p) =>
         {
             EventManager.SendEvent("InGameData :: FinishVoteAnimationPlaying", true);
             EventManager.SendEvent("InGameUI :: PlayFinishVoteAnimation");
+        });
+        EventManager.AddEvent("InGameUI :: EndVote", (p) =>
+        {
+            areaVote.GetComponent<VoteUI>().EndVote();
         });
         EventManager.AddEvent("InGameUI :: CloseVoteUI", (p) =>
         {
@@ -152,12 +160,20 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
             Player who = (Player)p[0];
             Player target = (Player)p[1];
 
-            for (int i = 0; i < playerList.Count; i++)
-            {
-                playerList[i].CloseVoteButton();
-            }
-
             photonView.RPC("CompleteVote", RpcTarget.All, who, target);
+        });
+        EventManager.AddEvent("InGameUI :: CompleteSkip", (p) =>
+        {
+            Player who = (Player)p[0];
+
+            photonView.RPC("CompleteVote", RpcTarget.All, who, null);
+        });
+        EventManager.AddEvent("InGameUI :: CloseVoteButtons", (p) =>
+        {
+            for (int i = 0; i < votePlayerList.Count; i++)
+            {
+                votePlayerList[i].CloseVoteButton();
+            }
         });
         EventManager.AddEvent("InGameUI :: FadeIn", (p) =>
         {
@@ -201,7 +217,9 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
         EventManager.AddEvent("Refresh Minimap", (p) =>
         {
             Transform player = (Transform)p[0];
-            minimapPlayer.anchoredPosition = new Vector2(player.position.x, player.position.z);
+            float width = minimap.rect.width / 400f;
+            float height = minimap.rect.height / 400f;
+            minimapPlayer.anchoredPosition = new Vector2(player.position.x * width, player.position.z * height);
             minimapPlayer.localRotation = Quaternion.Euler(0, 0, -player.eulerAngles.y);
         });
         EventManager.AddEvent("Refresh Hungry" , (p) =>
@@ -408,6 +426,46 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
         });
     }
 
+    private IEnumerator VoteTimer()
+    {
+        while (isVoting)
+        {
+            if (PhotonNetwork.LocalPlayer.IsMasterClient)
+            {
+                timer += Time.deltaTime;
+
+                if (timer >= maxTime)
+                {
+                    isVoting = false;
+                    if (PhotonNetwork.LocalPlayer.IsMasterClient)
+                    {
+                        var roomProperties = PhotonNetwork.CurrentRoom.CustomProperties;
+                        roomProperties["Vote"] = false;
+                        PhotonNetwork.CurrentRoom.SetCustomProperties(roomProperties);
+                    }
+                }
+            }
+            yield return new WaitForEndOfFrame();
+        }
+    }
+
+    private void RefreshVotePlayerList()
+    {
+        for (int i = 0; i < votePlayerList.Count; i++)
+        {
+            Destroy(votePlayerList[i].gameObject);
+        }
+        votePlayerList.Clear();
+
+        foreach (var player in PhotonNetwork.CurrentRoom.Players.Values)
+        {
+            VotePlayerListItem votePlayer = Instantiate(playerListPrefab, playerListParent).GetComponent<VotePlayerListItem>();
+            votePlayer.Init(player);
+            votePlayer.SetDie((bool)player.CustomProperties["isDead"]);
+            votePlayerList.Add(votePlayer);
+        }
+    }
+
     private void RefreshVoteAmount()
     {
         voteAmount = 0;
@@ -472,18 +530,25 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
         RefreshVoteAmount();
         if (PhotonNetwork.LocalPlayer.IsMasterClient)
         {
-            var properties = target.CustomProperties;
-            properties["voteMembers"] = (int)properties["voteMembers"] + 1;
-            target.SetCustomProperties(properties);
-
-            if (++voteCount >= voteAmount)
+            if (target != null)
             {
-                var roomProperties = PhotonNetwork.CurrentRoom.CustomProperties;
-                roomProperties["Vote"] = false;
-                PhotonNetwork.CurrentRoom.SetCustomProperties(roomProperties);
+                var properties = target.CustomProperties;
+                properties["voteMembers"] = (int)properties["voteMembers"] + 1;
+                target.SetCustomProperties(properties);
+
+                if (++voteCount >= voteAmount)
+                {
+                    var roomProperties = PhotonNetwork.CurrentRoom.CustomProperties;
+                    roomProperties["Vote"] = false;
+                    PhotonNetwork.CurrentRoom.SetCustomProperties(roomProperties);
+                }
+            }
+            else
+            {
+                ++voteCount;
             }
         }
-        foreach (var playerListItem in playerList)
+        foreach (var playerListItem in votePlayerList)
         {
             if (playerListItem.player == who)
             {
@@ -493,7 +558,6 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
         }
         EventManager.SendEvent("InGameUI :: AddAlamMessage", Strings.GetString(StringKey.InGameMessageCompleteVote, who.NickName));
     }
-
 
     [PunRPC]
     private void VoteDie()
@@ -509,6 +573,15 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        
+        if (stream.IsWriting)
+        {
+            stream.SendNext(timer);
+            EventManager.SendEvent("VoteUI :: RefreshTimer", maxTime, timer);
+        }
+        else
+        {
+            timer = (float)stream.ReceiveNext();
+            EventManager.SendEvent("VoteUI :: RefreshTimer", maxTime, timer);
+        }
     }
 }

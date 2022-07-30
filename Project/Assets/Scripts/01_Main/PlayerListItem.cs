@@ -13,33 +13,22 @@ public class PlayerListItem : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 {
     private Player owner;
 
-    [SerializeField]
-    private Text txtNickname;
+    [SerializeField] private Text txtNickname;
 
-    [SerializeField]
-    private Image playerColor;
+    [SerializeField] private Image playerColor;
 
-    [SerializeField]
-    private Image statusObject;
+    [SerializeField] private Image statusObject;
 
-    [SerializeField]
-    private RectTransform areaNickname;
-    [SerializeField]
-    private GameObject areaPlayerManagementButtons;
+    [SerializeField] private RectTransform areaNickname;
+    [SerializeField] private GameObject areaPlayerManagementButtons;
 
-    [SerializeField]
-    private Button btnExplusion;
-    [SerializeField]
-    private Button btnBan;
+    [SerializeField] private Button btnExplusion;
+    [SerializeField] private Button btnBan;
 
-    [SerializeField]
-    private Color clrNone;
-    [SerializeField]
-    private Color clrNormal;
-    [SerializeField]
-    private Color clrReady;
-    [SerializeField]
-    private Color clrMaster;
+    [SerializeField] private Color clrNone;
+    [SerializeField] private Color clrNormal;
+    [SerializeField] private Color clrReady;
+    [SerializeField] private Color clrMaster;
 
     private void Awake()
     {

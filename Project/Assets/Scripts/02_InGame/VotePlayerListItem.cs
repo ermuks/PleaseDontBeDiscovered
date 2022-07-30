@@ -20,41 +20,56 @@ public class VotePlayerListItem : MonoBehaviour
 
     private bool voteable = false;
 
-    public void Init(Player player, Texture2D img)
+    public void Init(Player player)
     {
-        GetComponent<Button>().onClick.AddListener(() =>
-        {
-            bool isDead = (bool)PhotonNetwork.LocalPlayer.CustomProperties["isDead"];
-            if (voteable && !isDead && !(bool)EventManager.GetData("InGameData >> AlreadyVoted"))
-            {
-                areaVoteButtons.SetActive(!areaVoteButtons.activeInHierarchy);
-            }
-        });
-        btnSelect.onClick.AddListener(() =>
-        {
-            EventManager.SendEvent("InGameUI :: CompleteVote", PhotonNetwork.LocalPlayer, player);
-            EventManager.SendEvent("InGameData :: AlreadyVoted", true);
-            CloseVoteButton();
-        });
-        btnCancel.onClick.AddListener(() =>
-        {
-            CloseVoteButton();
-        });
-        bool isMurder = (bool)PhotonNetwork.LocalPlayer.CustomProperties["isMurder"];
         this.player = player;
-        if (img != null)
-        {
-            imgProfile.sprite = Sprite.Create(img, new Rect(Vector2.zero, new Vector2(img.width, img.height)), Vector2.zero);
-        }
-        if (isMurder)
+
+        GetComponent<Button>().onClick.AddListener(() => OnClick());
+        btnSelect.onClick.AddListener(() => ButtonSelect());
+        btnCancel.onClick.AddListener(() => ButtonCancel());
+
+        if ((bool)PhotonNetwork.LocalPlayer.CustomProperties["isMurder"])
         {
             if ((bool)player.CustomProperties["isMurder"])
             {
                 txtNickname.color = Color.red;
             }
         }
+
+        bool isAlreadyVoted = (bool)PhotonNetwork.LocalPlayer.CustomProperties["alreadyVoted"];
+        if (isAlreadyVoted) SetVote();
+
         txtNickname.text = player.NickName;
+        imgProfile.color = PlayerData.GetColor((int)player.CustomProperties["color"]);
     }
+
+    private void OnClick()
+    {
+        bool isDead = (bool)PhotonNetwork.LocalPlayer.CustomProperties["isDead"];
+        bool isAlreadyVoted = (bool)PhotonNetwork.LocalPlayer.CustomProperties["alreadyVoted"];
+        if (voteable && !isDead && !isAlreadyVoted)
+        {
+            areaVoteButtons.SetActive(!areaVoteButtons.activeInHierarchy);
+        }
+    }
+
+    private void ButtonSelect()
+    {
+        bool isAlreadyVoted = (bool)PhotonNetwork.LocalPlayer.CustomProperties["alreadyVoted"];
+        if (!isAlreadyVoted)
+        {
+            EventManager.SendEvent("InGameUI :: CompleteVote", PhotonNetwork.LocalPlayer, player);
+            EventManager.SendEvent("InGameUI :: CloseVoteButtons");
+        }
+        EventManager.SendEvent("InGameData :: AlreadyVoted", true);
+        CloseVoteButton();
+    }
+
+    private void ButtonCancel()
+    {
+        CloseVoteButton();
+    }
+
 
     public void CloseVoteButton()
     {

@@ -288,11 +288,11 @@ public class PlayerStemina : MonoBehaviourPun
             if (thirstyDownTimer >= thirstyDelay)
             {
                 thirstyDownTimer -= thirstyDelay;
-                thirstValue -= .02f;
+                thirstValue -= .01f;
                 if (thirstValue < 0)
                 {
                     thirstValue = 0;
-                    GetHit(.012f, DieMessage.Hungry);
+                    GetHit(.004f, DieMessage.Hungry);
                 }
             }
             else
@@ -307,7 +307,7 @@ public class PlayerStemina : MonoBehaviourPun
         }
         if (thirstValue >= 1f)
         {
-            GetHit(-.02f * Time.deltaTime, DieMessage.None);
+            GetHit(-.01f * Time.deltaTime, DieMessage.None);
         }
     }
 
@@ -318,11 +318,11 @@ public class PlayerStemina : MonoBehaviourPun
             if (hungryDownTimer >= hungryDelay)
             {
                 hungryDownTimer -= hungryDelay;
-                hungryValue -= .035f;
+                hungryValue -= .015f;
                 if (hungryValue < 0)
                 {
                     hungryValue = 0;
-                    GetHit(.015f, DieMessage.Hungry);
+                    GetHit(.006f, DieMessage.Hungry);
                 }
             }
             else
@@ -337,7 +337,7 @@ public class PlayerStemina : MonoBehaviourPun
         }
         if (hungryValue >= 1f)
         {
-            GetHit(-.02f * Time.deltaTime, DieMessage.None);
+            GetHit(-.025f * Time.deltaTime, DieMessage.None);
         }
     }
 
@@ -352,7 +352,7 @@ public class PlayerStemina : MonoBehaviourPun
         if (warmItem)
         {
             warmDownTimer = .0f;
-            FillWarm(.04f * Time.deltaTime);
+            FillWarm(.01f * Time.deltaTime);
         }
         if (isWarm || warmItem) return;
         if (warmFullTimer >= warmFulldelay)
@@ -360,11 +360,11 @@ public class PlayerStemina : MonoBehaviourPun
             if (warmDownTimer >= warmDelay)
             {
                 warmDownTimer -= warmDelay;
-                warmValue -= .03f * (1 + wetValue);
+                warmValue -= .006f * (1 + wetValue);
                 if (warmValue < 0)
                 {
                     warmValue = 0;
-                    GetHit(.02f, DieMessage.Hungry);
+                    GetHit(.008f, DieMessage.Hungry);
                 }
             }
             else
@@ -386,7 +386,7 @@ public class PlayerStemina : MonoBehaviourPun
             if (wetTimer >= wetDelay)
             {
                 wetTimer -= wetDelay;
-                wetValue -= isWarm ? .15f : .02f;
+                wetValue -= isWarm ? .22f : .08f;
             }
             else
             {

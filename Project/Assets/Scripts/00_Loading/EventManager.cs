@@ -10,6 +10,7 @@ public class EventManager
     {
         "Drag",
         "Refresh",
+        "SetKillCooldown",
         "Sound"
     };
 #endif
@@ -42,9 +43,12 @@ public class EventManager
                 if (Array.FindIndex(ignoreKeys, e => key.IndexOf(e) != -1) == -1)
                 {
                     string p = "";
-                    for (int i = 0; i < param.Length; i++)
+                    if (param != null)
                     {
-                        p += $"\nParameter [ <color=#79d5d9>{i}</color> ] : <color=#c9f5f9>{param[i]}</color>";
+                        for (int i = 0; i < param.Length; i++)
+                        {
+                            p += $"\nParameter [ <color=#79d5d9>{i}</color> ] : <color=#c9f5f9>{param[i]}</color>";
+                        }
                     }
                     Debug.Log($"<color=#fff335>[ Success ]</color>\nEvent Key : <color=#c9f5f9>{key}</color>{p}");
                 }

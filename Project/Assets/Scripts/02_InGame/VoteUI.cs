@@ -10,40 +10,30 @@ public class VoteUI : MonoBehaviourPunCallbacks
 {
     [SerializeField] private TMP_Text txtVoteTime;
     [SerializeField] private Image imgVoteGauge;
-
-    bool isVoting = false;
-    float timer = .0f;
-    float maxTime = .0f;
+    [SerializeField] private Button btnSkip;
 
     private void Awake()
     {
-        maxTime = (float)PhotonNetwork.CurrentRoom.CustomProperties["voteTime"];
-        EventManager.AddEvent("InGameUI :: Vote :: InitTimer", (p) =>
+        btnSkip.onClick.AddListener(() =>
         {
-            isVoting = true;
-            timer = 0;
-        });
-    }
-
-    private void Update()
-    {
-        if (isVoting) 
-        {
-            timer += Time.deltaTime;
-            if (timer >= maxTime)
+            bool isAlreadyVoted = (bool)PhotonNetwork.LocalPlayer.CustomProperties["alreadyVoted"];
+            if (!isAlreadyVoted)
             {
-                isVoting = false;
-                if (PhotonNetwork.LocalPlayer.IsMasterClient)
-                {
-                    var roomProperties = PhotonNetwork.CurrentRoom.CustomProperties;
-                    roomProperties["Vote"] = false;
-                    PhotonNetwork.CurrentRoom.SetCustomProperties(roomProperties);
-                }
+                EventManager.SendEvent("InGameUI :: CompleteSkip", PhotonNetwork.LocalPlayer);
+                EventManager.SendEvent("InGameUI :: CloseVoteButtons");
             }
+            EventManager.SendEvent("InGameData :: AlreadyVoted", true);
+        });
+
+        EventManager.AddEvent("VoteUI :: RefreshTimer", (p) =>
+        {
+            float maxTime = (float)p[0];
+            float timer = (float)p[1];
 
             string txtColor = "ffffff";
             Color imgColor = Color.white;
             float remainTime = maxTime - timer;
+
             if (remainTime >= 5)
             {
                 imgColor = Color.white;
@@ -62,15 +52,16 @@ public class VoteUI : MonoBehaviourPunCallbacks
             txtVoteTime.text = Strings.GetString(StringKey.InGameVoteTimer, $"{maxTime - timer:0}", txtColor);
             imgVoteGauge.color = imgColor;
             imgVoteGauge.fillAmount = 1 - timer / maxTime;
-        }
+        });
     }
 
-    public override void OnRoomPropertiesUpdate(ExitGames.Client.Photon.Hashtable propertiesThatChanged)
+    public void EndVote()
     {
-        if (!(bool)propertiesThatChanged["Vote"])
-        {
-            if (isVoting) isVoting = false;
-            if (timer < maxTime) timer = 100000000;
-        }
+        CloseUI();
+    }
+
+    private void CloseUI()
+    {
+        EventManager.SendEvent("InGameUI :: CloseVoteUI");
     }
 }

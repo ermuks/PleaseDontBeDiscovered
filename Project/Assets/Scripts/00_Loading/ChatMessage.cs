@@ -10,6 +10,7 @@ using Photon.Realtime;
 public class ChatMessage : MonoBehaviour
 {
     [SerializeField] private Image imgContentBackground;
+    [SerializeField] private Image imgPlayerColor;
     [SerializeField] private TMP_Text txtNickname;
     [SerializeField] private TMP_Text txtContent;
 
@@ -23,12 +24,13 @@ public class ChatMessage : MonoBehaviour
             if (player.IsMasterClient && !inGame)
             {
                 imgContentBackground.color = new Color(.9f, .8f, .8f);
-                txtNickname.color = new Color(.9f, .8f, .8f);
+                txtNickname.color = new Color(.4f, .3f, .3f);
             }
             if (deadPlayer)
             {
-                imgContentBackground.color = new Color(1f, .8f, .8f, .4f);
+                imgContentBackground.color = new Color(.4f, .3f, .3f, .4f);
                 txtNickname.color = new Color(.9f, .8f, .8f, .75f);
+                txtContent.color = Color.white;
             }
             if (isMurderer)
             {
@@ -50,6 +52,7 @@ public class ChatMessage : MonoBehaviour
         if (txtNickname != null) txtNickname.text = nickname;
         txtContent.text = message;
         txtContent.richText = richText;
+        imgPlayerColor.color = PlayerData.GetColor(player);
     }
 
     public void SetMessage(string message, bool richText)
