@@ -132,6 +132,7 @@ public class PlayerData : MonoBehaviourPun, IPunObservable
     private void VoteDie()
     {
         Die(DieMessage.Vote, false, false);
+        EventManager.SendEvent("Player :: VoteDie");
     }
 
     private void Hit(Player player)

@@ -110,6 +110,7 @@ public class PlayerController : MonoBehaviour
             EventManager.SendEvent("Player :: WorkEnd");
             EventManager.SendEvent("Player :: SetWatching");
             SetDie();
+            NextPlayer(true);
         });
         EventManager.AddEvent("Player :: WorkStart", (p) =>
         {
@@ -248,8 +249,8 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                CameraRotate();
                 PlayerMove();
+                CameraRotate();
                 PlayerAttack();
             }
             if (!isMurder)

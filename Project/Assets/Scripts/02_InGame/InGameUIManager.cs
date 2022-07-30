@@ -66,6 +66,12 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
 
     private void Awake()
     {
+        GameObject[] g = GameObject.FindGameObjectsWithTag("DeepWater");
+        for (int i = 0; i < g.Length; i++)
+        {
+            Debug.Log(g[i], g[i]);
+        }
+
         messageUIPrefab = Resources.Load<GameObject>("Prefabs/UI/InGameMessageUI");
         bloodUIPrefab = Resources.Load<GameObject>("Prefabs/UI/BloodEffect");
 
