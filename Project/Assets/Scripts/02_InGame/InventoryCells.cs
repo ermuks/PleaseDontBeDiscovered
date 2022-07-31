@@ -106,7 +106,6 @@ public class InventoryCells : EventTrigger
 
     public override void OnEndDrag(PointerEventData eventData)
     {
-        if (cell.itemCount <= 0) return;
         if (eventData.button == PointerEventData.InputButton.Left)
         {
             EventManager.SendEvent("InventoryUI :: EndDrag");

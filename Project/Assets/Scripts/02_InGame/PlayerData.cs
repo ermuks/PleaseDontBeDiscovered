@@ -38,6 +38,8 @@ public class PlayerData : MonoBehaviourPun, IPunObservable
     };
     public static Color GetColor(Player player)
     {
+        Debug.Log(player.NickName);
+        Debug.Log(player.CustomProperties);
         int index = (int)player.CustomProperties["color"];
         index = Mathf.Clamp(index, 0, colors.Length - 1);
         return colors[index];

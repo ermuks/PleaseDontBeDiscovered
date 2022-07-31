@@ -40,7 +40,11 @@ public class VotePlayerListItem : MonoBehaviour
         if (isAlreadyVoted) SetVote();
 
         txtNickname.text = player.NickName;
-        imgProfile.color = PlayerData.GetColor((int)player.CustomProperties["color"]);
+        if (imgProfile != null)
+        {
+            Debug.Log(player.NickName);
+            imgProfile.color = PlayerData.GetColor((int)player.CustomProperties["color"]);
+        }
     }
 
     private void OnClick()

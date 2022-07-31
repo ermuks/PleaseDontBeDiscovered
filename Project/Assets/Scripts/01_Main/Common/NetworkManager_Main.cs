@@ -857,11 +857,17 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
         int i = 0;
         foreach (var player in players)
         {
-            playerListItems[i++].Refresh(player.Value);
+            if (playerListItems[i] != null)
+            {
+                playerListItems[i++].Refresh(player.Value);
+            }
         }
         for (int list = i; list < playerListItems.Count; list++)
         {
-            playerListItems[list].Clear();
+            if (playerListItems[list] != null)
+            {
+                playerListItems[list].Clear();
+            }
         }
     }
 
