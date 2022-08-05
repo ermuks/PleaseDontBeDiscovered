@@ -153,10 +153,7 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
     // ***** OnConnectedToMaster ***** //
     public override void OnConnectedToMaster()
     {
-        if (!PhotonNetwork.InLobby)
-        {
-            PhotonNetwork.JoinLobby();
-        }
+        PhotonNetwork.JoinLobby();
     }
 
     // ***** OnJoinedLobby ***** //
@@ -183,7 +180,14 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
             areaRoomList.SetActive(false);
             areaRoomSettings.SetActive(false);
             areaRoomUI.SetActive(true);
-            SetPlayerProperties("isReady", false, "isMurder", false, "isDead", false);
+            SetPlayerProperties(
+                "isReady", false,
+                "isMurder", false,
+                "isDead", false,
+                "alreadyVoted", false,
+                "voteMembers", 0,
+                "color", (int)PhotonNetwork.LocalPlayer.CustomProperties["color"]
+                );
             EventManager.SendEvent("Chatting :: Clear");
             RoomRefresh(true);
             RefreshPlayerList();
@@ -203,10 +207,6 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
         SetPlayerProperties("isReady", false);
 
         players.Clear();
-        if (!PhotonNetwork.InLobby)
-        {
-            PhotonNetwork.JoinLobby();
-        }
     }
 
     // ***** OnPlayerEnteredRoom ***** //
@@ -244,7 +244,10 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
         {
             players[targetPlayer.NickName].CustomProperties = changedProps;
         }
-        RefreshPlayerList();
+        if (PhotonNetwork.CurrentRoom.IsOpen)
+        {
+            RefreshPlayerList();
+        }
     }
 
 
@@ -950,16 +953,16 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
 
 #nullable enable
     // ***** SetPlayerProperties ***** //
-    private void SetPlayerProperties(params object?[] v)
+    private void SetPlayerProperties(params object?[] value)
     {
-        if (v != null)
+        if (value != null)
         {
             var settings = PhotonNetwork.LocalPlayer.CustomProperties;
-            if (v.Length > 0 && v.Length % 2 == 0)
+            if (value.Length > 0 && value.Length % 2 == 0)
             {
-                for (int i = 0; i < v.Length / 2; i++)
+                for (int i = 0; i < value.Length / 2; i++)
                 {
-                    settings[v[i * 2]] = v[i * 2 + 1];
+                    settings[value[i * 2]] = value[i * 2 + 1];
                 }
             }
             PhotonNetwork.LocalPlayer.SetCustomProperties(settings);

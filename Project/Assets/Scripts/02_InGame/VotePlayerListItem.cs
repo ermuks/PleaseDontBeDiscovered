@@ -43,6 +43,7 @@ public class VotePlayerListItem : MonoBehaviour
         if (imgProfile != null)
         {
             Debug.Log(player.NickName);
+            Debug.Log(player.CustomProperties);
             imgProfile.color = PlayerData.GetColor((int)player.CustomProperties["color"]);
         }
     }
