@@ -70,7 +70,6 @@ public class PlayerListItem : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         if (player != null)
         {
             playerColor.gameObject.SetActive(true);
-            Debug.Log(player.NickName);
             playerColor.color = PlayerData.GetColor(player);
         }
         else

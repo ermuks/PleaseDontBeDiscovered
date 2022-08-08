@@ -49,6 +49,7 @@ public class Settings : MonoBehaviourPunCallbacks
     [SerializeField] private GameObject[] areaTabs;
 
     [SerializeField] private Button btnExitSettings;
+    [SerializeField] private GameObject areaDebugUI;
     [SerializeField] private GameObject areaSettings;
 
     [SerializeField] private Toggle tglVSync;
@@ -120,6 +121,8 @@ public class Settings : MonoBehaviourPunCallbacks
         GameObject colorPrefab = Resources.Load<GameObject>("Prefabs/UI/ColorSelectButton");
         GameObject controlPrefab = Resources.Load<GameObject>("Prefabs/UI/ControllerList");
         AddEvent();
+        areaSettings.SetActive(false);
+        areaDebugUI.SetActive(isDebug);
         for (int i = 0; i < (int)KeySettings.KeyCount; i++)
         {
             keys.Add((KeySettings)i, defaultKeys[i]);
