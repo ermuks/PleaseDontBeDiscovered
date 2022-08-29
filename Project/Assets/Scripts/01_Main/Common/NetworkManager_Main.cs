@@ -240,6 +240,7 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
     // ***** OnPlayerPropertiesUpdate ***** //
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
     {
+        Debug.Log($"{Time.time}\n{changedProps}");
         if (players.ContainsKey(targetPlayer.NickName))
         {
             players[targetPlayer.NickName].CustomProperties = changedProps;
@@ -278,11 +279,11 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
     // ***** OnRoomPropertiesUpdate ***** //
     public override void OnRoomPropertiesUpdate(ExitGames.Client.Photon.Hashtable propertiesThatChanged)
     {
-        var properties = PhotonNetwork.CurrentRoom.CustomProperties;
         if (propertiesThatChanged.ContainsKey("isStart"))
         {
             if ((bool)propertiesThatChanged["isStart"])
             {
+                var properties = PhotonNetwork.LocalPlayer.CustomProperties;
                 properties["isReady"] = false;
                 PhotonNetwork.LocalPlayer.SetCustomProperties(properties);
                 EventManager.SendEvent("OpenScene", "InGame");

@@ -5,6 +5,11 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 
+public enum ROCTJob
+{
+    None, Police, Doctor, FisherMan, Woodcutter
+}
+
 public class NetworkManager_Loading : MonoBehaviourPunCallbacks
 {
     int color;
@@ -37,6 +42,7 @@ public class NetworkManager_Loading : MonoBehaviourPunCallbacks
             { "isMurder", false },
             { "alreadyVoted", false },
             { "voteMembers", 0 },
+            { "job", (int)ROCTJob.None },
             { "color", color }
         });
         EventManager.SendEvent("OpenScene", "Main");
