@@ -58,7 +58,7 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
     [Space(8)]
     [SerializeField] private Toggle tglNickname;
     [SerializeField] private Toggle tglFallingDamage;
-    [SerializeField] private Toggle tglStartItem;
+    //[SerializeField] private Toggle tglStartItem;
     [SerializeField] private Toggle tglRunable;
 
     [Space(8)]
@@ -95,7 +95,7 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
     [SerializeField] private TMP_Text txtRoomSettingsVoteTime;
     [SerializeField] private TMP_Text txtRoomSettingsNicknameVisible;
     [SerializeField] private TMP_Text txtRoomSettingsFallingDamage;
-    [SerializeField] private TMP_Text txtRoomSettingsStartItem;
+    //[SerializeField] private TMP_Text txtRoomSettingsStartItem;
     [SerializeField] private TMP_Text txtRoomSettingsRunable;
     #endregion
 
@@ -673,7 +673,7 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
         sliderJobMission.value = (int)properties["jobMission"];
         tglNickname.isOn = (bool)properties["nicknameVisible"];
         tglFallingDamage.isOn = (bool)properties["fallingDamage"];
-        tglStartItem.isOn = (bool)properties["startItem"];
+        //tglStartItem.isOn = (bool)properties["startItem"];
         tglRunable.isOn = (bool)properties["runable"];
         areaRoomSettings.SetActive(true);
     }
@@ -699,7 +699,7 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
                 roomOption.CustomRoomProperties.Add("voteTime", sliderVoteTime.value);
                 roomOption.CustomRoomProperties.Add("nicknameVisible", tglNickname.isOn);
                 roomOption.CustomRoomProperties.Add("fallingDamage", tglFallingDamage.isOn);
-                roomOption.CustomRoomProperties.Add("startItem", tglStartItem.isOn);
+                //roomOption.CustomRoomProperties.Add("startItem", tglStartItem.isOn);
                 roomOption.CustomRoomProperties.Add("runable", tglRunable.isOn);
                 roomOption.CustomRoomProperties.Add("commonMission", (int)sliderCommonMission.value);
                 roomOption.CustomRoomProperties.Add("personalMission", (int)sliderPersonalMission.value);
@@ -755,7 +755,7 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
         float s_voteTime = (float)properties["voteTime"];
         string s_nicknameVisible = (bool)properties["nicknameVisible"] ? "O" : "X";
         string s_fallingDamage = (bool)properties["fallingDamage"] ? "O" : "X";
-        string s_startItem = (bool)properties["startItem"] ? "O" : "X";
+        //string s_startItem = (bool)properties["startItem"] ? "O" : "X";
         string s_runable = (bool)properties["runable"] ? "O" : "X";
         txtRoomSettingsMurdererCount.text = Strings.GetString(StringKey.MainTextMurdererCount, s_murdererCount);
         txtRoomSettingsMoveSpeed.text = Strings.GetString(StringKey.MainTextMoveSpeed, s_moveSpeed);
@@ -763,7 +763,7 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
         txtRoomSettingsVoteTime.text = Strings.GetString(StringKey.MainTextVoteTime, s_voteTime);
         txtRoomSettingsNicknameVisible.text = Strings.GetString(StringKey.MainTextNicknameVisible, s_nicknameVisible);
         txtRoomSettingsFallingDamage.text = Strings.GetString(StringKey.MainTextFallingDamage, s_fallingDamage);
-        txtRoomSettingsStartItem.text = Strings.GetString(StringKey.MainTextStartItem, s_startItem);
+        //txtRoomSettingsStartItem.text = Strings.GetString(StringKey.MainTextStartItem, s_startItem);
         txtRoomSettingsRunable.text = Strings.GetString(StringKey.MainTextRunable, s_runable);
         txtRoomSettingsRoomTitle.text = PhotonNetwork.CurrentRoom.Name;
 

@@ -305,8 +305,8 @@ public static class Strings
                 str.Add(StringKey.ItemFishDescript, "방금 잡은 듯한 모습을 한 물고기다.");
                 str.Add(StringKey.ItemGrilledFishDescript, "바싹 익혀서 노릇노릇 구워진 맛있는 생선이 되었다.");
                 str.Add(StringKey.InGameDieMessage, "당신은 {0}에게 살해당했습니다.");
-                str.Add(StringKey.InGameMurderPlayer, "들키지 않고 모두 죽이세요");
-                str.Add(StringKey.InGameNoMurderPlayer, "무조건 생존하세요");
+                str.Add(StringKey.InGameMurderPlayer, "당신은 범인입니다.");
+                str.Add(StringKey.InGameNoMurderPlayer, "당신은 여행자입니다.");
                 str.Add(StringKey.InGameDieMessageHungry, "굶주림에 지쳐 사망했습니다");
                 str.Add(StringKey.InGameDieMessageFalling, "높은 곳에서 떨어져 사망했습니다");
                 str.Add(StringKey.InGameDieMessageVote, "투표로 인해 쫓겨났습니다.");
