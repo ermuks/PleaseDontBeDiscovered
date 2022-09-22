@@ -55,10 +55,6 @@ public class PlayerController : MonoBehaviour
 
     private bool isWorking = false;
 
-    private float slowTimer = 3.0f;
-    private float slowEndTime = 3.0f;
-    private bool isSlow = false;
-
     private bool killable = false;
     private float killCooldown = .0f;
     private float killTimer = .0f;
@@ -74,8 +70,6 @@ public class PlayerController : MonoBehaviour
 
     public Vector3 hitNormal;
     public float hitAngle;
-
-    private float rememberHeight;
 
     private void Awake()
     {
@@ -257,7 +251,6 @@ public class PlayerController : MonoBehaviour
             {
                 BreathTimer();
             }
-            PlayerSlow();
             PlayerJumpTimer();
             PlayerMinimap();
             PlayerCCTV();
@@ -326,16 +319,6 @@ public class PlayerController : MonoBehaviour
     private void PlayerJumpTimer()
     {
         jumpTimer += Time.deltaTime;
-    }
-
-    private void PlayerSlow()
-    {
-        slowTimer += Time.deltaTime;
-        if (slowTimer >= slowEndTime)
-        {
-            slowTimer = slowEndTime;
-        }
-        isSlow = slowTimer < slowEndTime;
     }
 
     private void PlayerMinimap()
@@ -568,16 +551,6 @@ public class PlayerController : MonoBehaviour
                 vertical = Mathf.Clamp(vertical, -.5f, 1f);
                 anim.SetBool("Air", false);
 
-                float currentHeight = transform.position.y;
-                float damage = rememberHeight - currentHeight - 8;
-                if (damage > 0 && isFallingDamage)
-                {
-                    EventManager.SendEvent("InGameUI :: Hurt");
-                    EventManager.SendEvent("Player :: FallingDamage", damage * 2f / 100f);
-                    slowTimer = .0f;
-                }
-                rememberHeight = currentHeight;
-
                 gravityY = .0f;
                 if (!isWater && Input.GetKey(Settings.instance.GetKey(KeySettings.JumpKey)) && jumpTimer >= jumpDelay)
                 {
@@ -587,7 +560,6 @@ public class PlayerController : MonoBehaviour
                 }
 
                 moveDir = Quaternion.Euler(0, isAround ? rememberAngleY : currentAngleY, 0) * new Vector3(horizontal, 0, vertical);
-                moveDir *= isSlow ? .5f : 1f;
 
                 if (moveDir.magnitude > 1) moveDir.Normalize();
                 if (isRun) moveDir *= run;

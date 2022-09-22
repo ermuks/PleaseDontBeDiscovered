@@ -61,6 +61,14 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
     [SerializeField] private Toggle tglStartItem;
     [SerializeField] private Toggle tglRunable;
 
+    [Space(8)]
+    [SerializeField] private TMP_Text txtCommonMission;
+    [SerializeField] private TMP_Text txtPersonalMission;
+    [SerializeField] private TMP_Text txtJobMission;
+    [SerializeField] private Slider sliderCommonMission;
+    [SerializeField] private Slider sliderPersonalMission;
+    [SerializeField] private Slider sliderJobMission;
+
     [Space(16)]
     [SerializeField] private Button btnOpenCreateRoom;
     [SerializeField] private Button btnRandomJoinRoom;
@@ -285,6 +293,7 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
             {
                 var properties = PhotonNetwork.LocalPlayer.CustomProperties;
                 properties["isReady"] = false;
+                MissionManager.SetMission((int)propertiesThatChanged["commonMission"], (int)propertiesThatChanged["personalMission"], (int)propertiesThatChanged["jobMission"]);
                 PhotonNetwork.LocalPlayer.SetCustomProperties(properties);
                 EventManager.SendEvent("OpenScene", "InGame");
             }
@@ -586,6 +595,21 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
             txtVoteTime.text = $"{value:0}";
         });
 
+        sliderCommonMission.onValueChanged.AddListener((value) =>
+        {
+            txtCommonMission.text = value.ToString();
+        });
+
+        sliderPersonalMission.onValueChanged.AddListener((value) =>
+        {
+            txtPersonalMission.text = value.ToString();
+        });
+
+        sliderJobMission.onValueChanged.AddListener((value) =>
+        {
+            txtJobMission.text = value.ToString();
+        });
+
         btnRoomMaxPlayer.onClick.AddListener(() =>
         {
             inputRoomMaxPlayer.gameObject.SetActive(true);
@@ -644,6 +668,9 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
         sliderMoveSpeed.value = (float)properties["moveSpeed"];
         sliderKillCooldown.value = (float)properties["killCooldown"];
         sliderVoteTime.value = (float)properties["voteTime"];
+        sliderCommonMission.value = (int)properties["commonMission"];
+        sliderPersonalMission.value = (int)properties["personalMission"];
+        sliderJobMission.value = (int)properties["jobMission"];
         tglNickname.isOn = (bool)properties["nicknameVisible"];
         tglFallingDamage.isOn = (bool)properties["fallingDamage"];
         tglStartItem.isOn = (bool)properties["startItem"];
@@ -674,6 +701,9 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
                 roomOption.CustomRoomProperties.Add("fallingDamage", tglFallingDamage.isOn);
                 roomOption.CustomRoomProperties.Add("startItem", tglStartItem.isOn);
                 roomOption.CustomRoomProperties.Add("runable", tglRunable.isOn);
+                roomOption.CustomRoomProperties.Add("commonMission", (int)sliderCommonMission.value);
+                roomOption.CustomRoomProperties.Add("personalMission", (int)sliderPersonalMission.value);
+                roomOption.CustomRoomProperties.Add("jobMission", (int)sliderJobMission.value);
 
                 if (PhotonNetwork.InRoom)
                 {

@@ -20,7 +20,6 @@ public class NetworkManager_InGame : MonoBehaviourPunCallbacks
         Transform playerTransform = Resources.Load<GameObject>(path).transform;
         myCharacter = PhotonNetwork.Instantiate(path, playerTransform.position, playerTransform.rotation);
         myCharacter.AddComponent<PlayerController>();
-        myCharacter.AddComponent<PlayerStemina>();
         Cursor.lockState = CursorLockMode.Locked;
 
         EventManager.AddEvent("InGameData :: PlayerPositionSetting", (p) =>

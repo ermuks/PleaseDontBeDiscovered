@@ -22,6 +22,7 @@ public class NetworkManager_Loading : MonoBehaviourPunCallbacks
 
     private void LoadData()
     {
+        MissionManager.Initialize();
         if (PlayerPrefs.HasKey("color"))
         {
             color = PlayerPrefs.GetInt("color");

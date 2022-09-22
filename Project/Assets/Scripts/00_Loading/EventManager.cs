@@ -55,6 +55,10 @@ public class EventManager
 #endif
                 eventList[key](param);
             }
+            else
+            {
+                Debug.Log($"<color=#ff7b85>[ Fail ]</color>\nEvent Key : <color=#c9f5f9>{key}</color>");
+            }
         }
     }
 

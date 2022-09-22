@@ -138,37 +138,6 @@ public class Settings : MonoBehaviourPunCallbacks
         }
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.F3))
-        {
-            foreach (var item in Photon.Pun.PhotonNetwork.LocalPlayer.CustomProperties)
-            {
-                Debug.Log($"{item.Key} :: {item.Value}");
-            }
-            EventManager.SendEvent("InGameUI :: CreateMessage", "디버그용 버튼 (F3)");
-        }
-        if (Input.GetKeyDown(KeyCode.F4))
-        {
-            foreach (var p in Photon.Pun.PhotonNetwork.CurrentRoom.Players)
-            {
-                foreach (var pr in p.Value.CustomProperties)
-                {
-                    Debug.Log($"{p.Value.NickName} :: {pr.Key} :: {pr.Value}");
-                }
-            }
-            EventManager.SendEvent("InGameUI :: CreateMessage", "디버그용 버튼 (F4)");
-        }
-        if (Input.GetKeyDown(KeyCode.F5))
-        {
-            foreach (var p in Photon.Pun.PhotonNetwork.CurrentRoom.CustomProperties)
-            {
-                Debug.Log($"{p.Key} :: {p.Value}");
-            }
-            EventManager.SendEvent("InGameUI :: CreateMessage", "디버그용 버튼 (F5)");
-        }
-    }
-
     public override void OnJoinedRoom()
     {
         int colorIndex = (int)PhotonNetwork.LocalPlayer.CustomProperties["color"];

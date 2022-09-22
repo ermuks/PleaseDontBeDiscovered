@@ -114,6 +114,8 @@ public enum StringKey
     MainTextFallingDamage,
     MainTextStartItem,
     MainTextRunable,
+
+    InGameMissionRemain,
 }
 
 public static class Strings
@@ -229,6 +231,8 @@ public static class Strings
 
                 str.Add(StringKey.InGameVoteTimer, "Remain time : <color=#{1}>{0}</color>s");
 
+                str.Add(StringKey.InGameMissionRemain, "Remain : {0}");
+
 
 
                 break;
@@ -334,6 +338,8 @@ public static class Strings
                 str.Add(StringKey.InGameFinishVoteMurderFalse, "{0}님은 <color=#ee3333>범인</color>이 아니였습니다.");
                 str.Add(StringKey.InGameFinishVoteMurderCount, "<color=#ee3333>범인</color>이 {0}명 있습니다.");
                 str.Add(StringKey.InGameVoteTimer, "남은 투표시간 : <color=#{1}>{0}</color> 초");
+
+                str.Add(StringKey.InGameMissionRemain, "남은 수 : {0}");
                 break;
             case Language.Japanese:
                 str.Add(StringKey.InitializeConnectingMessage, "サーバーに接続中...");
@@ -437,6 +443,8 @@ public static class Strings
                 str.Add(StringKey.InGameFinishVoteMurderFalse, "{0}님은 <color=#ee3333>범인</color>이 아니였습니다.");
                 str.Add(StringKey.InGameFinishVoteMurderCount, "<color=#ee3333>범인</color>이 {0}명 있습니다.");
                 str.Add(StringKey.InGameVoteTimer, "남은 투표시간 : <color=#{1}>{0}</color> 초");
+
+                str.Add(StringKey.InGameMissionRemain, "남은 수 : {0}");
                 break;
             case Language.Chinese:
                 str.Add(StringKey.InitializeConnectingMessage, "正在连接服务器...");
@@ -540,6 +548,8 @@ public static class Strings
                 str.Add(StringKey.InGameFinishVoteMurderFalse, "{0}님은 <color=#ee3333>범인</color>이 아니였습니다.");
                 str.Add(StringKey.InGameFinishVoteMurderCount, "<color=#ee3333>범인</color>이 {0}명 있습니다.");
                 str.Add(StringKey.InGameVoteTimer, "남은 투표시간 : <color=#{1}>{0}</color> 초");
+
+                str.Add(StringKey.InGameMissionRemain, "남은 수 : {0}");
                 break;
         }
     }

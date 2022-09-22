@@ -14,15 +14,15 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
     private GameObject messageUIPrefab;
     private GameObject bloodUIPrefab;
 
-    [SerializeField] private Image areaHPValue;
-    [SerializeField] private Image areaHungryValue;
-    [SerializeField] private Image areaThirstyValue;
-    [SerializeField] private Image areaColdValue;
-    [SerializeField] private Image areaWetValue;
-    [SerializeField] private Image areaBreathValue;
+    //[SerializeField] private Image areaHPValue;
+    //[SerializeField] private Image areaHungryValue;
+    //[SerializeField] private Image areaThirstyValue;
+    //[SerializeField] private Image areaColdValue;
+    //[SerializeField] private Image areaWetValue;
+    //[SerializeField] private Image areaBreathValue;
 
-    [SerializeField] private GameObject areaNormalPlayerUI;
-    [SerializeField] private GameObject areaMurderPlayerUI;
+    //[SerializeField] private GameObject areaNormalPlayerUI;
+    //[SerializeField] private GameObject areaMurderPlayerUI;
     [SerializeField] private Image imgCooldownTimer;
     [SerializeField] private TMP_Text txtCooldownTimer;
 
@@ -33,7 +33,7 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
     [SerializeField] private GameObject areaWater;
     [SerializeField] private GameObject areaDieUI;
     [SerializeField] private GameObject areaInventory;
-    [SerializeField] private GameObject areaPlayerUI;
+    //[SerializeField] private GameObject areaPlayerUI;
     [SerializeField] private GameObject areaPlayerWorkProgressUI;
     [SerializeField] private GameObject areaWatcherUI;
     [SerializeField] private GameObject areaGameOver;
@@ -75,7 +75,7 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
 
         areaFinishVote.SetActive(false);
         areaDieUI.SetActive(false);
-        areaPlayerUI.SetActive(true);
+        //areaPlayerUI.SetActive(true);
         areaInventory.SetActive(false);
         areaWatcherUI.SetActive(false);
         areaGameOver.SetActive(false);
@@ -87,13 +87,13 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
         areaPlayerWorkProgressUI.SetActive(false);
 
         bool isMurder = (bool)PhotonNetwork.LocalPlayer.CustomProperties["isMurder"];
-        areaNormalPlayerUI.SetActive(!isMurder);
-        areaMurderPlayerUI.SetActive(isMurder);
+        //areaNormalPlayerUI.SetActive(!isMurder);
+        //areaMurderPlayerUI.SetActive(isMurder);
 
-        areaHPValue.color = new Color(.8f, .8f, .8f);
-        areaHungryValue.color = new Color(.8f, .8f, .8f);
-        areaThirstyValue.color = new Color(.8f, .8f, .8f);
-        areaColdValue.color = new Color(.8f, .8f, .8f);
+        //areaHPValue.color = new Color(.8f, .8f, .8f);
+        //areaHungryValue.color = new Color(.8f, .8f, .8f);
+        //areaThirstyValue.color = new Color(.8f, .8f, .8f);
+        //areaColdValue.color = new Color(.8f, .8f, .8f);
 
         maxTime = (float)PhotonNetwork.CurrentRoom.CustomProperties["voteTime"];
 
@@ -183,7 +183,7 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
         EventManager.AddEvent("InGameUI :: PlayFinishVoteAnimation", (p) =>
         {
             StartCoroutine(AnimationEnd());
-            areaPlayerUI.SetActive(false);
+            //areaPlayerUI.SetActive(false);
             areaDieUI.SetActive(false);
             areaTriggerParent.SetActive(false);
             EventManager.SendEvent("InGameData :: PlayerPositionSetting");
@@ -199,21 +199,21 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
             else
             {
                 EventManager.SendEvent("InGameData :: PlayerPositionSetting");
-                areaPlayerUI.SetActive(true);
+                //areaPlayerUI.SetActive(true);
             }
             areaTriggerParent.SetActive(true);
         });
 
-        EventManager.AddEvent("Refresh Stamina", (p) =>
-        {
-            float value = (float)p[0];
-            areaHPValue.fillAmount = value;
+        //EventManager.AddEvent("Refresh Stamina", (p) =>
+        //{
+        //    float value = (float)p[0];
+        //    areaHPValue.fillAmount = value;
 
-            if (value >= .6f) areaHPValue.color = new Color(.8f, .8f, .8f);
-            else if (value >= .3f) areaHPValue.color = Color.white;
-            else if (value >= .15f) areaHPValue.color = new Color(1, 1, .4f);
-            else areaHPValue.color = new Color(1, .4f, .4f);
-        });
+        //    if (value >= .6f) areaHPValue.color = new Color(.8f, .8f, .8f);
+        //    else if (value >= .3f) areaHPValue.color = Color.white;
+        //    else if (value >= .15f) areaHPValue.color = new Color(1, 1, .4f);
+        //    else areaHPValue.color = new Color(1, .4f, .4f);
+        //});
         EventManager.AddEvent("Refresh Minimap", (p) =>
         {
             Transform player = (Transform)p[0];
@@ -222,51 +222,51 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
             minimapPlayer.anchoredPosition = new Vector2(player.position.x * width, player.position.z * height);
             minimapPlayer.localRotation = Quaternion.Euler(0, 0, -player.eulerAngles.y);
         });
-        EventManager.AddEvent("Refresh Hungry" , (p) =>
-        {
-            float value = (float)p[0];
-            areaHungryValue.fillAmount = value;
+        //EventManager.AddEvent("Refresh Hungry" , (p) =>
+        //{
+        //    float value = (float)p[0];
+        //    areaHungryValue.fillAmount = value;
 
-            if (value >= .6f) areaHungryValue.color = new Color(.8f, .8f, .8f);
-            else if (value >= .3f) areaHungryValue.color = Color.white;
-            else if (value >= .15f) areaHungryValue.color = new Color(1, 1, .4f);
-            else areaHungryValue.color = new Color(1, .4f, .4f);
-        });
-        EventManager.AddEvent("Refresh Thirsty", (p) =>
-        {
-            float value = (float)p[0];
-            areaThirstyValue.fillAmount = value;
+        //    if (value >= .6f) areaHungryValue.color = new Color(.8f, .8f, .8f);
+        //    else if (value >= .3f) areaHungryValue.color = Color.white;
+        //    else if (value >= .15f) areaHungryValue.color = new Color(1, 1, .4f);
+        //    else areaHungryValue.color = new Color(1, .4f, .4f);
+        //});
+        //EventManager.AddEvent("Refresh Thirsty", (p) =>
+        //{
+        //    float value = (float)p[0];
+        //    areaThirstyValue.fillAmount = value;
 
-            if (value >= .6f) areaThirstyValue.color = new Color(.8f, .8f, .8f);
-            else if (value >= .3f) areaThirstyValue.color = Color.white;
-            else if (value >= .15f) areaThirstyValue.color = new Color(1, 1, .4f);
-            else areaThirstyValue.color = new Color(1, .4f, .4f);
-        });
-        EventManager.AddEvent("Refresh Breath"   , (p) =>
-        {
-            float value = (float)p[0];
-            areaBreathValue.fillAmount = value;
+        //    if (value >= .6f) areaThirstyValue.color = new Color(.8f, .8f, .8f);
+        //    else if (value >= .3f) areaThirstyValue.color = Color.white;
+        //    else if (value >= .15f) areaThirstyValue.color = new Color(1, 1, .4f);
+        //    else areaThirstyValue.color = new Color(1, .4f, .4f);
+        //});
+        //EventManager.AddEvent("Refresh Breath"   , (p) =>
+        //{
+        //    float value = (float)p[0];
+        //    areaBreathValue.fillAmount = value;
 
-            if (value <= .5f) areaBreathValue.color = new Color(.8f, .8f, .8f);
-            else if (value <= .7f) areaBreathValue.color = new Color(1, .8f, .8f);
-            else if (value <= .9f) areaBreathValue.color = new Color(1, .4f, .4f);
-            else areaBreathValue.color = new Color(.8f, .2f, .2f);
-        });
-        EventManager.AddEvent("Refresh Wet"   , (p) =>
-        {
-            float value = (float)p[0];
-            areaWetValue.fillAmount = value;
-        });
-        EventManager.AddEvent("Refresh Cold", (p) =>
-        {
-            float value = (float)p[0];
-            areaColdValue.fillAmount = value;
+        //    if (value <= .5f) areaBreathValue.color = new Color(.8f, .8f, .8f);
+        //    else if (value <= .7f) areaBreathValue.color = new Color(1, .8f, .8f);
+        //    else if (value <= .9f) areaBreathValue.color = new Color(1, .4f, .4f);
+        //    else areaBreathValue.color = new Color(.8f, .2f, .2f);
+        //});
+        //EventManager.AddEvent("Refresh Wet"   , (p) =>
+        //{
+        //    float value = (float)p[0];
+        //    areaWetValue.fillAmount = value;
+        //});
+        //EventManager.AddEvent("Refresh Cold", (p) =>
+        //{
+        //    float value = (float)p[0];
+        //    areaColdValue.fillAmount = value;
 
-            if (value >= .6f) areaColdValue.color = new Color(.8f, .8f, .8f);
-            else if (value >= .3f) areaColdValue.color = Color.white;
-            else if (value >= .15f) areaColdValue.color = new Color(1, 1, .4f);
-            else areaColdValue.color = new Color(1, .4f, .4f);
-        });
+        //    if (value >= .6f) areaColdValue.color = new Color(.8f, .8f, .8f);
+        //    else if (value >= .3f) areaColdValue.color = Color.white;
+        //    else if (value >= .15f) areaColdValue.color = new Color(1, 1, .4f);
+        //    else areaColdValue.color = new Color(1, .4f, .4f);
+        //});
         EventManager.AddEvent("InGameUI :: SetDie", (p) =>
         {
             areaDieUI.SetActive(true);
@@ -294,7 +294,7 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
         });
         EventManager.AddEvent("InGameUI :: WatchUI", (p) =>
         {
-            areaPlayerUI.SetActive(false);
+            //areaPlayerUI.SetActive(false);
             areaDieUI.SetActive(false);
             areaWatcherUI.SetActive(true);
         });
@@ -306,7 +306,7 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
         EventManager.AddEvent("InGameUI :: GameOver", (p) =>
         {
             bool murdererWin = (bool)p[0];
-            areaPlayerUI.SetActive(false);
+            //areaPlayerUI.SetActive(false);
             areaDieUI.SetActive(false);
             areaWatcherUI.SetActive(false);
             areaGameOver.SetActive(true);
