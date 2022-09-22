@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 
-public class MissionListTurnOnLight : Mission
+public class MissionListHanging : Mission
 {
     public override Mission InitializeMission()
     {
-        missionType = MissionType.Common;
-        missionCode = "commonMission-TurnOnLight";
-        missionName = "가로등 불 켜기";
-        missionDescript = "주변 시야가 어둡습니다. 가로등을 켜서 시야를 밝히세요.";
+        missionType = MissionType.Personal;
+        missionCode = "personalMission-Wood";
+        missionName = "옷 정리하기";
+        missionDescript = "옷장에 널브러진 옷을 정리하세요.";
         isFirst = true;
         missionConditions = 1;
         return this;
@@ -19,5 +19,10 @@ public class MissionListTurnOnLight : Mission
         {
             CompleteMission();
         }
+    }
+
+    public override void CompleteMission()
+    {
+        
     }
 }

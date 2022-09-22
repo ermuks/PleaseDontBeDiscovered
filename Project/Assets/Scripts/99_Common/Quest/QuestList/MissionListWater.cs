@@ -12,4 +12,12 @@ public class MissionListWater : Mission
         missionConditions = 3;
         return this;
     }
+
+    public override void RefreshMission()
+    {
+        if (--missionConditions == 0)
+        {
+            CompleteMission();
+        }
+    }
 }

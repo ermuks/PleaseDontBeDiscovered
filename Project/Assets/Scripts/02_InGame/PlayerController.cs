@@ -89,7 +89,7 @@ public class PlayerController : MonoBehaviour
         EventManager.AddEvent("Player :: Die", (p) =>
         {
             EventManager.SendEvent("Player :: WorkEnd");
-            EventManager.SendEvent("InGameUI :: CloseInventory");
+            //EventManager.SendEvent("InGameUI :: CloseInventory");
             if (p[0].GetType() == typeof(Player))
             {
                 SetDie((Player)p[0]);
@@ -132,27 +132,35 @@ public class PlayerController : MonoBehaviour
         {
             isWorking = false;
             WorkMessage msg = (WorkMessage)p[0];
-            Collider col = (Collider)p[1];
+            //Collider col = (Collider)p[1];
             switch (msg)
             {
                 case WorkMessage.Treezone:
                     anim.SetBool("isWorkTree", false);
-                    EventManager.SendEvent("Inventory :: AddItem", "0007", Random.Range(1, 3));
+                    MissionManager.ProcessMission("personalMission-Wood");
+                    EventManager.SendEvent("Mission :: Refresh");
+                    //EventManager.SendEvent("Inventory :: AddItem", "0007", Random.Range(1, 3));
                     break;
                 case WorkMessage.WaterZone:
                     anim.SetBool("isWorkWater", false);
-                    EventManager.SendEvent("Inventory :: Change", "0002", "0003");
+                    MissionManager.ProcessMission("personalMission-Water");
+                    EventManager.SendEvent("Mission :: Refresh");
+                    //EventManager.SendEvent("Inventory :: Change", "0002", "0003");
                     break;
                 case WorkMessage.FishZone:
                     anim.SetBool("isWorkFish", false);
-                    EventManager.SendEvent("Inventory :: AddItem", "0000", 1);
+                    MissionManager.ProcessMission("personalMission-Fish");
+                    EventManager.SendEvent("Mission :: Refresh");
+                    //EventManager.SendEvent("Inventory :: AddItem", "0000", 1);
                     break;
-                case WorkMessage.Inventory:
-                    EventManager.SendEvent("InGameUI :: OpenInventory", col);
-                    isWorking = true;
-                    break;
+                //case WorkMessage.Inventory:
+                //    EventManager.SendEvent("InGameUI :: OpenInventory", col);
+                //    isWorking = true;
+                //    break;
                 case WorkMessage.CampFire:
-                    EventManager.SendEvent("Inventory :: Change", "0000", "0001");
+                    MissionManager.ProcessMission("personalMission-Fire");
+                    EventManager.SendEvent("Mission :: Refresh");
+                    //EventManager.SendEvent("Inventory :: Change", "0000", "0001");
                     break;
                 default:
                     break;
@@ -201,13 +209,13 @@ public class PlayerController : MonoBehaviour
         });
     }
 
-    private void Start()
-    {
-        if ((bool)PhotonNetwork.CurrentRoom.CustomProperties["startItem"])
-        {
-            ItemManager.SetItemRandom();
-        }
-    }
+    //private void Start()
+    //{
+    //    if ((bool)PhotonNetwork.CurrentRoom.CustomProperties["startItem"])
+    //    {
+    //        ItemManager.SetItemRandom();
+    //    }
+    //}
 
     void Update()
     {
@@ -326,11 +334,11 @@ public class PlayerController : MonoBehaviour
         EventManager.SendEvent("Refresh Minimap", transform);
         if (Input.GetKeyDown(Settings.instance.GetKey(KeySettings.MinimapKey)))
         {
-            EventManager.SendEvent("InGameUI :: OpenMinimap");
+            
         }
         if (Input.GetKeyUp(Settings.instance.GetKey(KeySettings.MinimapKey)))
         {
-            EventManager.SendEvent("InGameUI :: CloseMinimap");
+            
         }
     }
 

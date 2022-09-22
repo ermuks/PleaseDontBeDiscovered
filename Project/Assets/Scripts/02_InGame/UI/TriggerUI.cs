@@ -13,7 +13,7 @@ public enum WorkMessage
     WaterZone,
     FishZone,
     OpenVote,
-    Inventory,
+    //Inventory,
     CampFire,
 }
 
@@ -63,9 +63,9 @@ public class TriggerUI : MonoBehaviour
             case WorkMessage.OpenVote:
                 txtMessage.text = Strings.GetString(StringKey.InGameWorkOpenVote);
                 break;
-            case WorkMessage.Inventory:
-                txtMessage.text = Strings.GetString(StringKey.InGameWorkInventory);
-                break;
+            //case WorkMessage.Inventory:
+            //    txtMessage.text = Strings.GetString(StringKey.InGameWorkInventory);
+            //    break;
             case WorkMessage.CampFire:
                 txtMessage.text = Strings.GetString(StringKey.InGameWorkCampFire);
                 break;
@@ -91,52 +91,56 @@ public class TriggerUI : MonoBehaviour
                         case WorkMessage.None:
                             break;
                         case WorkMessage.Treezone:
-                            if ((bool)EventManager.GetData("Inventory >> TryAddItem", "0007")) isWorking = true;
-                            else err = Strings.GetString(StringKey.InGameMessageInventoryIsFull);
+                            //if ((bool)EventManager.GetData("Inventory >> TryAddItem", "0007")) isWorking = true;
+                            //else err = Strings.GetString(StringKey.InGameMessageInventoryIsFull);
+                            isWorking = true;
                             break;
                         case WorkMessage.WaterZone:
-                            if ((bool)EventManager.GetData("Inventory >> HasItem", "0002"))
-                            {
-                                if ((bool)EventManager.GetData("Inventory >> TryChange", "0002", "0003"))
-                                {
-                                    isWorking = true;
-                                }
-                                else
-                                {
-                                    err = Strings.GetString(StringKey.InGameMessageInventoryIsFull);
-                                }
-                            }
-                            else
-                            {
-                                err = Strings.GetString(StringKey.InGameMessageNotExistItem, ItemManager.GetItem("0002").itemName);
-                            }
+                            //if ((bool)EventManager.GetData("Inventory >> HasItem", "0002"))
+                            //{
+                            //    if ((bool)EventManager.GetData("Inventory >> TryChange", "0002", "0003"))
+                            //    {
+                            //        isWorking = true;
+                            //    }
+                            //    else
+                            //    {
+                            //        err = Strings.GetString(StringKey.InGameMessageInventoryIsFull);
+                            //    }
+                            //}
+                            //else
+                            //{
+                            //    err = Strings.GetString(StringKey.InGameMessageNotExistItem, ItemManager.GetItem("0002").itemName);
+                            //}
+                            isWorking = true;
                             break;
                         case WorkMessage.FishZone:
-                            if ((bool)EventManager.GetData("Inventory >> TryAddItem", "0000")) isWorking = true;
-                            else err = Strings.GetString(StringKey.InGameMessageInventoryIsFull);
+                            //if ((bool)EventManager.GetData("Inventory >> TryAddItem", "0000")) isWorking = true;
+                            //else err = Strings.GetString(StringKey.InGameMessageInventoryIsFull);
+                            isWorking = true;
                             break;
                         case WorkMessage.OpenVote:
                             isReport = true;
                             break;
-                        case WorkMessage.Inventory:
-                            isWorking = true;
-                            break;
+                        //case WorkMessage.Inventory:
+                        //    isWorking = true;
+                        //    break;
                         case WorkMessage.CampFire:
-                            if ((bool)EventManager.GetData("Inventory >> HasItem", "0000"))
-                            {
-                                if ((bool)EventManager.GetData("Inventory >> TryChange", "0000", "0001"))
-                                {
-                                    isWorking = true;
-                                }
-                                else
-                                {
-                                    err = Strings.GetString(StringKey.InGameMessageInventoryIsFull);
-                                }
-                            }
-                            else
-                            {
-                                err = Strings.GetString(StringKey.InGameMessageNotExistItem, ItemManager.GetItem("0000").itemName);
-                            }
+                            //if ((bool)EventManager.GetData("Inventory >> HasItem", "0000"))
+                            //{
+                            //    if ((bool)EventManager.GetData("Inventory >> TryChange", "0000", "0001"))
+                            //    {
+                            //        isWorking = true;
+                            //    }
+                            //    else
+                            //    {
+                            //        err = Strings.GetString(StringKey.InGameMessageInventoryIsFull);
+                            //    }
+                            //}
+                            //else
+                            //{
+                            //    err = Strings.GetString(StringKey.InGameMessageNotExistItem, ItemManager.GetItem("0000").itemName);
+                            //}
+                            isWorking = true;
                             break;
                         default:
                             break;

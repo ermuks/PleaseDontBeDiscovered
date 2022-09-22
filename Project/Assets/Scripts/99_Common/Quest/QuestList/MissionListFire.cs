@@ -12,4 +12,12 @@ public class MissionListFire : Mission
         missionConditions = 1;
         return this;
     }
+
+    public override void RefreshMission()
+    {
+        if (--missionConditions == 0)
+        {
+            CompleteMission();
+        }
+    }
 }

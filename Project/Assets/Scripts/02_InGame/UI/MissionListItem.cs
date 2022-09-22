@@ -22,5 +22,10 @@ public class MissionListItem : MonoBehaviour
         {
             txtMissionConditions.text = Strings.GetString(StringKey.InGameMissionRemain, mission.missionConditions);
         }
+        else
+        {
+            txtMissionName.color = Color.green;
+            txtMissionConditions.text = Strings.GetString(StringKey.InGameMissionSuccess);
+        }
     }
 }

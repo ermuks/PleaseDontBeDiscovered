@@ -53,7 +53,7 @@ public class MissionManager
             codes.Enqueue(commonMissionCodes[i]);
         }
         commonMissionList.Add(codes.Dequeue(), new MissionListTurnOnLight());
-        commonMissionList.Add(codes.Dequeue(), new MissionListTurnOnLight());
+        commonMissionList.Add(codes.Dequeue(), new MissionListCamera());
         //////////////////////////////
 
         // Personal mission setting
@@ -65,6 +65,7 @@ public class MissionManager
         personalMissionList.Add(codes.Dequeue(), new MissionListWood());
         personalMissionList.Add(codes.Dequeue(), new MissionListFire());
         personalMissionList.Add(codes.Dequeue(), new MissionListWater());
+        personalMissionList.Add(codes.Dequeue(), new MissionListHanging());
         //////////////////////////////
     }
 
@@ -103,6 +104,7 @@ public class MissionManager
         while (addCount < personal)
         {
             string code = personalMissionCodes[Random.Range(0, personalMissionCodes.Length)];
+            Debug.Log($"Try to add Mission. Code : {code}");
             if (myMissions.ContainsKey(code)) continue;
             Mission mission = personalMissionList[code].InitializeMission();
             if (!mission.isFirst) continue;
@@ -114,6 +116,7 @@ public class MissionManager
         while (addCount < job)
         {
             string code = jobMissionCodes[Random.Range(0, jobMissionCodes.Length)];
+            Debug.Log($"Try to add Mission. Code : {code}");
             if (myMissions.ContainsKey(code)) continue;
             Mission mission = jobMissionList[code].InitializeMission();
             if (!mission.isFirst) continue;

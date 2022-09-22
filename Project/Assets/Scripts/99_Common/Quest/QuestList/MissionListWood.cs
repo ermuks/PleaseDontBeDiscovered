@@ -13,6 +13,14 @@ public class MissionListWood : Mission
         return this;
     }
 
+    public override void RefreshMission()
+    {
+        if (--missionConditions == 0)
+        {
+            CompleteMission();
+        }
+    }
+
     public override void CompleteMission()
     {
         MissionManager.SwitchMission(this, "Quest-Fire");

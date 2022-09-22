@@ -41,23 +41,23 @@ public class PlayerWorkProgressUI : MonoBehaviour
                 break;
             case WorkMessage.Treezone:
                 message = Strings.GetString(StringKey.InGameWorkProcessTree);
-                workEndTime = 35f;
+                workEndTime = 8f;
                 break;
             case WorkMessage.WaterZone:
                 message = Strings.GetString(StringKey.InGameWorkProcessWater);
-                workEndTime = 8f;
+                workEndTime = 1.5f;
                 break;
             case WorkMessage.FishZone:
                 message = Strings.GetString(StringKey.InGameWorkProcessFish);
-                workEndTime = 15f;
+                workEndTime = 3f;
                 break;
-            case WorkMessage.Inventory:
-                message = Strings.GetString(StringKey.InGameWorkProcessInventory);
-                workEndTime = .5f;
-                break;
+            //case WorkMessage.Inventory:
+            //    message = Strings.GetString(StringKey.InGameWorkProcessInventory);
+            //    workEndTime = .5f;
+            //    break;
             case WorkMessage.CampFire:
                 message = Strings.GetString(StringKey.InGameWorkProcessCampFire);
-                workEndTime = 20f;
+                workEndTime = 4f;
                 break;
             default:
                 break;

@@ -32,7 +32,7 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
     [SerializeField] private GameObject areaMinimap;
     [SerializeField] private GameObject areaWater;
     [SerializeField] private GameObject areaDieUI;
-    [SerializeField] private GameObject areaInventory;
+    //[SerializeField] private GameObject areaInventory;
     //[SerializeField] private GameObject areaPlayerUI;
     [SerializeField] private GameObject areaPlayerWorkProgressUI;
     [SerializeField] private GameObject areaWatcherUI;
@@ -76,13 +76,13 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
         areaFinishVote.SetActive(false);
         areaDieUI.SetActive(false);
         //areaPlayerUI.SetActive(true);
-        areaInventory.SetActive(false);
+        //areaInventory.SetActive(false);
         areaWatcherUI.SetActive(false);
         areaGameOver.SetActive(false);
         areaTriggerParent.SetActive(true);
         areaTrigger.SetActive(false);
         areaCCTV.SetActive(false);
-        areaMinimap.SetActive(false);
+        //areaMinimap.SetActive(false);
         areaVote.SetActive(false);
         areaPlayerWorkProgressUI.SetActive(false);
 
@@ -219,8 +219,9 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
             Transform player = (Transform)p[0];
             float width = minimap.rect.width / 400f;
             float height = minimap.rect.height / 400f;
-            minimapPlayer.anchoredPosition = new Vector2(player.position.x * width, player.position.z * height);
+            //minimapPlayer.anchoredPosition = new Vector2(player.position.x * width, player.position.z * height);
             minimapPlayer.localRotation = Quaternion.Euler(0, 0, -player.eulerAngles.y);
+            minimap.anchoredPosition = -new Vector2(player.position.x * width, player.position.z * height);
         });
         //EventManager.AddEvent("Refresh Hungry" , (p) =>
         //{
@@ -341,11 +342,11 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
                 areaTrigger.SetActive(true);
                 areaTrigger.GetComponent<TriggerUI>().SetMessage(WorkMessage.OpenVote, col);
             }
-            else if (col.CompareTag("Inventory"))
-            {
-                areaTrigger.SetActive(true);
-                areaTrigger.GetComponent<TriggerUI>().SetMessage(WorkMessage.Inventory, col);
-            }
+            //else if (col.CompareTag("Inventory"))
+            //{
+            //    areaTrigger.SetActive(true);
+            //    areaTrigger.GetComponent<TriggerUI>().SetMessage(WorkMessage.Inventory, col);
+            //}
             else if (col.CompareTag("CampFire"))
             {
                 areaTrigger.SetActive(true);
@@ -395,17 +396,17 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
             txtCooldownTimer.text = $"{(float)p[1] - (float)p[0]:0.0}";
             txtCooldownTimer.gameObject.SetActive(!(bool)p[2]);
         });
-        EventManager.AddEvent("InGameUI :: OpenInventory", (p) =>
-        {
-            Cursor.lockState = CursorLockMode.None;
-            areaInventory.SetActive(true);
-            areaInventory.GetComponent<InventoryUI>().Init(((Collider)p[0]).GetComponent<PublicInventory>());
-        });
-        EventManager.AddEvent("InGameUI :: CloseInventory", (p) =>
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-            areaInventory.SetActive(false);
-        });
+        //EventManager.AddEvent("InGameUI :: OpenInventory", (p) =>
+        //{
+        //    Cursor.lockState = CursorLockMode.None;
+        //    areaInventory.SetActive(true);
+        //    areaInventory.GetComponent<InventoryUI>().Init(((Collider)p[0]).GetComponent<PublicInventory>());
+        //});
+        //EventManager.AddEvent("InGameUI :: CloseInventory", (p) =>
+        //{
+        //    Cursor.lockState = CursorLockMode.Locked;
+        //    areaInventory.SetActive(false);
+        //});
         EventManager.AddEvent("InGameUI :: OpenCCTV", (p) =>
         {
             Cursor.lockState = CursorLockMode.None;
