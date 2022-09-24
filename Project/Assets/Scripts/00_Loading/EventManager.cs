@@ -9,7 +9,7 @@ public class EventManager
     public static string[] ignoreKeys = new string[]
     {
         "Drag",
-        "Refresh Minimap",
+        "Refresh",
         "SetKillCooldown",
         "Sound"
     };
@@ -20,6 +20,8 @@ public class EventManager
 
     private static Dictionary<string, OnEvent> eventList = new Dictionary<string, OnEvent>();
     private static Dictionary<string, GetDataFunction> dataList = new Dictionary<string, GetDataFunction>();
+
+    public static Dictionary<string, OnEvent> GetEventList() => eventList;
 
     public static void AddEvent(string key, OnEvent func)
     {
@@ -57,7 +59,10 @@ public class EventManager
             }
             else
             {
-                Debug.Log($"<color=#ff7b85>[ Fail ]</color>\nEvent Key : <color=#c9f5f9>{key}</color>");
+                if (Array.FindIndex(ignoreKeys, e => key.IndexOf(e) != -1) == -1)
+                {
+                    Debug.Log($"<color=#ff7b85>[ Fail ]</color>\nEvent Key : <color=#c9f5f9>{key}</color>");
+                }
             }
         }
     }

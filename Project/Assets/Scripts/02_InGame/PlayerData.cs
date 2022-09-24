@@ -52,6 +52,8 @@ public class PlayerData : MonoBehaviourPun, IPunObservable
     [SerializeField] private GameObject reportArea;
     [SerializeField] private GameObject[] childs;
 
+    [SerializeField] private Light handLight;
+
     [SerializeField] private Transform objHair;
     [SerializeField] private Transform objHat;
     [SerializeField] private Transform objCloth;
@@ -59,6 +61,8 @@ public class PlayerData : MonoBehaviourPun, IPunObservable
     [SerializeField] private Transform objGlovesLeft;
     [SerializeField] private Transform objGlovesRight;
     [SerializeField] private Transform objShoes;
+
+    private bool handLightEnabled = false;
 
     public GameObject ReportArea => reportArea;
     private CharacterController controller;
@@ -135,6 +139,18 @@ public class PlayerData : MonoBehaviourPun, IPunObservable
         EventManager.SendEvent("Player :: VoteDie");
     }
 
+    public void ToggleLight()
+    {
+        handLight.enabled = !handLight.enabled;
+        handLightEnabled = handLight.enabled;
+        RefreshHandLight();
+    }
+
+    private void RefreshHandLight()
+    {
+        handLight.enabled = handLightEnabled;
+    }
+
     private void Hit(Player player)
     {
         GetComponent<Animator>().SetBool("Hit", true);
@@ -158,6 +174,18 @@ public class PlayerData : MonoBehaviourPun, IPunObservable
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-
+        if (stream.IsWriting)
+        {
+            stream.SendNext(handLightEnabled);
+        }
+        else
+        {
+            bool value = (bool)stream.ReceiveNext();
+            if (handLightEnabled != value)
+            {
+                handLightEnabled = value;
+                RefreshHandLight();
+            }
+        }
     }
 }

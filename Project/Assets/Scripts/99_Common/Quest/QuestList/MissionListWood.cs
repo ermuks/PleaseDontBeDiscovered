@@ -15,7 +15,7 @@ public class MissionListWood : Mission
 
     public override void RefreshMission()
     {
-        if (--missionConditions == 0)
+        if (--missionRemainConditions == 0)
         {
             CompleteMission();
         }
@@ -23,6 +23,7 @@ public class MissionListWood : Mission
 
     public override void CompleteMission()
     {
-        MissionManager.SwitchMission(this, "Quest-Fire");
+        UnityEngine.Debug.Log($"MissionListWood::CompleteMission()");
+        MissionManager.SwitchMission(this, "personalMission-Fire");
     }
 }

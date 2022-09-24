@@ -21,7 +21,7 @@ public enum StringKey
     SettingsKeyDescriptRunKey,
     SettingsKeyDescriptWalkKey,
     SettingsKeyDescriptMinimapKey,
-    SettingsKeyDescriptCCTVKey,
+    SettingsKeyDescriptLampKey,
     
     SettingsKeyDescriptAroundKey,
     SettingsKeyDescriptWatchNextPlayer,
@@ -88,12 +88,16 @@ public enum StringKey
     InGameWorkCampFire,
     InGameWorkLight,
     InGameWorkProcessLight,
+    InGameWorkTable,
+    InGameWorkChest,
 
     InGameWorkProcessTree,
     InGameWorkProcessWater,
     InGameWorkProcessFish,
     InGameWorkProcessInventory,
     InGameWorkProcessCampFire,
+    InGameWorkProcessTable,
+    InGameWorkProcessChest,
 
     InGameMessageInventoryIsFull,
     InGameMessageCantMoveItem,
@@ -142,7 +146,7 @@ public static class Strings
                 str.Add(StringKey.SettingsKeyDescriptRunKey, "Run");
                 str.Add(StringKey.SettingsKeyDescriptWalkKey, "Walk");
                 str.Add(StringKey.SettingsKeyDescriptMinimapKey, "Open Minimap");
-                str.Add(StringKey.SettingsKeyDescriptCCTVKey, "View CCTV");
+                str.Add(StringKey.SettingsKeyDescriptLampKey, "Hand light On/Off");
 
                 str.Add(StringKey.SettingsKeyDescriptAroundKey, "Look around");
                 str.Add(StringKey.SettingsKeyDescriptWatchNextPlayer, "Spectate the next player");
@@ -213,15 +217,19 @@ public static class Strings
                 str.Add(StringKey.InGameWorkFish, "Fish");
                 str.Add(StringKey.InGameWorkOpenVote, "Report");
                 str.Add(StringKey.InGameWorkInventory, "Open Chest");
-                str.Add(StringKey.InGameWorkCampFire, "grilled fish");
+                str.Add(StringKey.InGameWorkCampFire, "Make fire");
                 str.Add(StringKey.InGameWorkLight, "Manage lamp");
+                str.Add(StringKey.InGameWorkTable, "Clean up table");
+                str.Add(StringKey.InGameWorkChest, "Open the chest");
 
                 str.Add(StringKey.InGameWorkProcessTree, "Tree");
                 str.Add(StringKey.InGameWorkProcessWater, "Water");
                 str.Add(StringKey.InGameWorkProcessFish, "Fish");
                 str.Add(StringKey.InGameWorkProcessInventory, "Open Chest");
-                str.Add(StringKey.InGameWorkProcessCampFire, "Cooking fish");
+                str.Add(StringKey.InGameWorkProcessCampFire, "Making a fire");
                 str.Add(StringKey.InGameWorkProcessLight, "Fixing the lamp");
+                str.Add(StringKey.InGameWorkProcessTable, "The table is being cleaned up.");
+                str.Add(StringKey.InGameWorkProcessChest, "Sorting items.");
 
                 str.Add(StringKey.InGameMessageInventoryIsFull, "Inventory has been full");
                 str.Add(StringKey.InGameMessageCantMoveItem, "Item cannot be moved!");
@@ -236,7 +244,7 @@ public static class Strings
 
                 str.Add(StringKey.InGameVoteTimer, "Remain time : <color=#{1}>{0}</color>s");
 
-                str.Add(StringKey.InGameMissionRemain, "Remain : {0}");
+                str.Add(StringKey.InGameMissionRemain, "[{0} / {1}]");
                 str.Add(StringKey.InGameMissionSuccess, "Success");
 
 
@@ -255,7 +263,7 @@ public static class Strings
                 str.Add(StringKey.SettingsKeyDescriptRunKey, "달리기");
                 str.Add(StringKey.SettingsKeyDescriptWalkKey, "걷기");
                 str.Add(StringKey.SettingsKeyDescriptMinimapKey, "미니맵 열기");
-                str.Add(StringKey.SettingsKeyDescriptCCTVKey, "CCTV 열기");
+                str.Add(StringKey.SettingsKeyDescriptLampKey, "손전등 On/Off");
 
                 str.Add(StringKey.SettingsKeyDescriptAroundKey, "주변 둘러보기");
                 str.Add(StringKey.SettingsKeyDescriptWatchNextPlayer, "다음 플레이어 관전하기");
@@ -325,15 +333,19 @@ public static class Strings
                 str.Add(StringKey.InGameWorkFish, "낚시하기");
                 str.Add(StringKey.InGameWorkOpenVote, "신고하기");
                 str.Add(StringKey.InGameWorkInventory, "보관소 열기");
-                str.Add(StringKey.InGameWorkCampFire, "물고기 굽기");
+                str.Add(StringKey.InGameWorkCampFire, "모닥불 불 지피기");
                 str.Add(StringKey.InGameWorkLight, "전등 조작하기");
+                str.Add(StringKey.InGameWorkTable, "테이블 보기");
+                str.Add(StringKey.InGameWorkChest, "창고 열기");
 
                 str.Add(StringKey.InGameWorkProcessTree, "나무를 구하는 중입니다.");
                 str.Add(StringKey.InGameWorkProcessWater, "물을 퍼고있습니다.");
                 str.Add(StringKey.InGameWorkProcessFish, "물고기를 낚는중입니다.");
                 str.Add(StringKey.InGameWorkProcessInventory, "보관소를 여는중입니다.");
-                str.Add(StringKey.InGameWorkProcessCampFire, "물고기를 익히는중입니다.");
+                str.Add(StringKey.InGameWorkProcessCampFire, "모닥불에 불을 지피는 중입니다.");
                 str.Add(StringKey.InGameWorkProcessLight, "전등을 고치는 중입니다.");
+                str.Add(StringKey.InGameWorkProcessTable, "테이블을 정리하는 중입니다.");
+                str.Add(StringKey.InGameWorkProcessChest, "물건들을 분류하는 중입니다.");
 
                 str.Add(StringKey.InGameMessageInventoryIsFull, "아이템을 더 이상 구할 수 없습니다!");
                 str.Add(StringKey.InGameMessageCantMoveItem, "아이템을 옮길 수 없습니다!");
@@ -347,7 +359,7 @@ public static class Strings
                 str.Add(StringKey.InGameFinishVoteMurderCount, "<color=#ee3333>범인</color>이 {0}명 있습니다.");
                 str.Add(StringKey.InGameVoteTimer, "남은 투표시간 : <color=#{1}>{0}</color> 초");
 
-                str.Add(StringKey.InGameMissionRemain, "남은 수 : {0}");
+                str.Add(StringKey.InGameMissionRemain, "[{0} / {1}]");
                 str.Add(StringKey.InGameMissionSuccess, "완료");
                 break;
             case Language.Japanese:
@@ -363,7 +375,7 @@ public static class Strings
                 str.Add(StringKey.SettingsKeyDescriptRunKey, "달리기");
                 str.Add(StringKey.SettingsKeyDescriptWalkKey, "걷기");
                 str.Add(StringKey.SettingsKeyDescriptMinimapKey, "미니맵 열기");
-                str.Add(StringKey.SettingsKeyDescriptCCTVKey, "CCTV 열기");
+                str.Add(StringKey.SettingsKeyDescriptLampKey, "손전등 On/Off");
 
                 str.Add(StringKey.SettingsKeyDescriptAroundKey, "주변 둘러보기");
                 str.Add(StringKey.SettingsKeyDescriptWatchNextPlayer, "다음 플레이어 관전하기");
@@ -433,15 +445,19 @@ public static class Strings
                 str.Add(StringKey.InGameWorkFish, "Fish");
                 str.Add(StringKey.InGameWorkOpenVote, "신고하기");
                 str.Add(StringKey.InGameWorkInventory, "창고 열기");
-                str.Add(StringKey.InGameWorkCampFire, "물고기 굽기");
+                str.Add(StringKey.InGameWorkCampFire, "모닥불 불 지피기");
                 str.Add(StringKey.InGameWorkLight, "전등 조작하기");
+                str.Add(StringKey.InGameWorkTable, "테이블 보기");
+                str.Add(StringKey.InGameWorkChest, "창고 열기");
 
                 str.Add(StringKey.InGameWorkProcessTree, "Tree");
                 str.Add(StringKey.InGameWorkProcessWater, "Water");
                 str.Add(StringKey.InGameWorkProcessFish, "Fish");
                 str.Add(StringKey.InGameWorkProcessInventory, "보관소를 여는중입니다.");
-                str.Add(StringKey.InGameWorkProcessCampFire, "물고기를 익히는중입니다.");
+                str.Add(StringKey.InGameWorkProcessCampFire, "모닥불에 불을 지피는 중입니다.");
                 str.Add(StringKey.InGameWorkProcessLight, "전등을 고치는 중입니다.");
+                str.Add(StringKey.InGameWorkProcessTable, "테이블을 정리하는 중입니다.");
+                str.Add(StringKey.InGameWorkProcessChest, "물건들을 분류하는 중입니다.");
 
                 str.Add(StringKey.InGameMessageInventoryIsFull, "아이템을 더 이상 구할 수 없습니다!");
                 str.Add(StringKey.InGameMessageCantMoveItem, "아이템을 옮길 수 없습니다!");
@@ -455,7 +471,7 @@ public static class Strings
                 str.Add(StringKey.InGameFinishVoteMurderCount, "<color=#ee3333>범인</color>이 {0}명 있습니다.");
                 str.Add(StringKey.InGameVoteTimer, "남은 투표시간 : <color=#{1}>{0}</color> 초");
 
-                str.Add(StringKey.InGameMissionRemain, "남은 수 : {0}");
+                str.Add(StringKey.InGameMissionRemain, "[{0} / {1}]");
                 str.Add(StringKey.InGameMissionSuccess, "완료");
                 break;
             case Language.Chinese:
@@ -471,7 +487,7 @@ public static class Strings
                 str.Add(StringKey.SettingsKeyDescriptRunKey, "달리기");
                 str.Add(StringKey.SettingsKeyDescriptWalkKey, "걷기");
                 str.Add(StringKey.SettingsKeyDescriptMinimapKey, "미니맵 열기");
-                str.Add(StringKey.SettingsKeyDescriptCCTVKey, "CCTV 열기");
+                str.Add(StringKey.SettingsKeyDescriptLampKey, "손전등 On/Off");
 
                 str.Add(StringKey.SettingsKeyDescriptAroundKey, "주변 둘러보기");
                 str.Add(StringKey.SettingsKeyDescriptWatchNextPlayer, "다음 플레이어 관전하기");
@@ -541,15 +557,19 @@ public static class Strings
                 str.Add(StringKey.InGameWorkFish, "Fish");
                 str.Add(StringKey.InGameWorkOpenVote, "신고하기");
                 str.Add(StringKey.InGameWorkInventory, "창고 열기");
-                str.Add(StringKey.InGameWorkCampFire, "물고기 굽기");
+                str.Add(StringKey.InGameWorkCampFire, "모닥불 불 지피기");
                 str.Add(StringKey.InGameWorkLight, "전등 조작하기");
+                str.Add(StringKey.InGameWorkTable, "테이블 보기");
+                str.Add(StringKey.InGameWorkChest, "창고 열기");
 
                 str.Add(StringKey.InGameWorkProcessTree, "Tree");
                 str.Add(StringKey.InGameWorkProcessWater, "Water");
                 str.Add(StringKey.InGameWorkProcessFish, "Fish");
                 str.Add(StringKey.InGameWorkProcessInventory, "보관소를 여는중입니다.");
-                str.Add(StringKey.InGameWorkProcessCampFire, "물고기를 익히는중입니다.");
+                str.Add(StringKey.InGameWorkProcessCampFire, "모닥불에 불을 지피는 중입니다.");
                 str.Add(StringKey.InGameWorkProcessLight, "전등을 고치는 중입니다.");
+                str.Add(StringKey.InGameWorkProcessTable, "테이블을 정리하는 중입니다.");
+                str.Add(StringKey.InGameWorkProcessChest, "물건들을 분류하는 중입니다.");
 
                 str.Add(StringKey.InGameMessageInventoryIsFull, "아이템을 더 이상 구할 수 없습니다!");
                 str.Add(StringKey.InGameMessageCantMoveItem, "아이템을 옮길 수 없습니다!");
@@ -563,7 +583,7 @@ public static class Strings
                 str.Add(StringKey.InGameFinishVoteMurderCount, "<color=#ee3333>범인</color>이 {0}명 있습니다.");
                 str.Add(StringKey.InGameVoteTimer, "남은 투표시간 : <color=#{1}>{0}</color> 초");
 
-                str.Add(StringKey.InGameMissionRemain, "남은 수 : {0}");
+                str.Add(StringKey.InGameMissionRemain, "[{0} / {1}]");
                 str.Add(StringKey.InGameMissionSuccess, "완료");
                 break;
         }

@@ -15,7 +15,7 @@ public class MissionListWater : Mission
 
     public override void RefreshMission()
     {
-        if (--missionConditions == 0)
+        if (--missionRemainConditions == 0)
         {
             CompleteMission();
         }

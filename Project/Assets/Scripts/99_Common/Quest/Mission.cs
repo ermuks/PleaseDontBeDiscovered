@@ -8,7 +8,16 @@ public class Mission : IMission
     public string missionCode;
     public string missionName;
     public string missionDescript;
-    public int missionConditions;
+    public int missionConditions 
+    {
+        set
+        {
+            missionRemainConditions = value;
+            missionMaxConditions = value;
+        }
+    }
+    public int missionRemainConditions;
+    public int missionMaxConditions;
 
     public virtual Mission InitializeMission()
     {

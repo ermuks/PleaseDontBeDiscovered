@@ -20,7 +20,8 @@ public class MissionManager
         "personalMission-Wood",
         "personalMission-Fire",
         "personalMission-Water",
-        "personalMission-Hanging"
+        "personalMission-Table",
+        "personalMission-Chest"
     };
     private static string[] jobMissionCodes =
     {
@@ -65,7 +66,8 @@ public class MissionManager
         personalMissionList.Add(codes.Dequeue(), new MissionListWood());
         personalMissionList.Add(codes.Dequeue(), new MissionListFire());
         personalMissionList.Add(codes.Dequeue(), new MissionListWater());
-        personalMissionList.Add(codes.Dequeue(), new MissionListHanging());
+        personalMissionList.Add(codes.Dequeue(), new MissionListTable());
+        personalMissionList.Add(codes.Dequeue(), new MissionListChest());
         //////////////////////////////
     }
 
@@ -73,8 +75,8 @@ public class MissionManager
     {
         if (myMissions.ContainsKey(missionCode))
         {
+            Debug.Log($"MissionManager::ProcessMission({missionCode})");
             myMissions[missionCode].RefreshMission();
-            EventManager.SendEvent("Mission :: Refresh", myMissions[missionCode]);
             CheckAllClear();
         }
     }
@@ -85,7 +87,7 @@ public class MissionManager
         List<Mission> missions = new List<Mission>(myMissions.Values);
         for (int i = 0; i < missions.Count; i++)
         {
-            if (missions[i].missionConditions > 0)
+            if (missions[i].missionRemainConditions > 0)
             {
                 clear = false;
                 break;
@@ -106,14 +108,12 @@ public class MissionManager
 
     public static void SetMission(int common, int personal, int job)
     {
+        Clear();
         int addCount;
-        Debug.Log("Mission initializing... ");
-        Debug.Log($"common : {common}, personal : {personal}, job : {job}");
         addCount = 0;
         while (addCount < common)
         {
             string code = commonMissionCodes[Random.Range(0, commonMissionCodes.Length)];
-            Debug.Log($"Try to add Mission. Code : {code}");
             if (myMissions.ContainsKey(code)) continue;
             Mission mission = commonMissionList[code].InitializeMission();
             if (!mission.isFirst) continue;
@@ -125,7 +125,6 @@ public class MissionManager
         while (addCount < personal)
         {
             string code = personalMissionCodes[Random.Range(0, personalMissionCodes.Length)];
-            Debug.Log($"Try to add Mission. Code : {code}");
             if (myMissions.ContainsKey(code)) continue;
             Mission mission = personalMissionList[code].InitializeMission();
             if (!mission.isFirst) continue;
@@ -148,26 +147,15 @@ public class MissionManager
 
     public static void SwitchMission(Mission origin, string code)
     {
+        Debug.Log($"MissionManager::SwitchMission({origin.missionCode}, {code})");
         myMissions.Remove(origin.missionCode);
-
-        Mission mission;
-        string type = code.Split('-')[0];
-        switch (type)
-        {
-            case "common":
-                mission = commonMissionList[code];
-                break;
-            case "personal":
-                mission = personalMissionList[code];
-                break;
-            case "job":
-                mission = jobMissionList[code];
-                break;
-            default:
-                mission = null;
-                break;
-        }
+        Mission mission = null;
+        if (commonMissionList.ContainsKey(code)) mission = commonMissionList[code];
+        if (personalMissionList.ContainsKey(code)) mission = personalMissionList[code];
+        if (jobMissionList.ContainsKey(code)) mission = jobMissionList[code];
         mission.InitializeMission();
+        Debug.Log($"{code}");
+        Debug.Log($"{mission.missionCode}");
         myMissions.Add(code, mission);
     }
 

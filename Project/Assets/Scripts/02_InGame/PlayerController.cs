@@ -158,6 +158,14 @@ public class PlayerController : MonoBehaviour
                     MissionManager.ProcessMission("commonMission-TurnOnLight");
                     EventManager.SendEvent("Mission :: Refresh");
                     break;
+                case WorkMessage.TableZone:
+                    MissionManager.ProcessMission("personalMission-Table");
+                    EventManager.SendEvent("Mission :: Refresh");
+                    break;
+                case WorkMessage.ChestZone:
+                    MissionManager.ProcessMission("personalMission-Chest");
+                    EventManager.SendEvent("Mission :: Refresh");
+                    break;
                 default:
                     break;
             }
@@ -250,14 +258,10 @@ public class PlayerController : MonoBehaviour
                 PlayerMove();
                 CameraRotate();
                 PlayerAttack();
-            }
-            if (!isMurder)
-            {
-                BreathTimer();
+                ToggleLight();
             }
             PlayerJumpTimer();
             PlayerMinimap();
-            PlayerCCTV();
         }
         else
         {
@@ -278,26 +282,6 @@ public class PlayerController : MonoBehaviour
             {
                 KillCooldownUpdate();
             }
-        }
-    }
-
-    private void BreathTimer()
-    {
-        if (canBreath)
-        {
-            if (breathHoldTimer >= breathHoldMaximum) breathHoldTimer = breathHoldMaximum;
-            breathHoldTimer -= Time.deltaTime;
-            if (breathHoldTimer <= 0) breathHoldTimer = 0;
-        }
-        else
-        {
-            breathHoldTimer += Time.deltaTime;
-            if (breathHoldTimer >= breathHoldMaximum)
-            {
-                EventManager.SendEvent("Player :: BreathDamage", Time.deltaTime * .07f);
-                breathHoldTimer = breathHoldMaximum;
-            }
-            EventManager.SendEvent("Refresh Breath", breathHoldTimer / breathHoldMaximum);
         }
     }
 
@@ -331,18 +315,6 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(Settings.instance.GetKey(KeySettings.MinimapKey)))
         {
             EventManager.SendEvent("InGameUI :: TogglePhone");
-        }
-    }
-
-    private void PlayerCCTV()
-    {
-        if (Input.GetKeyDown(Settings.instance.GetKey(KeySettings.CCTVKey)))
-        {
-            EventManager.SendEvent("InGameUI :: OpenCCTV");
-        }
-        if (Input.GetKeyUp(Settings.instance.GetKey(KeySettings.CCTVKey)))
-        {
-            EventManager.SendEvent("InGameUI :: CloseCCTV");
         }
     }
 
@@ -538,7 +510,7 @@ public class PlayerController : MonoBehaviour
         }
 
         hitAngle = Vector3.Angle(Vector3.up, hitNormal);
-        if (Physics.CapsuleCast(point1, point2, controller.radius, Vector3.down, .02f, ~(1 << gameObject.layer), QueryTriggerInteraction.Ignore))
+        if (Physics.CapsuleCast(point1, point2, controller.radius, Vector3.down, .01f, ~(1 << gameObject.layer), QueryTriggerInteraction.Ignore))
         {
             if (hitAngle <= controller.slopeLimit)
             {
@@ -632,6 +604,14 @@ public class PlayerController : MonoBehaviour
                 anim.SetBool("PunchRight", true);
             }
             SetPunch();
+        }
+    }
+
+    private void ToggleLight()
+    {
+        if (Input.GetKeyDown(Settings.instance.GetKey(KeySettings.LampKey)))
+        {
+            GetComponent<PlayerData>().ToggleLight();
         }
     }
 

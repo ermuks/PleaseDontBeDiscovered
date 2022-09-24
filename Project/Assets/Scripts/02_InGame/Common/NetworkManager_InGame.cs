@@ -102,15 +102,25 @@ public class NetworkManager_InGame : MonoBehaviourPunCallbacks
         int surviverCount = 0;
         int murderCount = 0;
 
+        bool missionAllClear = true;
+
         foreach (var player in PhotonNetwork.CurrentRoom.Players.Values)
         {
             var properties = player.CustomProperties;
             if (!(bool)properties["isDead"] && !(bool)properties["isMurder"]) surviverCount++;
             if (!(bool)properties["isDead"] && (bool)properties["isMurder"]) murderCount++;
+            if (properties["missionClear"].Equals(false) && properties["isMurder"].Equals(false)) missionAllClear = false;
         }
-
-        if (murderCount >= surviverCount) GameOver(true);
-        if (murderCount == 0) GameOver(false);
+        
+        if (missionAllClear)
+        {
+            GameOver(false);
+        }
+        else
+        {
+            if (murderCount >= surviverCount) GameOver(true);
+            if (murderCount == 0) GameOver(false);
+        }
     }
 
     private void GameOver(bool murderWin)

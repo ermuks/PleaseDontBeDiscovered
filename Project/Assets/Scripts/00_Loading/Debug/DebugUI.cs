@@ -66,5 +66,16 @@ public class DebugUI : MonoBehaviour
             PhotonNetwork.CurrentRoom.SetCustomProperties(properties);
             EventManager.SendEvent("InGameUI :: CreateMessage", "디버그용 버튼 (F7)");
         }
+        if (Input.GetKeyDown(KeyCode.F8))
+        {
+            var eventList = EventManager.GetEventList();
+            string result = "";
+            foreach (var item in eventList.Keys)
+            {
+                result += $"{item}\n";
+            }
+            Debug.Log(result);
+            EventManager.SendEvent("InGameUI :: CreateMessage", "디버그용 버튼 (F8)");
+        }
     }
 }

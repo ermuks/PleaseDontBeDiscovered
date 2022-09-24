@@ -55,13 +55,17 @@ public class PlayerWorkProgressUI : MonoBehaviour
                 message = Strings.GetString(StringKey.InGameWorkProcessLight);
                 workEndTime = 6f;
                 break;
-            //case WorkMessage.Inventory:
-            //    message = Strings.GetString(StringKey.InGameWorkProcessInventory);
-            //    workEndTime = .5f;
-            //    break;
             case WorkMessage.CampFire:
                 message = Strings.GetString(StringKey.InGameWorkProcessCampFire);
                 workEndTime = 4f;
+                break;
+            case WorkMessage.TableZone:
+                message = Strings.GetString(StringKey.InGameWorkProcessTable);
+                workEndTime = 6f;
+                break;
+            case WorkMessage.ChestZone:
+                message = Strings.GetString(StringKey.InGameWorkProcessChest);
+                workEndTime = 7f;
                 break;
             default:
                 break;

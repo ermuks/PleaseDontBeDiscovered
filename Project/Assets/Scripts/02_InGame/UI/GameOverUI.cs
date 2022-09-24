@@ -42,7 +42,6 @@ public class GameOverUI : MonoBehaviour
             PhotonNetwork.CurrentRoom.IsOpen = true;
             var roomInfo = PhotonNetwork.CurrentRoom.CustomProperties;
             roomInfo["isStart"] = false;
-            MissionManager.Clear();
             PhotonNetwork.CurrentRoom.SetCustomProperties(roomInfo);
         }
     }

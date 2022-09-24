@@ -18,9 +18,9 @@ public class MissionListItem : MonoBehaviour
     public void Refresh()
     {
         txtMissionName.text = mission.missionName;
-        if (mission.missionConditions > 0)
+        if (mission.missionRemainConditions > 0)
         {
-            txtMissionConditions.text = Strings.GetString(StringKey.InGameMissionRemain, mission.missionConditions);
+            txtMissionConditions.text = Strings.GetString(StringKey.InGameMissionRemain, mission.missionMaxConditions - mission.missionRemainConditions, mission.missionMaxConditions);
         }
         else
         {

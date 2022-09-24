@@ -73,27 +73,26 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
 
         minimapPlayerColor.color = PlayerData.GetColor((int)PhotonNetwork.LocalPlayer.CustomProperties["color"]);
 
+        areaFinishVote.SetActive(true);
+        areaDieUI.SetActive(true);
+        areaWatcherUI.SetActive(true);
+        areaGameOver.SetActive(true);
+        areaTriggerParent.SetActive(true);
+        areaTrigger.SetActive(true);
+        areaCCTV.SetActive(true);
+        areaVote.SetActive(true);
+        areaPlayerWorkProgressUI.SetActive(true);
         areaFinishVote.SetActive(false);
         areaDieUI.SetActive(false);
-        //areaPlayerUI.SetActive(true);
-        //areaInventory.SetActive(false);
         areaWatcherUI.SetActive(false);
         areaGameOver.SetActive(false);
         areaTriggerParent.SetActive(true);
         areaTrigger.SetActive(false);
         areaCCTV.SetActive(false);
-        //areaMinimap.SetActive(false);
         areaVote.SetActive(false);
         areaPlayerWorkProgressUI.SetActive(false);
 
         bool isMurder = (bool)PhotonNetwork.LocalPlayer.CustomProperties["isMurder"];
-        //areaNormalPlayerUI.SetActive(!isMurder);
-        //areaMurderPlayerUI.SetActive(isMurder);
-
-        //areaHPValue.color = new Color(.8f, .8f, .8f);
-        //areaHungryValue.color = new Color(.8f, .8f, .8f);
-        //areaThirstyValue.color = new Color(.8f, .8f, .8f);
-        //areaColdValue.color = new Color(.8f, .8f, .8f);
 
         maxTime = (float)PhotonNetwork.CurrentRoom.CustomProperties["voteTime"];
 
@@ -333,10 +332,6 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
                 areaTrigger.SetActive(true);
                 areaTrigger.GetComponent<TriggerUI>().SetMessage(WorkMessage.FishZone, col);
             }
-            else if (col.CompareTag("WarmZone"))
-            {
-                EventManager.SendEvent("Player :: EnterWarmZone");
-            }
             else if (col.CompareTag("ReportArea"))
             {
                 areaTrigger.SetActive(true);
@@ -347,15 +342,20 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
                 areaTrigger.SetActive(true);
                 areaTrigger.GetComponent<TriggerUI>().SetMessage(WorkMessage.LightZone, col);
             }
-            //else if (col.CompareTag("Inventory"))
-            //{
-            //    areaTrigger.SetActive(true);
-            //    areaTrigger.GetComponent<TriggerUI>().SetMessage(WorkMessage.Inventory, col);
-            //}
             else if (col.CompareTag("CampFire"))
             {
                 areaTrigger.SetActive(true);
                 areaTrigger.GetComponent<TriggerUI>().SetMessage(WorkMessage.CampFire, col);
+            }
+            else if (col.CompareTag("TableZone"))
+            {
+                areaTrigger.SetActive(true);
+                areaTrigger.GetComponent<TriggerUI>().SetMessage(WorkMessage.TableZone, col);
+            }
+            else if (col.CompareTag("ChestZone"))
+            {
+                areaTrigger.SetActive(true);
+                areaTrigger.GetComponent<TriggerUI>().SetMessage(WorkMessage.ChestZone, col);
             }
             else
             {
@@ -369,10 +369,6 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
             if (p != null)
             {
                 Collider col = (Collider)p[0];
-                if (col.CompareTag("WarmZone"))
-                {
-                    EventManager.SendEvent("Player :: ExitWarmZone");
-                }
             }
         });
         EventManager.AddEvent("InGameUI :: WorkStart", (p) =>
@@ -455,7 +451,7 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
                     }
                 }
             }
-            yield return new WaitForEndOfFrame();
+            yield return null;
         }
     }
 

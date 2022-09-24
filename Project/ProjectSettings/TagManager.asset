@@ -17,6 +17,8 @@ TagManager:
   - PlayerSpawnZone
   - MurdererSpawnZone
   - LightZone
+  - ChestZone
+  - TableZone
   layers:
   - Default
   - TransparentFX

@@ -17,7 +17,7 @@ public class LampManagement : MonoBehaviourPun, IPunObservable
     {
         matTurnOn = Resources.Load<Material>("Materials/Lamp On Road");
         matTurnOff = Resources.Load<Material>("Materials/Lamp Off Road");
-        _light = transform.Find("Point Light").GetComponent<Light>();
+        _light = transform.Find("Lamp Light").GetComponent<Light>();
         _renderer = transform.Find("Cube").GetComponent<MeshRenderer>();
         RefreshLamp();
     }
