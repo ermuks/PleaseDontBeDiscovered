@@ -51,6 +51,10 @@ public class PlayerWorkProgressUI : MonoBehaviour
                 message = Strings.GetString(StringKey.InGameWorkProcessFish);
                 workEndTime = 3f;
                 break;
+            case WorkMessage.LightZone:
+                message = Strings.GetString(StringKey.InGameWorkProcessLight);
+                workEndTime = 6f;
+                break;
             //case WorkMessage.Inventory:
             //    message = Strings.GetString(StringKey.InGameWorkProcessInventory);
             //    workEndTime = .5f;

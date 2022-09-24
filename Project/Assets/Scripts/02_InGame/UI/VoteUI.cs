@@ -57,6 +57,9 @@ public class VoteUI : MonoBehaviourPunCallbacks
 
     public void EndVote()
     {
+        var properties = PhotonNetwork.LocalPlayer.CustomProperties;
+        properties["alreadyVoted"] = false;
+        PhotonNetwork.LocalPlayer.SetCustomProperties(properties);
         CloseUI();
     }
 

@@ -29,9 +29,9 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
     [SerializeField] private GameObject areaTriggerParent;
     [SerializeField] private GameObject areaTrigger;
     [SerializeField] private GameObject areaCCTV;
-    [SerializeField] private GameObject areaMinimap;
     [SerializeField] private GameObject areaWater;
     [SerializeField] private GameObject areaDieUI;
+    [SerializeField] private GameObject areaPhone;
     //[SerializeField] private GameObject areaInventory;
     //[SerializeField] private GameObject areaPlayerUI;
     [SerializeField] private GameObject areaPlayerWorkProgressUI;
@@ -342,6 +342,11 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
                 areaTrigger.SetActive(true);
                 areaTrigger.GetComponent<TriggerUI>().SetMessage(WorkMessage.OpenVote, col);
             }
+            else if (col.CompareTag("LightZone"))
+            {
+                areaTrigger.SetActive(true);
+                areaTrigger.GetComponent<TriggerUI>().SetMessage(WorkMessage.LightZone, col);
+            }
             //else if (col.CompareTag("Inventory"))
             //{
             //    areaTrigger.SetActive(true);
@@ -417,13 +422,17 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
             Cursor.lockState = CursorLockMode.Locked;
             areaCCTV.SetActive(false);
         });
-        EventManager.AddEvent("InGameUI :: OpenMinimap", (p) =>
+        EventManager.AddEvent("InGameUI :: TogglePhone", (p) =>
         {
-            areaMinimap.SetActive(true);
-        });
-        EventManager.AddEvent("InGameUI :: CloseMinimap", (p) =>
-        {
-            areaMinimap.SetActive(false);
+            areaPhone.SetActive(!areaPhone.activeSelf);
+            if (areaPhone.activeSelf)
+            {
+
+            }
+            else
+            {
+
+            }
         });
     }
 

@@ -15,6 +15,7 @@ public enum WorkMessage
     OpenVote,
     //Inventory,
     CampFire,
+    LightZone,
 }
 
 public class TriggerUI : MonoBehaviour
@@ -62,6 +63,9 @@ public class TriggerUI : MonoBehaviour
                 break;
             case WorkMessage.OpenVote:
                 txtMessage.text = Strings.GetString(StringKey.InGameWorkOpenVote);
+                break;
+            case WorkMessage.LightZone:
+                txtMessage.text = Strings.GetString(StringKey.InGameWorkLight);
                 break;
             //case WorkMessage.Inventory:
             //    txtMessage.text = Strings.GetString(StringKey.InGameWorkInventory);
@@ -120,6 +124,9 @@ public class TriggerUI : MonoBehaviour
                             break;
                         case WorkMessage.OpenVote:
                             isReport = true;
+                            break;
+                        case WorkMessage.LightZone:
+                            isWorking = true;
                             break;
                         //case WorkMessage.Inventory:
                         //    isWorking = true;

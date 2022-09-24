@@ -86,6 +86,8 @@ public enum StringKey
     InGameWorkOpenVote,
     InGameWorkInventory,
     InGameWorkCampFire,
+    InGameWorkLight,
+    InGameWorkProcessLight,
 
     InGameWorkProcessTree,
     InGameWorkProcessWater,
@@ -212,12 +214,14 @@ public static class Strings
                 str.Add(StringKey.InGameWorkOpenVote, "Report");
                 str.Add(StringKey.InGameWorkInventory, "Open Chest");
                 str.Add(StringKey.InGameWorkCampFire, "grilled fish");
+                str.Add(StringKey.InGameWorkLight, "Manage lamp");
 
                 str.Add(StringKey.InGameWorkProcessTree, "Tree");
                 str.Add(StringKey.InGameWorkProcessWater, "Water");
                 str.Add(StringKey.InGameWorkProcessFish, "Fish");
                 str.Add(StringKey.InGameWorkProcessInventory, "Open Chest");
                 str.Add(StringKey.InGameWorkProcessCampFire, "Cooking fish");
+                str.Add(StringKey.InGameWorkProcessLight, "Fixing the lamp");
 
                 str.Add(StringKey.InGameMessageInventoryIsFull, "Inventory has been full");
                 str.Add(StringKey.InGameMessageCantMoveItem, "Item cannot be moved!");
@@ -322,12 +326,14 @@ public static class Strings
                 str.Add(StringKey.InGameWorkOpenVote, "신고하기");
                 str.Add(StringKey.InGameWorkInventory, "보관소 열기");
                 str.Add(StringKey.InGameWorkCampFire, "물고기 굽기");
+                str.Add(StringKey.InGameWorkLight, "전등 조작하기");
 
                 str.Add(StringKey.InGameWorkProcessTree, "나무를 구하는 중입니다.");
                 str.Add(StringKey.InGameWorkProcessWater, "물을 퍼고있습니다.");
                 str.Add(StringKey.InGameWorkProcessFish, "물고기를 낚는중입니다.");
                 str.Add(StringKey.InGameWorkProcessInventory, "보관소를 여는중입니다.");
                 str.Add(StringKey.InGameWorkProcessCampFire, "물고기를 익히는중입니다.");
+                str.Add(StringKey.InGameWorkProcessLight, "전등을 고치는 중입니다.");
 
                 str.Add(StringKey.InGameMessageInventoryIsFull, "아이템을 더 이상 구할 수 없습니다!");
                 str.Add(StringKey.InGameMessageCantMoveItem, "아이템을 옮길 수 없습니다!");
@@ -428,12 +434,14 @@ public static class Strings
                 str.Add(StringKey.InGameWorkOpenVote, "신고하기");
                 str.Add(StringKey.InGameWorkInventory, "창고 열기");
                 str.Add(StringKey.InGameWorkCampFire, "물고기 굽기");
+                str.Add(StringKey.InGameWorkLight, "전등 조작하기");
 
                 str.Add(StringKey.InGameWorkProcessTree, "Tree");
                 str.Add(StringKey.InGameWorkProcessWater, "Water");
                 str.Add(StringKey.InGameWorkProcessFish, "Fish");
                 str.Add(StringKey.InGameWorkProcessInventory, "보관소를 여는중입니다.");
                 str.Add(StringKey.InGameWorkProcessCampFire, "물고기를 익히는중입니다.");
+                str.Add(StringKey.InGameWorkProcessLight, "전등을 고치는 중입니다.");
 
                 str.Add(StringKey.InGameMessageInventoryIsFull, "아이템을 더 이상 구할 수 없습니다!");
                 str.Add(StringKey.InGameMessageCantMoveItem, "아이템을 옮길 수 없습니다!");
@@ -534,12 +542,14 @@ public static class Strings
                 str.Add(StringKey.InGameWorkOpenVote, "신고하기");
                 str.Add(StringKey.InGameWorkInventory, "창고 열기");
                 str.Add(StringKey.InGameWorkCampFire, "물고기 굽기");
+                str.Add(StringKey.InGameWorkLight, "전등 조작하기");
 
                 str.Add(StringKey.InGameWorkProcessTree, "Tree");
                 str.Add(StringKey.InGameWorkProcessWater, "Water");
                 str.Add(StringKey.InGameWorkProcessFish, "Fish");
                 str.Add(StringKey.InGameWorkProcessInventory, "보관소를 여는중입니다.");
                 str.Add(StringKey.InGameWorkProcessCampFire, "물고기를 익히는중입니다.");
+                str.Add(StringKey.InGameWorkProcessLight, "전등을 고치는 중입니다.");
 
                 str.Add(StringKey.InGameMessageInventoryIsFull, "아이템을 더 이상 구할 수 없습니다!");
                 str.Add(StringKey.InGameMessageCantMoveItem, "아이템을 옮길 수 없습니다!");

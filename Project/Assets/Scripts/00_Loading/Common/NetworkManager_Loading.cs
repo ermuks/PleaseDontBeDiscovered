@@ -44,7 +44,8 @@ public class NetworkManager_Loading : MonoBehaviourPunCallbacks
             { "alreadyVoted", false },
             { "voteMembers", 0 },
             { "job", (int)ROCTJob.None },
-            { "color", color }
+            { "color", color },
+            { "missionClear", false }
         });
         EventManager.SendEvent("OpenScene", "Main");
     }

@@ -9,7 +9,7 @@ public class EventManager
     public static string[] ignoreKeys = new string[]
     {
         "Drag",
-        //"Refresh",
+        "Refresh Minimap",
         "SetKillCooldown",
         "Sound"
     };

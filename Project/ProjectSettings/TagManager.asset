@@ -16,6 +16,7 @@ TagManager:
   - CampFire
   - PlayerSpawnZone
   - MurdererSpawnZone
+  - LightZone
   layers:
   - Default
   - TransparentFX
