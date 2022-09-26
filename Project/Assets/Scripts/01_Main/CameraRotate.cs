@@ -12,7 +12,7 @@ public class CameraRotate : MonoBehaviour
     float speed = 10f;
 
     GameObject currentSelectObject;
-
+    /*
     void Update()
     {
         if (ableControl)
@@ -108,4 +108,5 @@ public class CameraRotate : MonoBehaviour
             angleY += 360f;
         }
     }
+    */
 }
