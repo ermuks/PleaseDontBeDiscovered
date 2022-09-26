@@ -67,6 +67,10 @@ public class PlayerWorkProgressUI : MonoBehaviour
                 message = Strings.GetString(StringKey.InGameWorkProcessChest);
                 workEndTime = 7f;
                 break;
+            case WorkMessage.PictureZone:
+                message = Strings.GetString(StringKey.InGameWorkProcessPicture);
+                workEndTime = 7f;
+                break;
             default:
                 break;
         }

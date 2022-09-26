@@ -18,6 +18,7 @@ public enum WorkMessage
     LightZone,
     TableZone,
     ChestZone,
+    PictureZone,
 }
 
 public class TriggerUI : MonoBehaviour
@@ -75,6 +76,9 @@ public class TriggerUI : MonoBehaviour
             case WorkMessage.ChestZone:
                 txtMessage.text = Strings.GetString(StringKey.InGameWorkChest);
                 break;
+            case WorkMessage.PictureZone:
+                txtMessage.text = Strings.GetString(StringKey.InGameWorkPicture);
+                break;
             case WorkMessage.CampFire:
                 txtMessage.text = Strings.GetString(StringKey.InGameWorkCampFire);
                 break;
@@ -121,6 +125,9 @@ public class TriggerUI : MonoBehaviour
                             isWorking = true;
                             break;
                         case WorkMessage.ChestZone:
+                            isWorking = true;
+                            break;
+                        case WorkMessage.PictureZone:
                             isWorking = true;
                             break;
                         default:

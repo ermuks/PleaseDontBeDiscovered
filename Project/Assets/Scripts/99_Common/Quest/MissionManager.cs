@@ -21,6 +21,7 @@ public class MissionManager
         "personalMission-Fire",
         "personalMission-Water",
         "personalMission-Table",
+        "personalMission-Picture",
         "personalMission-Chest"
     };
     private static string[] jobMissionCodes =
@@ -67,6 +68,7 @@ public class MissionManager
         personalMissionList.Add(codes.Dequeue(), new MissionListFire());
         personalMissionList.Add(codes.Dequeue(), new MissionListWater());
         personalMissionList.Add(codes.Dequeue(), new MissionListTable());
+        personalMissionList.Add(codes.Dequeue(), new MissionListPicture());
         personalMissionList.Add(codes.Dequeue(), new MissionListChest());
         //////////////////////////////
     }

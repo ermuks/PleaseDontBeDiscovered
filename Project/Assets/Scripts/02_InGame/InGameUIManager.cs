@@ -354,6 +354,11 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
                 areaTrigger.SetActive(true);
                 areaTrigger.GetComponent<TriggerUI>().SetMessage(WorkMessage.ChestZone, col);
             }
+            else if (col.CompareTag("PictureZone"))
+            {
+                areaTrigger.SetActive(true);
+                areaTrigger.GetComponent<TriggerUI>().SetMessage(WorkMessage.PictureZone, col);
+            }
             else
             {
                 areaTrigger.SetActive(true);

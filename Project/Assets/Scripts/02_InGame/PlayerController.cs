@@ -171,6 +171,10 @@ public class PlayerController : MonoBehaviour
                     MissionManager.ProcessMission("personalMission-Chest");
                     EventManager.SendEvent("Mission :: Refresh");
                     break;
+                case WorkMessage.PictureZone:
+                    MissionManager.ProcessMission("personalMission-Picture");
+                    EventManager.SendEvent("Mission :: Refresh");
+                    break;
                 default:
                     break;
             }

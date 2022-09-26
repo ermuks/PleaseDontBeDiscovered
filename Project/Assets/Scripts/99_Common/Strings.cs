@@ -90,6 +90,7 @@ public enum StringKey
     InGameWorkProcessLight,
     InGameWorkTable,
     InGameWorkChest,
+    InGameWorkPicture,
 
     InGameWorkProcessTree,
     InGameWorkProcessWater,
@@ -98,6 +99,7 @@ public enum StringKey
     InGameWorkProcessCampFire,
     InGameWorkProcessTable,
     InGameWorkProcessChest,
+    InGameWorkProcessPicture,
 
     InGameMessageInventoryIsFull,
     InGameMessageCantMoveItem,
@@ -221,6 +223,7 @@ public static class Strings
                 str.Add(StringKey.InGameWorkLight, "Manage lamp");
                 str.Add(StringKey.InGameWorkTable, "Clean up table");
                 str.Add(StringKey.InGameWorkChest, "Open the chest");
+                str.Add(StringKey.InGameWorkPicture, "Take Picture");
 
                 str.Add(StringKey.InGameWorkProcessTree, "Tree");
                 str.Add(StringKey.InGameWorkProcessWater, "Water");
@@ -230,6 +233,7 @@ public static class Strings
                 str.Add(StringKey.InGameWorkProcessLight, "Fixing the lamp");
                 str.Add(StringKey.InGameWorkProcessTable, "The table is being cleaned up.");
                 str.Add(StringKey.InGameWorkProcessChest, "Sorting items.");
+                str.Add(StringKey.InGameWorkProcessPicture, "Taking Picture.");
 
                 str.Add(StringKey.InGameMessageInventoryIsFull, "Inventory has been full");
                 str.Add(StringKey.InGameMessageCantMoveItem, "Item cannot be moved!");
@@ -337,6 +341,7 @@ public static class Strings
                 str.Add(StringKey.InGameWorkLight, "전등 조작하기");
                 str.Add(StringKey.InGameWorkTable, "테이블 보기");
                 str.Add(StringKey.InGameWorkChest, "창고 열기");
+                str.Add(StringKey.InGameWorkPicture, "사진 찍기");
 
                 str.Add(StringKey.InGameWorkProcessTree, "나무를 구하는 중입니다.");
                 str.Add(StringKey.InGameWorkProcessWater, "물을 퍼고있습니다.");
@@ -346,6 +351,7 @@ public static class Strings
                 str.Add(StringKey.InGameWorkProcessLight, "전등을 고치는 중입니다.");
                 str.Add(StringKey.InGameWorkProcessTable, "테이블을 정리하는 중입니다.");
                 str.Add(StringKey.InGameWorkProcessChest, "물건들을 분류하는 중입니다.");
+                str.Add(StringKey.InGameWorkProcessPicture, "사진을 찍는 중입니다.");
 
                 str.Add(StringKey.InGameMessageInventoryIsFull, "아이템을 더 이상 구할 수 없습니다!");
                 str.Add(StringKey.InGameMessageCantMoveItem, "아이템을 옮길 수 없습니다!");
@@ -449,6 +455,7 @@ public static class Strings
                 str.Add(StringKey.InGameWorkLight, "전등 조작하기");
                 str.Add(StringKey.InGameWorkTable, "테이블 보기");
                 str.Add(StringKey.InGameWorkChest, "창고 열기");
+                str.Add(StringKey.InGameWorkPicture, "사진 찍기");
 
                 str.Add(StringKey.InGameWorkProcessTree, "Tree");
                 str.Add(StringKey.InGameWorkProcessWater, "Water");
@@ -458,6 +465,7 @@ public static class Strings
                 str.Add(StringKey.InGameWorkProcessLight, "전등을 고치는 중입니다.");
                 str.Add(StringKey.InGameWorkProcessTable, "테이블을 정리하는 중입니다.");
                 str.Add(StringKey.InGameWorkProcessChest, "물건들을 분류하는 중입니다.");
+                str.Add(StringKey.InGameWorkProcessPicture, "사진을 찍는 중입니다.");
 
                 str.Add(StringKey.InGameMessageInventoryIsFull, "아이템을 더 이상 구할 수 없습니다!");
                 str.Add(StringKey.InGameMessageCantMoveItem, "아이템을 옮길 수 없습니다!");
@@ -561,6 +569,7 @@ public static class Strings
                 str.Add(StringKey.InGameWorkLight, "전등 조작하기");
                 str.Add(StringKey.InGameWorkTable, "테이블 보기");
                 str.Add(StringKey.InGameWorkChest, "창고 열기");
+                str.Add(StringKey.InGameWorkPicture, "사진 찍기");
 
                 str.Add(StringKey.InGameWorkProcessTree, "Tree");
                 str.Add(StringKey.InGameWorkProcessWater, "Water");
@@ -570,6 +579,7 @@ public static class Strings
                 str.Add(StringKey.InGameWorkProcessLight, "전등을 고치는 중입니다.");
                 str.Add(StringKey.InGameWorkProcessTable, "테이블을 정리하는 중입니다.");
                 str.Add(StringKey.InGameWorkProcessChest, "물건들을 분류하는 중입니다.");
+                str.Add(StringKey.InGameWorkProcessPicture, "사진을 찍는 중입니다.");
 
                 str.Add(StringKey.InGameMessageInventoryIsFull, "아이템을 더 이상 구할 수 없습니다!");
                 str.Add(StringKey.InGameMessageCantMoveItem, "아이템을 옮길 수 없습니다!");

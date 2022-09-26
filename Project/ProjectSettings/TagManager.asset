@@ -19,6 +19,7 @@ TagManager:
   - LightZone
   - ChestZone
   - TableZone
+  - PictureZone
   layers:
   - Default
   - TransparentFX
