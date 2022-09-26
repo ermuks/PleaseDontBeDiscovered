@@ -17,7 +17,8 @@ public class VoteUI : MonoBehaviourPunCallbacks
         btnSkip.onClick.AddListener(() =>
         {
             bool isAlreadyVoted = (bool)PhotonNetwork.LocalPlayer.CustomProperties["alreadyVoted"];
-            if (!isAlreadyVoted)
+            bool isDead = (bool)PhotonNetwork.LocalPlayer.CustomProperties["isDead"];
+            if (!isAlreadyVoted && !isDead)
             {
                 EventManager.SendEvent("InGameUI :: CompleteSkip", PhotonNetwork.LocalPlayer);
                 EventManager.SendEvent("InGameUI :: CloseVoteButtons");

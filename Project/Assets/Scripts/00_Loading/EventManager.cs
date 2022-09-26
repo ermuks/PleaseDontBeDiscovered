@@ -59,10 +59,12 @@ public class EventManager
             }
             else
             {
+#if UNITY_EDITOR
                 if (Array.FindIndex(ignoreKeys, e => key.IndexOf(e) != -1) == -1)
                 {
                     Debug.Log($"<color=#ff7b85>[ Fail ]</color>\nEvent Key : <color=#c9f5f9>{key}</color>");
                 }
+#endif
             }
         }
     }

@@ -11,7 +11,7 @@ public class WatcherUI : MonoBehaviour
 
     public void SetPlayer(Player player)
     {
-        if ((bool)player.CustomProperties["isMurder"])
+        if ((bool)player.CustomProperties["isMurderer"])
         {
             txtNickname.color = new Color(1f, .06f, .08f);
         }

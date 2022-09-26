@@ -74,6 +74,12 @@ public class NetworkManager_InGame : MonoBehaviourPunCallbacks
             {
                 if ((bool)properties["Vote"] && !(bool)EventManager.GetData("InGameUI >> VoteUIActive"))
                 {
+                    if (PhotonNetwork.LocalPlayer.IsMasterClient)
+                    {
+                        var prope = PhotonNetwork.CurrentRoom.CustomProperties;
+                        prope["skipCount"] = 0;
+                        PhotonNetwork.CurrentRoom.SetCustomProperties(prope);
+                    }
                     EventManager.SendEvent("InGameUI :: OpenVoteUI");
                 }
                 if (!(bool)properties["Vote"] && (bool)EventManager.GetData("InGameUI >> VoteUIActive"))
@@ -107,9 +113,9 @@ public class NetworkManager_InGame : MonoBehaviourPunCallbacks
         foreach (var player in PhotonNetwork.CurrentRoom.Players.Values)
         {
             var properties = player.CustomProperties;
-            if (!(bool)properties["isDead"] && !(bool)properties["isMurder"]) surviverCount++;
-            if (!(bool)properties["isDead"] && (bool)properties["isMurder"]) murderCount++;
-            if (properties["missionClear"].Equals(false) && properties["isMurder"].Equals(false)) missionAllClear = false;
+            if (!(bool)properties["isDead"] && !(bool)properties["isMurderer"]) surviverCount++;
+            if (!(bool)properties["isDead"] && (bool)properties["isMurderer"]) murderCount++;
+            if (properties["missionClear"].Equals(false) && properties["isMurderer"].Equals(false)) missionAllClear = false;
         }
         
         if (missionAllClear)

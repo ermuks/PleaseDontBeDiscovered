@@ -154,7 +154,7 @@ public class PlayerData : MonoBehaviourPun, IPunObservable
     private void Hit(Player player)
     {
         GetComponent<Animator>().SetBool("Hit", true);
-        if ((bool)player.CustomProperties["isMurder"])
+        if ((bool)player.CustomProperties["isMurderer"])
         {
             Die(player, true, true);
         }

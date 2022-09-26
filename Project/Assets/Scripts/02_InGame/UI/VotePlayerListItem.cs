@@ -28,9 +28,9 @@ public class VotePlayerListItem : MonoBehaviour
         btnSelect.onClick.AddListener(() => ButtonSelect());
         btnCancel.onClick.AddListener(() => ButtonCancel());
 
-        if ((bool)PhotonNetwork.LocalPlayer.CustomProperties["isMurder"])
+        if ((bool)PhotonNetwork.LocalPlayer.CustomProperties["isMurderer"])
         {
-            if ((bool)player.CustomProperties["isMurder"])
+            if ((bool)player.CustomProperties["isMurderer"])
             {
                 txtNickname.color = Color.red;
             }
@@ -59,11 +59,12 @@ public class VotePlayerListItem : MonoBehaviour
     private void ButtonSelect()
     {
         bool isAlreadyVoted = (bool)PhotonNetwork.LocalPlayer.CustomProperties["alreadyVoted"];
-        if (!isAlreadyVoted)
+        bool isDead = (bool)PhotonNetwork.LocalPlayer.CustomProperties["isDead"];
+        if (!isAlreadyVoted && !isDead)
         {
             EventManager.SendEvent("InGameUI :: CompleteVote", PhotonNetwork.LocalPlayer, player);
-            EventManager.SendEvent("InGameUI :: CloseVoteButtons");
         }
+        EventManager.SendEvent("InGameUI :: CloseVoteButtons");
         EventManager.SendEvent("InGameData :: AlreadyVoted", true);
         CloseVoteButton();
     }

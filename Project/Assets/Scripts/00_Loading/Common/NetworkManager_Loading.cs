@@ -40,7 +40,7 @@ public class NetworkManager_Loading : MonoBehaviourPunCallbacks
         {
             { "isReady", false },
             { "isDead", false },
-            { "isMurder", false },
+            { "isMurderer", false },
             { "alreadyVoted", false },
             { "voteMembers", 0 },
             { "job", (int)ROCTJob.None },

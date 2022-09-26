@@ -28,7 +28,6 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
 
     [SerializeField] private GameObject areaTriggerParent;
     [SerializeField] private GameObject areaTrigger;
-    [SerializeField] private GameObject areaCCTV;
     [SerializeField] private GameObject areaWater;
     [SerializeField] private GameObject areaDieUI;
     [SerializeField] private GameObject areaPhone;
@@ -79,7 +78,6 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
         areaGameOver.SetActive(true);
         areaTriggerParent.SetActive(true);
         areaTrigger.SetActive(true);
-        areaCCTV.SetActive(true);
         areaVote.SetActive(true);
         areaPlayerWorkProgressUI.SetActive(true);
         areaFinishVote.SetActive(false);
@@ -88,11 +86,10 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
         areaGameOver.SetActive(false);
         areaTriggerParent.SetActive(true);
         areaTrigger.SetActive(false);
-        areaCCTV.SetActive(false);
         areaVote.SetActive(false);
         areaPlayerWorkProgressUI.SetActive(false);
 
-        bool isMurder = (bool)PhotonNetwork.LocalPlayer.CustomProperties["isMurder"];
+        bool isMurderer = (bool)PhotonNetwork.LocalPlayer.CustomProperties["isMurderer"];
 
         maxTime = (float)PhotonNetwork.CurrentRoom.CustomProperties["voteTime"];
 
@@ -408,16 +405,6 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
         //    Cursor.lockState = CursorLockMode.Locked;
         //    areaInventory.SetActive(false);
         //});
-        EventManager.AddEvent("InGameUI :: OpenCCTV", (p) =>
-        {
-            Cursor.lockState = CursorLockMode.None;
-            areaCCTV.SetActive(true);
-        });
-        EventManager.AddEvent("InGameUI :: CloseCCTV", (p) =>
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-            areaCCTV.SetActive(false);
-        });
         EventManager.AddEvent("InGameUI :: TogglePhone", (p) =>
         {
             areaPhone.SetActive(!areaPhone.activeSelf);
@@ -492,7 +479,7 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
         Player manyVotePlayer = null;
         int voteCount = 0;
         bool isEqualVotes = false;
-
+        int skipCount = (int)PhotonNetwork.CurrentRoom.CustomProperties["skipCount"];
         foreach (var player in PhotonNetwork.CurrentRoom.Players.Values)
         {
             var properties = player.CustomProperties;
@@ -514,6 +501,7 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
             }
         }
         if (isEqualVotes) manyVotePlayer = null;
+        if (skipCount >= voteCount) manyVotePlayer = null;
         areaFinishVote.GetComponent<FinishVoteBackgroundUI>().SetMessage(manyVotePlayer);
         yield return new WaitUntil(() => !areaFinishVote.activeSelf);
         if (PhotonNetwork.LocalPlayer.IsMasterClient)
@@ -536,22 +524,24 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
         RefreshVoteAmount();
         if (PhotonNetwork.LocalPlayer.IsMasterClient)
         {
+            voteCount++;
             if (target != null)
             {
                 var properties = target.CustomProperties;
                 properties["voteMembers"] = (int)properties["voteMembers"] + 1;
                 target.SetCustomProperties(properties);
-
-                if (++voteCount >= voteAmount)
-                {
-                    var roomProperties = PhotonNetwork.CurrentRoom.CustomProperties;
-                    roomProperties["Vote"] = false;
-                    PhotonNetwork.CurrentRoom.SetCustomProperties(roomProperties);
-                }
             }
             else
             {
-                ++voteCount;
+                var properties = PhotonNetwork.CurrentRoom.CustomProperties;
+                properties["skipCount"] = (int)properties["skipCount"] + 1;
+                PhotonNetwork.CurrentRoom.SetCustomProperties(properties);
+            }
+            if (voteCount >= voteAmount)
+            {
+                var roomProperties = PhotonNetwork.CurrentRoom.CustomProperties;
+                roomProperties["Vote"] = false;
+                PhotonNetwork.CurrentRoom.SetCustomProperties(roomProperties);
             }
         }
         foreach (var playerListItem in votePlayerList)

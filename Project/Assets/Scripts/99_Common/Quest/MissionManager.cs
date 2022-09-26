@@ -75,7 +75,6 @@ public class MissionManager
     {
         if (myMissions.ContainsKey(missionCode))
         {
-            Debug.Log($"MissionManager::ProcessMission({missionCode})");
             myMissions[missionCode].RefreshMission();
             CheckAllClear();
         }

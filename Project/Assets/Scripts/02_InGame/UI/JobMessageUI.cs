@@ -11,7 +11,7 @@ public class JobMessageUI : MonoBehaviour
 
     private void Awake()
     {
-        bool murder = (bool)PhotonNetwork.LocalPlayer.CustomProperties["isMurder"];
+        bool murder = (bool)PhotonNetwork.LocalPlayer.CustomProperties["isMurderer"];
         txtJobMessage.text = murder ? Strings.GetString(StringKey.InGameMurderPlayer) : Strings.GetString(StringKey.InGameNoMurderPlayer);
         txtJobMessage.color = murder ? new Color(.733333f, .2f, .2f) : new Color(.2f, .733333f, .733333f);
     }

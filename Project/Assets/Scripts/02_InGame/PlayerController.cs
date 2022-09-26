@@ -49,24 +49,19 @@ public class PlayerController : MonoBehaviour
 
     private bool isDead = false;
     private bool isWatcher = false;
-    private bool isMurder = false;
+    private bool isMurderer = false;
     private int playerIndex = 0;
     private Transform targetPlayer;
 
     private bool isWorking = false;
 
+    private bool isRunable = false;
+
     private bool killable = false;
     private float killCooldown = .0f;
     private float killTimer = .0f;
 
-    private bool isFallingDamage = false;
-    private bool isRunable = false;
-
     private bool isWater = false;
-
-    private bool canBreath = true;
-    private float breathHoldTimer = .0f;
-    private float breathHoldMaximum = 20f;
 
     public Vector3 hitNormal;
     public float hitAngle;
@@ -74,7 +69,7 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         speed = (float)PhotonNetwork.CurrentRoom.CustomProperties["moveSpeed"];
-        isMurder = (bool)PhotonNetwork.LocalPlayer.CustomProperties["isMurder"];
+        isMurderer = (bool)PhotonNetwork.LocalPlayer.CustomProperties["isMurderer"];
         killCooldown = (float)PhotonNetwork.CurrentRoom.CustomProperties["killCooldown"];
         isRunable = (bool)PhotonNetwork.CurrentRoom.CustomProperties["runable"];
         
@@ -103,6 +98,7 @@ public class PlayerController : MonoBehaviour
             EventManager.SendEvent("Player :: WorkEnd");
             EventManager.SendEvent("Player :: SetWatching");
             SetDie();
+            GetComponent<PlayerData>().DestroyPlayer();
             NextPlayer(true);
         });
         EventManager.AddEvent("Player :: WorkStart", (p) =>
@@ -154,7 +150,16 @@ public class PlayerController : MonoBehaviour
                     EventManager.SendEvent("Mission :: Refresh");
                     break;
                 case WorkMessage.LightZone:
-                    col.GetComponent<LampManagement>().TurnOnLamp();
+                    //col.GetComponent<LampManagement>().TurnOnLamp();
+                    //GetComponent<PhotonView>().RPC("LampOn", RpcTarget.All, col.GetComponent<PhotonView>().ViewID);
+                    if (PhotonNetwork.LocalPlayer.CustomProperties["isMurderer"].Equals(true))
+                    {
+                        EventManager.SendEvent("Lamp :: Murderer", col.GetComponent<PhotonView>().ViewID);
+                    }
+                    else
+                    {
+                        EventManager.SendEvent("Lamp :: On", col.GetComponent<PhotonView>().ViewID);
+                    }
                     MissionManager.ProcessMission("commonMission-TurnOnLight");
                     EventManager.SendEvent("Mission :: Refresh");
                     break;
@@ -185,20 +190,12 @@ public class PlayerController : MonoBehaviour
             EventManager.SendEvent("Player :: WorkEnd");
             aliveObject.SetActive(false);
         });
-        EventManager.AddEvent("Player :: CanBreath", (p) =>
-        {
-            canBreath = true;
-        });
-        EventManager.AddEvent("Player :: CantBreath", (p) =>
-        {
-            canBreath = false;
-        });
         EventManager.AddEvent("Player :: EndGame", (p) =>
         {
             GameObject spawnArea;
-            if ((bool)p[0] == isMurder) {
+            if ((bool)p[0] == isMurderer) {
                 spawnArea =
-                isMurder ?
+                isMurderer ?
                 GameObject.FindGameObjectWithTag("MurdererSpawnZone") :
                 GameObject.FindGameObjectWithTag("PlayerSpawnZone");
                 Bounds bounds = spawnArea.GetComponent<Collider>().bounds;
@@ -276,7 +273,7 @@ public class PlayerController : MonoBehaviour
                 NextPlayer();
             }
         }
-        if (isMurder)
+        if (isMurderer)
         {
             if (!killable)
             {
@@ -451,7 +448,7 @@ public class PlayerController : MonoBehaviour
         Vector3 point1 = controller.bounds.center + Vector3.up * (controller.height - controller.radius * 2) / 2;
         Vector3 point2 = controller.bounds.center - Vector3.up * (controller.height - controller.radius * 2) / 2;
 
-        bool isRun = Input.GetKey(Settings.instance.GetKey(KeySettings.RunKey)) && isMurder;
+        bool isRun = Input.GetKey(Settings.instance.GetKey(KeySettings.RunKey)) && (isMurderer || isRunable);
         bool isWalk = Input.GetKey(Settings.instance.GetKey(KeySettings.WalkKey));
         bool forward = Input.GetKey(Settings.instance.GetKey(KeySettings.ForwardKey));
         bool backward = Input.GetKey(Settings.instance.GetKey(KeySettings.BackwardKey));
@@ -638,7 +635,7 @@ public class PlayerController : MonoBehaviour
                     PhotonView view = item.collider.GetComponent<PhotonView>();
                     if (!view.IsMine)
                     {
-                        if (!(bool)view.Owner.CustomProperties["isMurder"] && !(bool)view.Owner.CustomProperties["isDead"])
+                        if (!(bool)view.Owner.CustomProperties["isMurderer"] && !(bool)view.Owner.CustomProperties["isDead"])
                         {
                             killable = false;
                             killTimer = .0f;

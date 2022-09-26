@@ -20,6 +20,13 @@ public class LampManagement : MonoBehaviourPun, IPunObservable
         _light = transform.Find("Lamp Light").GetComponent<Light>();
         _renderer = transform.Find("Cube").GetComponent<MeshRenderer>();
         RefreshLamp();
+        LampManager.Instance.AddLamp(this);
+    }
+
+    public void ToggleLamp()
+    {
+        isOn = !isOn;
+        RefreshLamp();
     }
 
     public void TurnOnLamp()
@@ -42,13 +49,6 @@ public class LampManagement : MonoBehaviourPun, IPunObservable
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        if (stream.IsWriting)
-        {
-            stream.SendNext(isOn);
-        }
-        else
-        {
-            isOn = (bool)stream.ReceiveNext();
-        }
+        
     }
 }

@@ -31,7 +31,7 @@ public class FinishVoteBackgroundUI : MonoBehaviour
         foreach (var p in PhotonNetwork.CurrentRoom.Players.Values)
         {
             var properties = p.CustomProperties;
-            if (!(bool)properties["isDead"] && (bool)properties["isMurder"]) murderCount++;
+            if (!(bool)properties["isDead"] && (bool)properties["isMurderer"]) murderCount++;
         }
         if (player == null)
         {
@@ -40,7 +40,7 @@ public class FinishVoteBackgroundUI : MonoBehaviour
         }
         else
         {
-            if ((bool)player.CustomProperties["isMurder"])
+            if ((bool)player.CustomProperties["isMurderer"])
             {
                 txtIsMurder.text = Strings.GetString(StringKey.InGameFinishVoteMurderTrue, player.NickName);
                 txtMurderCount.text = Strings.GetString(StringKey.InGameFinishVoteMurderCount, murderCount - 1);

@@ -190,10 +190,11 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
             areaRoomUI.SetActive(true);
             SetPlayerProperties(
                 "isReady", false,
-                "isMurder", false,
+                "isMurderer", false,
                 "isDead", false,
                 "alreadyVoted", false,
                 "voteMembers", 0,
+                "missionClear", false,
                 "color", (int)PhotonNetwork.LocalPlayer.CustomProperties["color"]
                 );
             EventManager.SendEvent("Chatting :: Clear");
@@ -410,7 +411,7 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
             if (Settings.instance.isDebug)
             {
                 var p = PhotonNetwork.LocalPlayer.CustomProperties;
-                p["isMurder"] = Settings.instance.isMurderMode;
+                p["isMurderer"] = Settings.instance.isMurderMode;
                 PhotonNetwork.LocalPlayer.SetCustomProperties(p);
                 PhotonNetwork.CurrentRoom.IsOpen = false;
                 SetRoomProperties("isStart", true);
@@ -704,6 +705,7 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
                 roomOption.CustomRoomProperties.Add("commonMission", (int)sliderCommonMission.value);
                 roomOption.CustomRoomProperties.Add("personalMission", (int)sliderPersonalMission.value);
                 roomOption.CustomRoomProperties.Add("jobMission", (int)sliderJobMission.value);
+                roomOption.CustomRoomProperties.Add("skipCount", 0);
 
                 if (PhotonNetwork.InRoom)
                 {
@@ -968,7 +970,7 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
                         if (murderIndex[i])
                         {
                             var p = player.Value.CustomProperties;
-                            p["isMurder"] = true;
+                            p["isMurderer"] = true;
                             player.Value.SetCustomProperties(p);
                         }
                         result += $"{murderIndex[i]} ({player.Value.NickName}), ";

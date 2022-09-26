@@ -29,7 +29,6 @@ public class MissionUIManager : MonoBehaviour
 
     private void Refresh()
     {
-        Debug.Log($"MissionUIManager::Refresh()");
         var missionList = MissionManager.GetMissions();
         for (int i = 0; i < missionListItems.Count; i++)
         {
