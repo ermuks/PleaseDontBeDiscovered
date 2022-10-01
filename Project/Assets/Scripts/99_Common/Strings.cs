@@ -29,6 +29,7 @@ public enum StringKey
     
     SettingsKeyDescriptUseItem1,
     SettingsKeyDescriptUseItem2,
+    SettingsKeyDescriptReport,
     SettingsKeyDescriptWork,
     SettingsKeyDescriptCancelWork,
 
@@ -156,6 +157,7 @@ public static class Strings
                 
                 str.Add(StringKey.SettingsKeyDescriptUseItem1, "Use item 1");
                 str.Add(StringKey.SettingsKeyDescriptUseItem2, "Use item 2");
+                str.Add(StringKey.SettingsKeyDescriptReport, "Report");
                 str.Add(StringKey.SettingsKeyDescriptWork, "Interaction");
                 str.Add(StringKey.SettingsKeyDescriptCancelWork, "Cancel interaction");
 
@@ -275,6 +277,7 @@ public static class Strings
 
                 str.Add(StringKey.SettingsKeyDescriptUseItem1, "1번 아이템 사용하기");
                 str.Add(StringKey.SettingsKeyDescriptUseItem2, "2번 아이템 사용하기");
+                str.Add(StringKey.SettingsKeyDescriptReport, "신고하기");
                 str.Add(StringKey.SettingsKeyDescriptWork, "상호작용 키");
                 str.Add(StringKey.SettingsKeyDescriptCancelWork, "작업 취소하기");
 
@@ -389,6 +392,7 @@ public static class Strings
 
                 str.Add(StringKey.SettingsKeyDescriptUseItem1, "1번 아이템 사용하기");
                 str.Add(StringKey.SettingsKeyDescriptUseItem2, "2번 아이템 사용하기");
+                str.Add(StringKey.SettingsKeyDescriptReport, "신고하기");
                 str.Add(StringKey.SettingsKeyDescriptWork, "상호작용 키");
                 str.Add(StringKey.SettingsKeyDescriptCancelWork, "작업 취소하기");
 
@@ -503,6 +507,7 @@ public static class Strings
 
                 str.Add(StringKey.SettingsKeyDescriptUseItem1, "1번 아이템 사용하기");
                 str.Add(StringKey.SettingsKeyDescriptUseItem2, "2번 아이템 사용하기");
+                str.Add(StringKey.SettingsKeyDescriptReport, "신고하기");
                 str.Add(StringKey.SettingsKeyDescriptWork, "상호작용 키");
                 str.Add(StringKey.SettingsKeyDescriptCancelWork, "작업 취소하기");
 

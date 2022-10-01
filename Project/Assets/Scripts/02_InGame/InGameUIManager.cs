@@ -28,6 +28,7 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
 
     [SerializeField] private GameObject areaTriggerParent;
     [SerializeField] private GameObject areaTrigger;
+    [SerializeField] private GameObject areaReport;
     [SerializeField] private GameObject areaWater;
     [SerializeField] private GameObject areaDieUI;
     [SerializeField] private GameObject areaPhone;
@@ -77,6 +78,7 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
         areaWatcherUI.SetActive(true);
         areaGameOver.SetActive(true);
         areaTriggerParent.SetActive(true);
+        areaReport.SetActive(true);
         areaTrigger.SetActive(true);
         areaVote.SetActive(true);
         areaPlayerWorkProgressUI.SetActive(true);
@@ -85,6 +87,7 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
         areaWatcherUI.SetActive(false);
         areaGameOver.SetActive(false);
         areaTriggerParent.SetActive(true);
+        areaReport.SetActive(false);
         areaTrigger.SetActive(false);
         areaVote.SetActive(false);
         areaPlayerWorkProgressUI.SetActive(false);
@@ -314,7 +317,12 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
         EventManager.AddEvent("InGameUI :: TriggerEnter", (p) =>
         {
             Collider col = (Collider)p[0];
-            if (col.CompareTag("TreeZone"))
+            if (col.CompareTag("ReportArea"))
+            {
+                areaReport.SetActive(true);
+                areaReport.GetComponent<ReportUI>().SetMessage();
+            }
+            else if (col.CompareTag("TreeZone"))
             {
                 areaTrigger.SetActive(true);
                 areaTrigger.GetComponent<TriggerUI>().SetMessage(WorkMessage.Treezone, col);
@@ -328,11 +336,6 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
             {
                 areaTrigger.SetActive(true);
                 areaTrigger.GetComponent<TriggerUI>().SetMessage(WorkMessage.FishZone, col);
-            }
-            else if (col.CompareTag("ReportArea"))
-            {
-                areaTrigger.SetActive(true);
-                areaTrigger.GetComponent<TriggerUI>().SetMessage(WorkMessage.OpenVote, col);
             }
             else if (col.CompareTag("LightZone"))
             {
@@ -372,6 +375,10 @@ public class InGameUIManager : MonoBehaviourPun, IPunObservable
             {
                 Collider col = (Collider)p[0];
             }
+        });
+        EventManager.AddEvent("InGameUI :: ReportExit", (p) =>
+        {
+            areaReport.SetActive(false);
         });
         EventManager.AddEvent("InGameUI :: WorkStart", (p) =>
         {

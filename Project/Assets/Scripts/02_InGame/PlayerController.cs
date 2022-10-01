@@ -689,7 +689,14 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        EventManager.SendEvent("InGameUI :: TriggerExit", other);
+        if (other.CompareTag("ReportArea"))
+        {
+            EventManager.SendEvent("InGameUI :: ReportExit");
+        }
+        else
+        {
+            EventManager.SendEvent("InGameUI :: TriggerExit", other);
+        }
         if (other.CompareTag("DeepWater"))
         {
             Debug.Log(other.name, other.gameObject);

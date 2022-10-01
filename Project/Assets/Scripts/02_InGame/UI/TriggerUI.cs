@@ -12,8 +12,6 @@ public enum WorkMessage
     Treezone,
     WaterZone,
     FishZone,
-    OpenVote,
-    //Inventory,
     CampFire,
     LightZone,
     TableZone,
@@ -49,7 +47,7 @@ public class TriggerUI : MonoBehaviour
     {
         currentWork = msg;
         currentCollider = col;
-        txtKey.text = ((char)Settings.instance.GetKey(KeySettings.Work)).ToString();
+        txtKey.text = ((char)Settings.instance.GetKey(KeySettings.Work)).ToString().ToUpper();
         switch (msg)
         {
             case WorkMessage.None:
@@ -63,9 +61,6 @@ public class TriggerUI : MonoBehaviour
                 break;
             case WorkMessage.FishZone:
                 txtMessage.text = Strings.GetString(StringKey.InGameWorkFish);
-                break;
-            case WorkMessage.OpenVote:
-                txtMessage.text = Strings.GetString(StringKey.InGameWorkOpenVote);
                 break;
             case WorkMessage.LightZone:
                 txtMessage.text = Strings.GetString(StringKey.InGameWorkLight);
@@ -97,7 +92,6 @@ public class TriggerUI : MonoBehaviour
 
                 if (!isDead)
                 {
-                    bool isReport = false;
                     string err = "";
                     switch (currentWork)
                     {
@@ -111,9 +105,6 @@ public class TriggerUI : MonoBehaviour
                             break;
                         case WorkMessage.FishZone:
                             isWorking = true;
-                            break;
-                        case WorkMessage.OpenVote:
-                            isReport = true;
                             break;
                         case WorkMessage.LightZone:
                             isWorking = true;
@@ -133,23 +124,14 @@ public class TriggerUI : MonoBehaviour
                         default:
                             break;
                     }
-                    if (isReport)
+                    if (isWorking)
                     {
-                        var properties = PhotonNetwork.CurrentRoom.CustomProperties;
-                        properties["Vote"] = true;
-                        PhotonNetwork.CurrentRoom.SetCustomProperties(properties);
+                        EventManager.SendEvent("Player :: WorkStart", currentWork);
+                        EventManager.SendEvent("InGameUI :: WorkStart", currentWork, currentCollider);
                     }
                     else
                     {
-                        if (isWorking)
-                        {
-                            EventManager.SendEvent("Player :: WorkStart", currentWork);
-                            EventManager.SendEvent("InGameUI :: WorkStart", currentWork, currentCollider);
-                        }
-                        else
-                        {
-                            EventManager.SendEvent("InGameUI :: CreateMessage", err);
-                        }
+                        EventManager.SendEvent("InGameUI :: CreateMessage", err);
                     }
                 }
             }

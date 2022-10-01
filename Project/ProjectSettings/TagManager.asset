@@ -20,6 +20,8 @@ TagManager:
   - ChestZone
   - TableZone
   - PictureZone
+  - ComputerZone
+  - BedZone
   layers:
   - Default
   - TransparentFX

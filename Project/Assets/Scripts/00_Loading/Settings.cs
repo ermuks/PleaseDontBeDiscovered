@@ -26,6 +26,7 @@ public enum KeySettings
 
     UseItem1,
     UseItem2,
+    Report,
     Work,
     CancelWork,
 
@@ -110,6 +111,8 @@ public class Settings : MonoBehaviourPunCallbacks
 
         KeyCode.Alpha1,
         KeyCode.Alpha2,
+
+        KeyCode.R,
         KeyCode.F,
         KeyCode.Escape
     };
