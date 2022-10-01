@@ -798,7 +798,6 @@ MonoBehaviour:
   reportArea: {fileID: 7874891367804078727}
   childs:
   - {fileID: 7323305051471148463}
-  - {fileID: 0}
   - {fileID: 4186874591825060968}
   handLight: {fileID: 6470359776835358554}
   objHair: {fileID: 7323305051471309189}
