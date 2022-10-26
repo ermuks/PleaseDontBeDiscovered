@@ -8,20 +8,23 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: OutWater
-  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+  m_Shader: {fileID: 4800000, guid: d9daebd53a81fcd4d9a8d09a38f7f61d, type: 3}
   m_ShaderKeywords: _ALPHAPREMULTIPLY_ON _DETAIL_MULX2 _NORMALMAP
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 3000
-  stringTagMap:
-    RenderType: Transparent
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
     - _BumpMap:
-        m_Texture: {fileID: 2800000, guid: a7d950ad657b9544aab7f27f62191d8a, type: 3}
+        m_Texture: {fileID: 2800000, guid: bf199a5dcc8a22540948beeda29b4328, type: 3}
+        m_Scale: {x: 20, y: 20}
+        m_Offset: {x: 0, y: 0}
+    - _CubeMap:
+        m_Texture: {fileID: 8900000, guid: 9e6b49f045832154a915a2036c400fd3, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -71,9 +74,13 @@ Material:
     - _Parallax: 0.02
     - _Size: 7.9
     - _SmoothnessTextureChannel: 0
+    - _SpacPow: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _UVSec: 0
+    - _WavePower: 0.1
+    - _WaveSpeed: 0.05
+    - _WaveTilling: 25
     - _ZWrite: 0
     m_Colors:
     - _Color: {r: 0.17590779, g: 0.45729715, b: 0.6320754, a: 0.65882355}
