@@ -397,10 +397,7 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
         {
             PhotonNetwork.JoinRandomRoom();
         });
-        btnCreateRoom.onClick.AddListener(() =>
-        {
-            CreateRoom();
-        });
+        btnCreateRoom.onClick.AddListener(CreateRoom);
         btnCreateCancel.onClick.AddListener(() =>
         {
             areaRoomSettings.SetActive(false);
@@ -706,7 +703,7 @@ public class NetworkManager_Main : MonoBehaviourPunCallbacks
                 roomOption.CustomRoomProperties.Add("personalMission", (int)sliderPersonalMission.value);
                 roomOption.CustomRoomProperties.Add("jobMission", (int)sliderJobMission.value);
                 roomOption.CustomRoomProperties.Add("skipCount", 0);
-
+                roomOption.CustomRoomPropertiesForLobby = new string[] { "murdererCount" };
                 if (PhotonNetwork.InRoom)
                 {
                     if (PhotonNetwork.LocalPlayer.IsMasterClient)

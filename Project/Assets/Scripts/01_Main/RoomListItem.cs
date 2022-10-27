@@ -25,8 +25,9 @@ public class RoomListItem : MonoBehaviourPun
             PhotonNetwork.LeaveLobby();
             PhotonNetwork.JoinRoom(info.Name);
         });
-        txtNumber.text = index.ToString();
+        txtNumber.text = $"{info.MaxPlayers - info.PlayerCount}";
         txtTitle.text = info.Name;
-        txtPlayers.text = $"{info.PlayerCount} / {info.MaxPlayers}";
+        int murdererCount = (int)info.CustomProperties["murdererCount"];
+        txtPlayers.text = $"{murdererCount} / {info.MaxPlayers - murdererCount}";
     }
 }
